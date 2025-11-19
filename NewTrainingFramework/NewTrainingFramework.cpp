@@ -1,4 +1,4 @@
-// NewTrainingFramework.cpp : Defines the entry point for the console application.
+﻿// NewTrainingFramework.cpp : Defines the entry point for the console application.
 //
 
 #include "stdafx.h"
@@ -71,6 +71,19 @@ void Draw ( ESContext *esContext )
 		glVertexAttribPointer(myShaders.colorAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(Vector3)));
 	}
 
+	Matrix proj = camera.getPerspectiveMatrix();
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++)
+			printf("%f ", proj.m[i][j]);
+		printf("\n");
+	}
+
+	Matrix model;
+	model.SetIdentity();
+
+	Matrix MVP = model * camera.getViewMatrix() * camera.getPerspectiveMatrix();
+	glUniformMatrix4fv(myShaders.matrixUniform, 1, GL_FALSE, &MVP.m[0][0]);
+
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -102,21 +115,27 @@ void Key ( ESContext *esContext, unsigned char key, bool bIsPressed)
 	switch (key)
 	{
 		case 'A': case 'a':
+			printf("A");
 			camera.moveOx(-1);
 			break;
 		case 'S': case 's':
+			printf("S");
 			camera.moveOy(-1);
 			break ;
 		case 'D':case'd':
+			printf("D");
 			camera.moveOx(1);
 			break;
 		case 'W':case 'w':
+			printf("W");
 			camera.moveOy(1);
 			break;
 		case 'Q':case 'q':
+			printf("Q");
 			camera.rotateOz(1);
 			break;
 		case 'E': case 'e':
+			printf("E");
 			camera.rotateOz(-1);
 			break;
 		default:

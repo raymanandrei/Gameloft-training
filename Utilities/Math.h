@@ -106,6 +106,8 @@ public:
 	Vector4 Modulate(Vector4 & vector);
 	GLfloat Dot(Vector4 & vector);
 
+	Vector3 toVector3() const;
+
 	//matrix multiplication
 	Vector4 operator * ( Matrix & m );
 

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../Utilities/Math.h"
 class Camera
 {
@@ -14,9 +14,11 @@ class Camera
 	Vector3 xAxis;
 	Vector3 yAxis;
 	Vector3 zAxis;
+
+private:
 	Matrix viewMatrix;
 	Matrix worldMatrix;
-
+	Matrix perspectiveMatrix; // obligatoriu pentru getter
 public:
 
     Camera():
@@ -28,10 +30,19 @@ public:
         nearPlane(0.2f),
         farPlane(10.0f),
         fov(45.0f),
-        deltaTime(0.016f)            
+        deltaTime(0.016f)       
+
+		
+
     {
+		updateAxes();
         updateWorldView();
+
+		float aspect = 800.0f / 600.0f;  // sau Globals::screenWidth / Globals::screenHeight
+		perspectiveMatrix.SetPerspective(fov * 3.14159265f / 180.0f, aspect, nearPlane, farPlane);
+
     }
+
 
 
 	void moveOx(int sens);
@@ -52,6 +63,16 @@ public:
 	void updateWorldView();
 
 	void setDeltaTime(GLfloat);
+
+	// Returnează matricea de view a camerei
+	Matrix getViewMatrix() {
+		return viewMatrix;
+	}
+
+	// Returnează matricea de perspectivă a camerei
+	Matrix getPerspectiveMatrix() {
+		return perspectiveMatrix;
+	}
 
 };
 

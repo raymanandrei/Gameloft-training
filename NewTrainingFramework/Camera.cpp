@@ -1,7 +1,8 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "Camera.h"
 
 void Camera::moveOx(int sens) {
+	printf("OxA");
 	Vector3 forward = xAxis * sens;
 	Vector3 vectorDeplasare = forward * moveSpeed * deltaTime;
 	position += vectorDeplasare;
@@ -30,8 +31,7 @@ void Camera::moveOz(int sens) {
 
 void Camera::rotateOx(int sens)
 {
-
-	/*float unghiRotatie = sens * rotateSpeed * deltaTime;
+	float unghiRotatie = sens * rotateSpeed * deltaTime;
 
 	Matrix mRotateOX;
 	mRotateOX.SetRotationX(unghiRotatie);
@@ -47,12 +47,12 @@ void Camera::rotateOx(int sens)
 
 	target = (rotatedTarget * worldMatrix).toVector3();
 
-	updateWorldView();*/
+	updateWorldView();
 }
 
 void Camera::rotateOy(int sens)
 {
-	/*float unghiRotatie = sens * rotateSpeed * deltaTime;
+	float unghiRotatie = sens * rotateSpeed * deltaTime;
 
 	Matrix mRotateOY;
 	mRotateOY.SetRotationY(unghiRotatie);
@@ -62,7 +62,7 @@ void Camera::rotateOy(int sens)
 
 	target = (rotatedTarget * worldMatrix).toVector3();
 
-	updateWorldView();*/
+	updateWorldView();
 }
 
 void Camera::rotateOz(int sens) {
@@ -76,9 +76,10 @@ void Camera::updateAxes() {
 }
 
 void Camera::updateWorldView() {
+	printf("update\n");
+	updateAxes();
 	Matrix R;
 	R.SetIdentity();
-	//worldMatrix = 0;
 	R.m[0][0] = xAxis.x;
 	R.m[0][1] = xAxis.y;
 	R.m[0][2] = xAxis.z;
@@ -109,7 +110,7 @@ void Camera::updateWorldView() {
 
 	viewMatrix = T1 * R1;
 
-	updateAxes();
+
 
 }
 
