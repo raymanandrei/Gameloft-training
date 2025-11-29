@@ -1,1 +1,1 @@
-# NewTrainingFramework_2015
+# Gameloft game developement course
