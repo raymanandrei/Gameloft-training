@@ -1,6 +1,5 @@
 #pragma once
 #include "../Utilities/utilities.h"
-
 class Shaders 
 {
 public:

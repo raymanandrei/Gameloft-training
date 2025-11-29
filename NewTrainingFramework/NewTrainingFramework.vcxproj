@@ -166,7 +166,9 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="NewTrainingFramework.cpp" />
-    <ClCompile Include="Shaders.cpp" />
+    <ClCompile Include="Shaders.cpp">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug-Nvidia|Win32'">CompileAsCpp</CompileAs>
+    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug-ATI|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug-Nvidia|Win32'">Create</PrecompiledHeader>

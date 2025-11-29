@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Shaders.h"
-
 int Shaders::Init(char* fileVertexShader, char* fileFragmentShader)
 {
 	vertexShader = esLoadShader(GL_VERTEX_SHADER, fileVertexShader);
@@ -21,7 +20,7 @@ int Shaders::Init(char* fileVertexShader, char* fileFragmentShader)
 	//finding location of uniforms / attributes
 	positionAttribute = glGetAttribLocation(program, "a_posL");
 	colorAttribute = glGetAttribLocation(program, "a_color");
-	matrixUniform = glGetUniformLocation(program, "uMVP");
+	matrixUniform = glGetUniformLocation(program, "u_rotation");
 
 
 	return 0;

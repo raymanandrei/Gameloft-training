@@ -1,6 +1,5 @@
 ﻿// NewTrainingFramework.cpp : Defines the entry point for the console application.
 //
-
 #include "stdafx.h"
 #include "../Utilities/utilities.h" // if you use STL, please include this line AFTER all other include
 #include "Vertex.h"
@@ -78,19 +77,30 @@ void Draw ( ESContext *esContext )
 		printf("\n");
 	}
 
-	Matrix model;
-	model.SetIdentity();
+	//Matrix model;
 
-	Matrix MVP = model * camera.getViewMatrix() * camera.getPerspectiveMatrix();
-	glUniformMatrix4fv(myShaders.matrixUniform, 1, GL_FALSE, &MVP.m[0][0]);
+	//model.SetIdentity();
+
+	//Matrix MVP = model * camera.getViewMatrix() * camera.getPerspectiveMatrix();
+
+	//glUniformMatrix4fv(myShaders.matrixUniform, 1, GL_FALSE, &MVP.m[0][0]);
+
+	//glDrawArrays(GL_TRIANGLES, 0, 3);
+
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	//eglSwapBuffers ( esContext->eglDisplay, esContext->eglSurface );
+
+	//mRotation.SetRotationZ(angle);
 
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	eglSwapBuffers ( esContext->eglDisplay, esContext->eglSurface );
+	eglSwapBuffers(esContext->eglDisplay, esContext->eglSurface);
 
 	mRotation.SetRotationZ(angle);
+
 
 	if (myShaders.matrixUniform != -1) {
 		glUniformMatrix4fv(myShaders.matrixUniform, 1, GL_FALSE, (float*)mRotation.m);
