@@ -31,19 +31,13 @@ public:
         farPlane(10.0f),
         fov(45.0f),
         deltaTime(0.016f)       
-
-		
-
     {
 		updateAxes();
         updateWorldView();
 
 		float aspect = 800.0f / 600.0f;  // sau Globals::screenWidth / Globals::screenHeight
-		perspectiveMatrix.SetPerspective(fov * 3.14159265f / 180.0f, aspect, nearPlane, farPlane);
-
+		perspectiveMatrix.SetPerspective(fov, aspect, nearPlane, farPlane);
     }
-
-
 
 	void moveOx(int sens);
 
@@ -57,7 +51,6 @@ public:
 
 	void rotateOz(int sens);
 	
-
 	void updateAxes();
 
 	void updateWorldView();
@@ -75,6 +68,3 @@ public:
 	}
 
 };
-
-
-

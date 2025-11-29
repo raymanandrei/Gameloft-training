@@ -70,44 +70,34 @@ void Draw ( ESContext *esContext )
 		glVertexAttribPointer(myShaders.colorAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(Vector3)));
 	}
 
+	/////////////////////////
+	//Camera matrix /////////
+	/////////////////////////
+	
+	// Rotation / model matrix
+	mRotation.SetRotationZ(angle);
+
+	Matrix model;
+	model.SetIdentity();
+	model = mRotation; // apply rotation to model
+
+	Matrix view = camera.getViewMatrix();
 	Matrix proj = camera.getPerspectiveMatrix();
-	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < 4; j++)
-			printf("%f ", proj.m[i][j]);
-		printf("\n");
+	Matrix MVP = model *  view * proj;
+
+	// Send MVP to the shader (must be a pointer to floats)
+	if (myShaders.matrixUniform != -1) {
+		glUniformMatrix4fv(myShaders.matrixUniform, 1, GL_FALSE, (float*)MVP.m);
 	}
 
-	//Matrix model;
-
-	//model.SetIdentity();
-
-	//Matrix MVP = model * camera.getViewMatrix() * camera.getPerspectiveMatrix();
-
-	//glUniformMatrix4fv(myShaders.matrixUniform, 1, GL_FALSE, &MVP.m[0][0]);
-
-	//glDrawArrays(GL_TRIANGLES, 0, 3);
-
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	//eglSwapBuffers ( esContext->eglDisplay, esContext->eglSurface );
-
-	//mRotation.SetRotationZ(angle);
-
+	// Draw after the uniform is set
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	eglSwapBuffers(esContext->eglDisplay, esContext->eglSurface);
-
-	mRotation.SetRotationZ(angle);
-
-
-	if (myShaders.matrixUniform != -1) {
-		glUniformMatrix4fv(myShaders.matrixUniform, 1, GL_FALSE, (float*)mRotation.m);
-	}
-
 	
-}
+} 
 
 void Update ( ESContext *esContext, float deltaTime )
 {

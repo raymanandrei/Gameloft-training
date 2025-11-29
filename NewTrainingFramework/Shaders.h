@@ -9,6 +9,7 @@ public:
 	GLint positionAttribute;
 	GLint colorAttribute;
 	GLint matrixUniform;
+	GLint matrixCamera;
 	int Init(char * fileVertexShader, char * fileFragmentShader);
 	~Shaders();
 };
