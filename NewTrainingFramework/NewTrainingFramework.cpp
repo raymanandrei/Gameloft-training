@@ -70,18 +70,17 @@ void Draw ( ESContext *esContext )
 		glVertexAttribPointer(myShaders.colorAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(Vector3)));
 	}
 
-
 	mRotation.SetRotationZ(angle);
-
-	//for (int i = 0; i < 4; i++) {
-	//	for (int j = 0; j < 4; j++) {
-	//		printf("%f ", MVP.m[i][j]);
-	//	}
-	//	printf("\n");
-	//}
 
 	if (myShaders.matrixUniform != -1) {
 		glUniformMatrix4fv(myShaders.matrixUniform, 1, GL_FALSE, (float*)mRotation.m);
+	}
+
+	Matrix MVP = camera.viewMatrix * camera.perspectiveMatrix;
+	MVP = mRotation * MVP;
+
+	if (myShaders.matrixCamera != -1) {
+		glUniformMatrix4fv(myShaders.matrixCamera, 1, GL_FALSE, (float*)MVP.m);
 	}
 
 	// Draw after the uniform is set
@@ -95,7 +94,16 @@ void Draw ( ESContext *esContext )
 
 void Update ( ESContext *esContext, float deltaTime )
 {
-	angle = (angle + step) > 2 * PI ? (angle + step) - 2 * PI : angle + step;
+	camera.setDeltaTime(deltaTime);
+	//printf("Update: %f\n", deltaTime);
+	totalTime += deltaTime;
+	if (totalTime >= Globals::frameTime) {
+		camera.setDeltaTime(totalTime);
+		angle = (angle + step) > 2 * PI ? (angle + step) - 2 * PI : angle + step;
+		totalTime = 0;
+		deltaTime = Globals::frameTime;
+	}
+	
 }
 
 void Key ( ESContext *esContext, unsigned char key, bool bIsPressed)
@@ -103,27 +111,22 @@ void Key ( ESContext *esContext, unsigned char key, bool bIsPressed)
 	switch (key)
 	{
 		case 'A': case 'a':
-			printf("A");
 			camera.moveOx(-1);
 			break;
 		case 'S': case 's':
 			printf("S");
-			camera.moveOz(-1);
+			camera.moveOz(1);
 			break ;
 		case 'D':case'd':
-			printf("D");
 			camera.moveOx(1);
 			break;
 		case 'W':case 'w':
-			printf("W");
-			camera.moveOz(1);
+			camera.moveOz(-1);
 			break;
 		case 'Q':case 'q':
-			printf("Q");
 			camera.rotateOy(1);
 			break;
 		case 'E': case 'e':
-			printf("E");
 			camera.rotateOy(-1);
 			break;
 		default:

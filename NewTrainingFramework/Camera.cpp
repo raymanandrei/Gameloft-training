@@ -1,5 +1,27 @@
 ﻿#include "stdafx.h"
 #include "Camera.h"
+#include "Globals.h"
+
+Camera::Camera()
+{
+	this->position = Vector3(0.0, 0.0, 1.0);
+	this->target = Vector3(0.0, 0.0, 0.0);
+	this->up = Vector3(0.0, 1.0, 0.0);
+	this->moveSpeed = 0.8;
+	this->rotateSpeed = 0.2;
+	this->nearPlane = 0.2;
+	this->farPlane = 100.0;
+	this->fov = 45.0;
+
+	zAxis = -(target - position).Normalize();
+	yAxis = up.Normalize();
+	xAxis = zAxis.Cross(yAxis).Normalize();
+	updateWorldView();
+	printf("Camera initialized.\n");
+	printf("Position: %f %d %d\n", fov, Globals::screenWidth, Globals::screenHeight);
+	perspectiveMatrix.SetPerspective(fov, (float)Globals::screenWidth / Globals::screenHeight, nearPlane, farPlane);
+}
+
 
 void Camera::moveOx(int sens) {
 	printf("Ox");
@@ -29,15 +51,17 @@ void Camera::moveOy(int sens) {
 
 void Camera::moveOz(int sens) {
 
-	printf("Oz");
+	printf("Oz\n");
+	printf("deltaTime%f\n", deltaTime);
 	printf("pos: %f %f %f\n", position.x, position.y, position.z);
 
-	Vector3 forward = zAxis * sens;
+	Vector3 forward = -(target - position).Normalize() * sens;
 	Vector3 vectorDeplasare = forward * moveSpeed * deltaTime;
 	position += vectorDeplasare;
 	target += vectorDeplasare;
 
 	updateWorldView();
+
 }
 
 void Camera::rotateOx(int sens)
@@ -128,12 +152,33 @@ void Camera::updateWorldView() {
 	R1 = R.Transpose();
 
 	viewMatrix = T1 * R1;
+
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			printf("%f ", viewMatrix.m[i][j]);
+		}
+		printf("\n");
+	}
+
 }
+
+Matrix Camera::getViewMatrix() {
+	return viewMatrix;
+}
+
+float Camera::getFOV() {
+	return fov;
+}
+float Camera::getNear() {
+	return nearPlane;
+}
+float Camera::getFar() {
+	return farPlane;
+}
+
 
 void Camera::setDeltaTime(GLfloat dt)
 {
-	if (dt <= 0.0f) 
-		dt = 0.016f;
-
 	deltaTime = dt;
 }
+
