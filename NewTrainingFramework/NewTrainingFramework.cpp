@@ -111,17 +111,17 @@ void Key ( ESContext *esContext, unsigned char key, bool bIsPressed)
 	switch (key)
 	{
 		case 'A': case 'a':
-			camera.moveOx(-1);
-			break;
-		case 'S': case 's':
-			camera.moveOz(1);
-			break ;
-		case 'D':case'd':
 			camera.moveOx(1);
+			break;
+		case 'D':case'd':
+			camera.moveOx(-1);
 			break;
 		case 'W':case 'w':
 			camera.moveOz(-1);
 			break;
+		case 'S': case 's':
+			camera.moveOz(1);
+			break ;
 		case 'Q':case 'q':
 			camera.moveOy(1);
 			break;
