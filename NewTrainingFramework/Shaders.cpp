@@ -20,7 +20,6 @@ int Shaders::Init(char* fileVertexShader, char* fileFragmentShader)
 
 	positionAttribute = glGetAttribLocation(program, "a_posL");
 	colorAttribute = glGetAttribLocation(program, "a_color");
-	matrixUniform = glGetUniformLocation(program, "u_rotation");
 	matrixCamera = glGetUniformLocation(program, "MVP");
 
 	return 0;

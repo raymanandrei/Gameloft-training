@@ -114,7 +114,6 @@ void Key ( ESContext *esContext, unsigned char key, bool bIsPressed)
 			camera.moveOx(-1);
 			break;
 		case 'S': case 's':
-			printf("S");
 			camera.moveOz(1);
 			break ;
 		case 'D':case'd':
@@ -124,10 +123,10 @@ void Key ( ESContext *esContext, unsigned char key, bool bIsPressed)
 			camera.moveOz(-1);
 			break;
 		case 'Q':case 'q':
-			camera.rotateOy(1);
+			camera.moveOy(1);
 			break;
 		case 'E': case 'e':
-			camera.rotateOy(-1);
+			camera.moveOy(-1);
 			break;
 		default:
 			break;

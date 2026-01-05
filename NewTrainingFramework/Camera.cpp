@@ -17,15 +17,11 @@ Camera::Camera()
 	yAxis = up.Normalize();
 	xAxis = zAxis.Cross(yAxis).Normalize();
 	updateWorldView();
-	printf("Camera initialized.\n");
-	printf("Position: %f %d %d\n", fov, Globals::screenWidth, Globals::screenHeight);
 	perspectiveMatrix.SetPerspective(fov, (float)Globals::screenWidth / Globals::screenHeight, nearPlane, farPlane);
 }
 
 
 void Camera::moveOx(int sens) {
-	printf("Ox");
-	printf("pos: %f %f %f\n", position.x, position.y, position.z);
 
 	Vector3 forward = xAxis * sens;
 	Vector3 vectorDeplasare = forward * moveSpeed * deltaTime;
@@ -38,9 +34,6 @@ void Camera::moveOx(int sens) {
 
 void Camera::moveOy(int sens) {
 
-	printf("Oy");
-	printf("pos: %f %f %f\n", position.x, position.y, position.z);
-
 	Vector3 forward = yAxis * sens;
 	Vector3 vectorDeplasare = forward * moveSpeed * deltaTime;
 	position += vectorDeplasare;
@@ -50,10 +43,6 @@ void Camera::moveOy(int sens) {
 }
 
 void Camera::moveOz(int sens) {
-
-	printf("Oz\n");
-	printf("deltaTime%f\n", deltaTime);
-	printf("pos: %f %f %f\n", position.x, position.y, position.z);
 
 	Vector3 forward = -(target - position).Normalize() * sens;
 	Vector3 vectorDeplasare = forward * moveSpeed * deltaTime;
@@ -108,14 +97,6 @@ void Camera::updateAxes() {
 	zAxis = -(target - position).Normalize(); 
 	yAxis = up.Normalize();
 	xAxis = zAxis.Cross(yAxis).Normalize();
-
-	printf("Position: %f %f %f\n", position.x, position.y, position.z);
-	printf("target: %f %f %f\n", target.x, target.y, target.z);
-
-	printf("Axes:\n");
-	printf("X: %f %f %f\n", xAxis.x, xAxis.y, xAxis.z);
-	printf("Y: %f %f %f\n", yAxis.x, yAxis.y, yAxis.z);
-	printf("Z: %f %f %f\n", zAxis.x, zAxis.y, zAxis.z);
 }
 
 void Camera::updateWorldView() {
@@ -152,14 +133,6 @@ void Camera::updateWorldView() {
 	R1 = R.Transpose();
 
 	viewMatrix = T1 * R1;
-
-	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < 4; j++) {
-			printf("%f ", viewMatrix.m[i][j]);
-		}
-		printf("\n");
-	}
-
 }
 
 Matrix Camera::getViewMatrix() {
