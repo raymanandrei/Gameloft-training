@@ -8,14 +8,14 @@
 #include "Globals.h"
 #include "Camera.h"
 
+#define PI 3.14159265358979323846
 
-constexpr double PI = 3.14159265358979323846;
 
 GLuint vboId;
 Shaders myShaders;
 
 float angle = 0;
-float step = 0.1;
+float step = 0.05;
 
 float totalTime = 0;
 
@@ -32,9 +32,9 @@ int Init ( ESContext *esContext )
 	verticesData[1].pos.x = -0.5f;  verticesData[1].pos.y = -0.5f;  verticesData[1].pos.z =  0.0f;
 	verticesData[2].pos.x =  0.5f;  verticesData[2].pos.y = -0.5f;  verticesData[2].pos.z =  0.0f;
 
-	verticesData[0].color.x = 0.0; verticesData[1].color.x = 0.0; verticesData[2].color.x = 1.0;
+	verticesData[0].color.x = 1.0; verticesData[1].color.x = 0.0; verticesData[2].color.x = 0.0;
 	verticesData[0].color.y = 0.0; verticesData[1].color.y = 1.0; verticesData[2].color.y = 0.0;
-	verticesData[0].color.z = 1.0;  verticesData[1].color.z = 0.0; verticesData[2].color.z = 0.0;
+	verticesData[0].color.z = 0.0;  verticesData[1].color.z = 0.0; verticesData[2].color.z = 1.0;
 
 
 	//buffer object
@@ -70,24 +70,18 @@ void Draw ( ESContext *esContext )
 		glVertexAttribPointer(myShaders.colorAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(Vector3)));
 	}
 
-	/////////////////////////
-	//Camera matrix /////////
-	/////////////////////////
-	
-	// Rotation / model matrix
+
 	mRotation.SetRotationZ(angle);
 
-	Matrix model;
-	model.SetIdentity();
-	model = mRotation; // apply rotation to model
+	//for (int i = 0; i < 4; i++) {
+	//	for (int j = 0; j < 4; j++) {
+	//		printf("%f ", MVP.m[i][j]);
+	//	}
+	//	printf("\n");
+	//}
 
-	Matrix view = camera.getViewMatrix();
-	Matrix proj = camera.getPerspectiveMatrix();
-	Matrix MVP = model *  view * proj;
-
-	// Send MVP to the shader (must be a pointer to floats)
 	if (myShaders.matrixUniform != -1) {
-		glUniformMatrix4fv(myShaders.matrixUniform, 1, GL_FALSE, (float*)MVP.m);
+		glUniformMatrix4fv(myShaders.matrixUniform, 1, GL_FALSE, (float*)mRotation.m);
 	}
 
 	// Draw after the uniform is set
@@ -101,13 +95,7 @@ void Draw ( ESContext *esContext )
 
 void Update ( ESContext *esContext, float deltaTime )
 {
-	totalTime += deltaTime;
-	if (totalTime > Globals::frameTime) {
-		if (angle > 2 * PI) angle = 0;
-		else angle = angle + 0.1;
-		totalTime = totalTime - Globals::frameTime;
-		deltaTime - Globals::frameTime;
-	}
+	angle = (angle + step) > 2 * PI ? (angle + step) - 2 * PI : angle + step;
 }
 
 void Key ( ESContext *esContext, unsigned char key, bool bIsPressed)
@@ -120,7 +108,7 @@ void Key ( ESContext *esContext, unsigned char key, bool bIsPressed)
 			break;
 		case 'S': case 's':
 			printf("S");
-			camera.moveOy(-1);
+			camera.moveOz(-1);
 			break ;
 		case 'D':case'd':
 			printf("D");
@@ -128,15 +116,15 @@ void Key ( ESContext *esContext, unsigned char key, bool bIsPressed)
 			break;
 		case 'W':case 'w':
 			printf("W");
-			camera.moveOy(1);
+			camera.moveOz(1);
 			break;
 		case 'Q':case 'q':
 			printf("Q");
-			camera.rotateOz(1);
+			camera.rotateOy(1);
 			break;
 		case 'E': case 'e':
 			printf("E");
-			camera.rotateOz(-1);
+			camera.rotateOy(-1);
 			break;
 		default:
 			break;

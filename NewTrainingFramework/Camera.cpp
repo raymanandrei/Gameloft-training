@@ -2,16 +2,23 @@
 #include "Camera.h"
 
 void Camera::moveOx(int sens) {
-	printf("OxA");
+	printf("Ox");
+	printf("pos: %f %f %f\n", position.x, position.y, position.z);
+
 	Vector3 forward = xAxis * sens;
 	Vector3 vectorDeplasare = forward * moveSpeed * deltaTime;
 	position += vectorDeplasare;
 	target += vectorDeplasare;
 
+
 	updateWorldView();
 }
 
 void Camera::moveOy(int sens) {
+
+	printf("Oy");
+	printf("pos: %f %f %f\n", position.x, position.y, position.z);
+
 	Vector3 forward = yAxis * sens;
 	Vector3 vectorDeplasare = forward * moveSpeed * deltaTime;
 	position += vectorDeplasare;
@@ -21,6 +28,10 @@ void Camera::moveOy(int sens) {
 }
 
 void Camera::moveOz(int sens) {
+
+	printf("Oz");
+	printf("pos: %f %f %f\n", position.x, position.y, position.z);
+
 	Vector3 forward = zAxis * sens;
 	Vector3 vectorDeplasare = forward * moveSpeed * deltaTime;
 	position += vectorDeplasare;
@@ -73,10 +84,18 @@ void Camera::updateAxes() {
 	zAxis = -(target - position).Normalize(); 
 	yAxis = up.Normalize();
 	xAxis = zAxis.Cross(yAxis).Normalize();
+
+	printf("Position: %f %f %f\n", position.x, position.y, position.z);
+	printf("target: %f %f %f\n", target.x, target.y, target.z);
+
+	printf("Axes:\n");
+	printf("X: %f %f %f\n", xAxis.x, xAxis.y, xAxis.z);
+	printf("Y: %f %f %f\n", yAxis.x, yAxis.y, yAxis.z);
+	printf("Z: %f %f %f\n", zAxis.x, zAxis.y, zAxis.z);
 }
 
 void Camera::updateWorldView() {
-	printf("update\n");
+	//printf("update\n");
 	updateAxes();
 	Matrix R;
 	R.SetIdentity();
@@ -109,11 +128,12 @@ void Camera::updateWorldView() {
 	R1 = R.Transpose();
 
 	viewMatrix = T1 * R1;
-
-
-
 }
 
-void Camera::setDeltaTime(GLfloat) {
+void Camera::setDeltaTime(GLfloat dt)
+{
+	if (dt <= 0.0f) 
+		dt = 0.016f;
 
+	deltaTime = dt;
 }
