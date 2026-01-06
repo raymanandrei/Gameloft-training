@@ -20,8 +20,11 @@ Camera::Camera()
 	perspectiveMatrix.SetPerspective(fov, (float)Globals::screenWidth / Globals::screenHeight, nearPlane, farPlane);
 }
 
+Camera::~Camera()
+{
+}
 
-void Camera::moveOx(int sens) {
+void Camera::moveOx(GLfloat sens) {
 
 	Vector3 forward = xAxis * sens;
 	Vector3 vectorDeplasare = forward * moveSpeed * deltaTime;
@@ -32,7 +35,7 @@ void Camera::moveOx(int sens) {
 	updateWorldView();
 }
 
-void Camera::moveOy(int sens) {
+void Camera::moveOy(GLfloat sens) {
 
 	Vector3 forward = yAxis * sens;
 	Vector3 vectorDeplasare = forward * moveSpeed * deltaTime;
@@ -42,7 +45,7 @@ void Camera::moveOy(int sens) {
 	updateWorldView();
 }
 
-void Camera::moveOz(int sens) {
+void Camera::moveOz(GLfloat sens) {
 
 	Vector3 forward = -(target - position).Normalize() * sens;
 	Vector3 vectorDeplasare = forward * moveSpeed * deltaTime;
@@ -53,7 +56,7 @@ void Camera::moveOz(int sens) {
 
 }
 
-void Camera::rotateOx(int sens)
+void Camera::rotateOx(GLfloat sens)
 {
 	float unghiRotatie = sens * rotateSpeed * deltaTime;
 
@@ -74,7 +77,7 @@ void Camera::rotateOx(int sens)
 	updateWorldView();
 }
 
-void Camera::rotateOy(int sens)
+void Camera::rotateOy(GLfloat sens)
 {
 	float unghiRotatie = sens * rotateSpeed * deltaTime;
 
@@ -89,7 +92,7 @@ void Camera::rotateOy(int sens)
 	updateWorldView();
 }
 
-void Camera::rotateOz(int sens) {
+void Camera::rotateOz(GLfloat sens) {
 	updateWorldView();
 }
 

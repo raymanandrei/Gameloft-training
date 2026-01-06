@@ -7,6 +7,7 @@
 #include <conio.h>
 #include "Globals.h"
 #include "Camera.h"
+#include "ResourceManager.h"
 
 #define PI 3.14159265358979323846
 
@@ -20,6 +21,9 @@ float step = 0.05;
 float totalTime = 0;
 
 Camera camera = Camera();
+
+
+ResourceManager* resourceManager = ResourceManager::GetInstance();
 
 int Init ( ESContext *esContext )
 {
@@ -42,6 +46,8 @@ int Init ( ESContext *esContext )
 	glBindBuffer(GL_ARRAY_BUFFER, vboId);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(verticesData), verticesData, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	resourceManager->Init();
 
 	//creation of shaders and program 
 	return myShaders.Init("../Resources/Shaders/TriangleShaderVS.vs", "../Resources/Shaders/TriangleShaderFS.fs");

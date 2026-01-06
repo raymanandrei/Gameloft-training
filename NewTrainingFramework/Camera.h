@@ -15,37 +15,38 @@ class Camera
 	Vector3 yAxis;
 	Vector3 zAxis;
 	
-public:
+	public:
 
-	Matrix viewMatrix;
-	Matrix worldMatrix;
-	Matrix perspectiveMatrix;
+		Matrix viewMatrix;
+		Matrix worldMatrix;
+		Matrix perspectiveMatrix;
 
-	Camera();
+		Camera();
+		~Camera();
 
-	void moveOx(int sens);
+		void moveOx(GLfloat sens);
 
-	void moveOy(int sens);
+		void moveOy(GLfloat sens);
 
-	void moveOz(int sens);
+		void moveOz(GLfloat sens);
 
-	void rotateOx(int sens);
+		void rotateOx(GLfloat sens);
 
-	void rotateOy(int sens);
+		void rotateOy(GLfloat sens);
 
-	void rotateOz(int sens);
+		void rotateOz(GLfloat sens);
 	
-	void updateAxes();
+		void updateAxes();
 
-	void updateWorldView();
+		void updateWorldView();
 
-	void setDeltaTime(GLfloat);
+		void setDeltaTime(GLfloat);
 
-	Matrix getViewMatrix();
+		Matrix getViewMatrix();
 
 
-	float getFOV();
-	float getNear();
-	float getFar();
+		float getFOV();
+		float getNear();
+		float getFar();
 
 };
