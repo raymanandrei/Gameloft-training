@@ -19,6 +19,9 @@
     <Filter Include="Resources\Shaders">
       <UniqueIdentifier>{579c080a-717e-429b-8b01-ae9eccb5ad2f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resources\Models">
+      <UniqueIdentifier>{cb94c276-0395-4b27-b279-33c614d130e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NewTrainingFramework.cpp">
@@ -49,6 +52,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -110,6 +116,9 @@
     <ClInclude Include="Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SceneObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\Shaders\TriangleShaderFS.fs">
@@ -127,5 +136,10 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\resourceManager.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageLayout Include="modelTest.nfg">
+      <Filter>Resources\Models</Filter>
+    </PackageLayout>
   </ItemGroup>
 </Project>

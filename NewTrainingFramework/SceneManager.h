@@ -2,13 +2,6 @@
 #include "../Utilities/utilities.h"
 #include <string>
 
-class SceneObject {
-	public:
-		GLuint id;
-		float position[3];
-		Vector3 rotation;
-		Vector3 scale;
-};
 
 class SceneManager {
 	public:
