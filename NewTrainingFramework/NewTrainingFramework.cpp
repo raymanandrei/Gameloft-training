@@ -32,40 +32,50 @@ Camera camera = Camera();
 
 ResourceManager* resourceManager = ResourceManager::GetInstance();
 
+void readNfgLine(std::string str,std::string field, std::vector<float> &numbers) {
+	std::cout << str << " ";
+	int posIndex = str.find(field);
+	std::cout << posIndex << "\n";
+	if (posIndex != -1) {
+
+		std::string numbersStr = str.substr(posIndex + 4, str.find(';') - posIndex - 4);
+		std::stringstream ss(numbersStr);
+		std::string token;
+
+		while (std::getline(ss, token, ',')) {
+			numbers.push_back(std::stof(token)); // convertim string -> float
+		}
+		//for (float f : numbers) {
+		//	std::cout << "pos:" << f << " ";
+		//}
+		//std::cout << '\n';
+	}
+}
+
 void readNfg(const char* filename, std::vector<Vertex>& vertices, std::vector<unsigned int>& indices) {
 	std::ifstream file(filename);
 	std::string str;
 	while (std::getline(file, str))
 	{
 		std::cout << str << "\n";
-		int posIndex = str.find("pos:");
-		if (posIndex != std::string::npos) {
+		
+		std::vector<float> numbers;
 
-			std::string numbersStr = str.substr(posIndex + 4, str.find(';')  - posIndex - 4);
-			std::stringstream ss(numbersStr);
-			std::string token;
+		readNfgLine(str, "pos:", numbers);
 
-			std::vector<float> numbers;
+		std::cout << numbers.size() << '\n';
 
-			while (std::getline(ss, token, ',')) { 
-				numbers.push_back(std::stof(token)); // convertim string -> float
-			}
-
+		if (numbers.size() == 3) {
 			Vertex v;
-
 			v.pos.x = numbers[0];
 			v.pos.y = numbers[1];
 			v.pos.z = numbers[2];
-
 			vertices.push_back(v);
-
-			for (float f : numbers) {
-				std::cout <<"pos:"<< f << " ";
-			}
-			std::cout << '\n';
 		}
+		
 
-		posIndex = str.find("norm:");
+
+		int posIndex = str.find("norm:");
 		if (posIndex != std::string::npos) {
 
 			std::string numbersStr = str.substr(posIndex + 5, str.find(';', posIndex + 5) - posIndex - 5);
@@ -173,7 +183,7 @@ int Init ( ESContext *esContext )
 	glClearColor ( 0.0f, 0.0f, 0.0f, 0.0f );
 
 	//triangle data (heap)
-	Vertex verticesData[3];
+	//Vertex verticesData[3];
 
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
@@ -190,7 +200,7 @@ int Init ( ESContext *esContext )
 
 	vertices[0].color.x = 1.0; vertices[1].color.x = 0.0; vertices[2].color.x = 0.0; vertices[3].color.x = 1.0; vertices[4].color.x = 1.0; vertices[5].color.x = 1.0; vertices[6].color.x = 1.0; vertices[7].color.x = 1.0;
 	vertices[0].color.y = 0.0; vertices[1].color.y = 1.0; vertices[2].color.y = 0.0; vertices[3].color.y = 1.0; vertices[4].color.y = 1.0; vertices[5].color.y = 1.0; vertices[6].color.y = 1.0; vertices[7].color.y = 1.0;
-	vertices[0].color.z = 0.0;  vertices[1].color.z = 0.0; vertices[2].color.z = 1.0; vertices[3].color.z = 0.0; vertices[4].color.z = 0.0; vertices[5].color.z = 0.0; vertices[6].color.z = 0.0; vertices[7].color.z = 0.0;
+	vertices[0].color.z = 0.0;  vertices[1].color.z = 0.0; vertices[2].color.z = 1.0; vertices[3].color.z = 0.0; vertices[4].color.z = 0.0; vertices[5].color.z =0.0; vertices[6].color.z = 0.0; vertices[7].color.z = 0.0;
 
 	std::cout << "marime:"<<vertices.size() * sizeof(Vertex);
 
