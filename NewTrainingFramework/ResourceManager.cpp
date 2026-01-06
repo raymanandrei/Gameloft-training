@@ -36,7 +36,6 @@ ResourceManager::~ResourceManager()
 }
 
 void ResourceManager::Init() {
-	printf("Getting Resource Manager instance.\n");
 	rapidxml::xml_document<> doc;
 	rapidxml::xml_node<>* rootNode;
 	std::ifstream xmlFile(xmlPath);
@@ -59,7 +58,7 @@ void ResourceManager::Init() {
 			const char* folderPath =
 				folder->first_attribute("path")->value();
 
-			std::cout << folderPath << "\n";
+			//std::cout << folderPath << "\n";
 
 			for (xml_node<>* model = folder->first_node("model");
 				model; model = model->next_sibling("model"))
@@ -67,7 +66,7 @@ void ResourceManager::Init() {
 				int id = std::stoi(model->first_attribute("id")->value());
 
 				xml_node<>* file = model->first_node("file");
-				std::cout  << id<< file->value() << "\n";
+				//std::cout  << id<< file->value() << "\n";
 			}
 		}
 
@@ -75,7 +74,7 @@ void ResourceManager::Init() {
 		folder = shaders->first_node("folder");
 		const char* path = folder->first_attribute("path")->value();
 
-		std::cout << path << "\n";
+		//std::cout << path << "\n";
 
 		for (xml_node<>* shader = folder->first_node("shader");
 			shader; shader = shader->next_sibling("shader"))
@@ -85,13 +84,13 @@ void ResourceManager::Init() {
 			const char* vs = shader->first_node("vs")->value();
 			const char* fs = shader->first_node("fs")->value();
 
-			std::cout << id<< vs << fs << "\n";
+			//std::cout << id<< vs << fs << "\n";
 		}
 	
 		folder = textures->first_node("folder");
 		path = folder->first_attribute("path")->value();
 
-		std::cout << path << "\n";
+		//std::cout << path << "\n";
 
 		for (xml_node<>* tex = folder->first_node("texture");
 			tex; tex = tex->next_sibling("texture"))
@@ -99,13 +98,13 @@ void ResourceManager::Init() {
 			int id = std::stoi(tex->first_attribute("id")->value());
 			const char* type = tex->first_attribute("type")->value();
 
-			std::cout << id << type << "\n";
+			//std::cout << id << type << "\n";
 
-			std::cout << tex->first_node("file")->value() << "\n";
-			std::cout << tex->first_node("min_filter")->value() << "\n";
-			std::cout <<tex->first_node("mag_filter")->value() << "\n";
-			std::cout << tex->first_node("wrap_s")->value() << "\n";
-			std::cout <<tex->first_node("wrap_t")->value() << "\n";
+			//std::cout << tex->first_node("file")->value() << "\n";
+			//std::cout << tex->first_node("min_filter")->value() << "\n";
+			//std::cout <<tex->first_node("mag_filter")->value() << "\n";
+			//std::cout << tex->first_node("wrap_s")->value() << "\n";
+			//std::cout <<tex->first_node("wrap_t")->value() << "\n";
 		}
 
 
@@ -113,7 +112,6 @@ void ResourceManager::Init() {
 }
 
 ResourceManager* ResourceManager::GetInstance() {
-	printf("Getting Resource Manager instance.\n");
 		if (!spInstance) 
 			spInstance = new ResourceManager();
 		return spInstance;

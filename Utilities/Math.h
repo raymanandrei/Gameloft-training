@@ -8,9 +8,10 @@ class Vector2
 {
 public:
 	//Constructors
-	Vector2() : x(0.0f), y(0.0f){}
+
+	Vector2() : x(0.0f), y(0.0f) {}
 	Vector2(GLfloat _x, GLfloat _y) : x(_x), y(_y) {}
-	Vector2(GLfloat * pArg) : x(pArg[0]), y(pArg[1]) {}
+	Vector2(const Vector2& vector) : x(vector.x), y(vector.y) {}
 	Vector2(Vector2 & vector) : x(vector.x), y(vector.y) {}
 
 	//Vector's operations
@@ -45,7 +46,7 @@ public:
 	//Constructors
 	Vector3() : x(0.0f), y(0.0f), z(0.0f) {}
 	Vector3(GLfloat _x, GLfloat _y, GLfloat _z) : x(_x), y(_y), z(_z) {}
-	Vector3(GLfloat * pArg) : x(pArg[0]), y(pArg[1]), z(pArg[2]) {}
+	Vector3(const Vector3& vector) : x(vector.x), y(vector.y), z(vector.z) {} // const reference
 	Vector3(Vector3 & vector) : x(vector.x), y(vector.y), z(vector.z) {}
 	
 	//Vector's operations

@@ -8,6 +8,13 @@
 #include "Globals.h"
 #include "Camera.h"
 #include "ResourceManager.h"
+#include <vector>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <algorithm>
+#include <string>
+#include <cstring>
 
 #define PI 3.14159265358979323846
 
@@ -25,6 +32,142 @@ Camera camera = Camera();
 
 ResourceManager* resourceManager = ResourceManager::GetInstance();
 
+void readNfg(const char* filename, std::vector<Vertex>& vertices, std::vector<unsigned int>& indices) {
+	std::ifstream file(filename);
+	std::string str;
+	while (std::getline(file, str))
+	{
+		std::cout << str << "\n";
+		int posIndex = str.find("pos:");
+		if (posIndex != std::string::npos) {
+
+			std::string numbersStr = str.substr(posIndex + 4, str.find(';')  - posIndex - 4);
+			std::stringstream ss(numbersStr);
+			std::string token;
+
+			std::vector<float> numbers;
+
+			while (std::getline(ss, token, ',')) { 
+				numbers.push_back(std::stof(token)); // convertim string -> float
+			}
+
+			Vertex v;
+
+			v.pos.x = numbers[0];
+			v.pos.y = numbers[1];
+			v.pos.z = numbers[2];
+
+			vertices.push_back(v);
+
+			for (float f : numbers) {
+				std::cout <<"pos:"<< f << " ";
+			}
+			std::cout << '\n';
+		}
+
+		posIndex = str.find("norm:");
+		if (posIndex != std::string::npos) {
+
+			std::string numbersStr = str.substr(posIndex + 5, str.find(';', posIndex + 5) - posIndex - 5);
+			std::stringstream ss(numbersStr);
+			std::string token;
+
+			std::vector<float> numbers;
+
+			while (std::getline(ss, token, ',')) {
+				numbers.push_back(std::stof(token)); // convertim string -> float
+			}
+
+			for (float f : numbers) {
+				std::cout <<"norm:"<< f << " ";
+			}
+			std::cout << "\n";
+		}
+
+		posIndex = str.find("binorm:");
+		if (posIndex != std::string::npos) {
+
+			std::string numbersStr = str.substr(posIndex + 7, str.find(';', posIndex + 7) - posIndex - 7);
+			std::stringstream ss(numbersStr);
+			std::string token;
+
+			std::vector<float> numbers;
+
+			while (std::getline(ss, token, ',')) {
+				numbers.push_back(std::stof(token)); // convertim string -> float
+			}
+
+			for (float f : numbers) {
+				std::cout << "binorm:" << f << " ";
+			}
+			std::cout << "\n";
+		}
+
+		posIndex = str.find("tgt:");
+		if (posIndex != std::string::npos) {
+
+			std::string numbersStr = str.substr(posIndex + 4, str.find(';', posIndex + 4) - posIndex - 4);
+			std::stringstream ss(numbersStr);
+			std::string token;
+
+			std::vector<float> numbers;
+
+			while (std::getline(ss, token, ',')) {
+				numbers.push_back(std::stof(token)); // convertim string -> float
+			}
+
+			for (float f : numbers) {
+				std::cout << "tgt:" << f << " ";
+			}
+			std::cout << "\n";
+		}
+
+		posIndex = str.find("uv:");
+		if (posIndex != std::string::npos) {
+
+			std::string numbersStr = str.substr(posIndex + 3, str.find(';', posIndex + 3) - posIndex - 3);
+			std::stringstream ss(numbersStr);
+			std::string token;
+
+			std::vector<float> numbers;
+
+			while (std::getline(ss, token, ',')) {
+				numbers.push_back(std::stof(token)); // convertim string -> float
+			}
+
+			for (float f : numbers) {
+				std::cout << "uv:" << f << " ";
+			}
+			std::cout << "\n";
+		}
+
+		posIndex = str.find("NrIndices:");
+		if (posIndex != std::string::npos) {
+			std::string numberStr = str.substr(posIndex + 10);
+			int nrIndices = std::stoi(numberStr);
+			std::cout << "NrIndices: " << nrIndices << "\n";
+			std::getline(file, str);
+
+			int posIndex = str.find("]");
+
+			std::string numbersStr = str.substr(posIndex + 3, str.find(';', posIndex + 3) - posIndex - 3);
+			std::cout << str << "\n";
+			std::stringstream ss(numbersStr);
+			std::string token;
+
+			std::vector<float> numbers;
+
+			while (std::getline(ss, token, ',')) {
+				numbers.push_back(std::stof(token)); // convertim string -> float
+			}
+			for (float f : numbers) {
+				std::cout << "indice:" << f << " ";
+			}
+		}
+	}
+}
+
+
 int Init ( ESContext *esContext )
 {
 	glClearColor ( 0.0f, 0.0f, 0.0f, 0.0f );
@@ -32,19 +175,29 @@ int Init ( ESContext *esContext )
 	//triangle data (heap)
 	Vertex verticesData[3];
 
-	verticesData[0].pos.x =  0.0f;  verticesData[0].pos.y =  0.5f;  verticesData[0].pos.z =  0.0f;
+	std::vector<Vertex> vertices;
+	std::vector<unsigned int> indices;
+
+	readNfg("C:/Users/Andrei/Desktop/Gameloft/NewTrainingFramework_2015/NewTrainingFramework/modelTest.nfg", vertices, indices);
+
+	for (auto v : vertices) {
+		std::cout << "Vertex pos: " << v.pos.x << ", " << v.pos.y << ", " << v.pos.z << "\n";
+	}
+
+	/*verticesData[0].pos.x =  0.0f;  verticesData[0].pos.y =  0.5f;  verticesData[0].pos.z =  0.0f;
 	verticesData[1].pos.x = -0.5f;  verticesData[1].pos.y = -0.5f;  verticesData[1].pos.z =  0.0f;
-	verticesData[2].pos.x =  0.5f;  verticesData[2].pos.y = -0.5f;  verticesData[2].pos.z =  0.0f;
+	verticesData[2].pos.x =  0.5f;  verticesData[2].pos.y = -0.5f;  verticesData[2].pos.z =  0.0f;*/
 
-	verticesData[0].color.x = 1.0; verticesData[1].color.x = 0.0; verticesData[2].color.x = 0.0;
-	verticesData[0].color.y = 0.0; verticesData[1].color.y = 1.0; verticesData[2].color.y = 0.0;
-	verticesData[0].color.z = 0.0;  verticesData[1].color.z = 0.0; verticesData[2].color.z = 1.0;
+	vertices[0].color.x = 1.0; vertices[1].color.x = 0.0; vertices[2].color.x = 0.0; vertices[3].color.x = 1.0;
+	vertices[0].color.y = 0.0; vertices[1].color.y = 1.0; vertices[2].color.y = 0.0; vertices[3].color.y = 1.0;
+	vertices[0].color.z = 0.0;  vertices[1].color.z = 0.0; vertices[2].color.z = 1.0; vertices[3].color.z = 0.0;
 
+	std::cout << "marime:"<<vertices.size() * sizeof(Vertex);
 
 	//buffer object
 	glGenBuffers(1, &vboId);
 	glBindBuffer(GL_ARRAY_BUFFER, vboId);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(verticesData), verticesData, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	resourceManager->Init();
@@ -90,7 +243,8 @@ void Draw ( ESContext *esContext )
 	}
 
 	// Draw after the uniform is set
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
