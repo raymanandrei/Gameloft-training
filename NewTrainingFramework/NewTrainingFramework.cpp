@@ -188,9 +188,9 @@ int Init ( ESContext *esContext )
 	verticesData[1].pos.x = -0.5f;  verticesData[1].pos.y = -0.5f;  verticesData[1].pos.z =  0.0f;
 	verticesData[2].pos.x =  0.5f;  verticesData[2].pos.y = -0.5f;  verticesData[2].pos.z =  0.0f;*/
 
-	vertices[0].color.x = 1.0; vertices[1].color.x = 0.0; vertices[2].color.x = 0.0; vertices[3].color.x = 1.0;
-	vertices[0].color.y = 0.0; vertices[1].color.y = 1.0; vertices[2].color.y = 0.0; vertices[3].color.y = 1.0;
-	vertices[0].color.z = 0.0;  vertices[1].color.z = 0.0; vertices[2].color.z = 1.0; vertices[3].color.z = 0.0;
+	vertices[0].color.x = 1.0; vertices[1].color.x = 0.0; vertices[2].color.x = 0.0; vertices[3].color.x = 1.0; vertices[4].color.x = 1.0; vertices[5].color.x = 1.0; vertices[6].color.x = 1.0; vertices[7].color.x = 1.0;
+	vertices[0].color.y = 0.0; vertices[1].color.y = 1.0; vertices[2].color.y = 0.0; vertices[3].color.y = 1.0; vertices[4].color.y = 1.0; vertices[5].color.y = 1.0; vertices[6].color.y = 1.0; vertices[7].color.y = 1.0;
+	vertices[0].color.z = 0.0;  vertices[1].color.z = 0.0; vertices[2].color.z = 1.0; vertices[3].color.z = 0.0; vertices[4].color.z = 0.0; vertices[5].color.z = 0.0; vertices[6].color.z = 0.0; vertices[7].color.z = 0.0;
 
 	std::cout << "marime:"<<vertices.size() * sizeof(Vertex);
 
@@ -229,7 +229,7 @@ void Draw ( ESContext *esContext )
 		glVertexAttribPointer(myShaders.colorAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(Vector3)));
 	}
 
-	mRotation.SetRotationZ(angle);
+	mRotation.SetRotationZ(0);
 
 	if (myShaders.matrixUniform != -1) {
 		glUniformMatrix4fv(myShaders.matrixUniform, 1, GL_FALSE, (float*)mRotation.m);
@@ -243,7 +243,7 @@ void Draw ( ESContext *esContext )
 	}
 
 	// Draw after the uniform is set
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	glDrawArrays(GL_TRIANGLE_FAN, 0, 8);
 
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
