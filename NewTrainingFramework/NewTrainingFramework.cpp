@@ -33,12 +33,13 @@ Camera camera = Camera();
 ResourceManager* resourceManager = ResourceManager::GetInstance();
 
 void readNfgLine(std::string str,std::string field, std::vector<float> &numbers) {
-	std::cout << str << " ";
+	//std::cout << str << " ";
 	int posIndex = str.find(field);
 	std::cout << posIndex << "\n";
 	if (posIndex != -1) {
 
-		std::string numbersStr = str.substr(posIndex + 4, str.find(';') - posIndex - 4);
+		//std::cout <<"substring"<< str.substr(posIndex + field.length() + 1, str.find(';') - posIndex - field.length() - 1) << '\n';
+		std::string numbersStr = str.substr(posIndex + field.length() + 1, str.find(';') - posIndex - field.length() - 1);
 		std::stringstream ss(numbersStr);
 		std::string token;
 
@@ -46,7 +47,7 @@ void readNfgLine(std::string str,std::string field, std::vector<float> &numbers)
 			numbers.push_back(std::stof(token)); // convertim string -> float
 		}
 		//for (float f : numbers) {
-		//	std::cout << "pos:" << f << " ";
+		//	std::cout << field << f << " ";
 		//}
 		//std::cout << '\n';
 	}
@@ -56,14 +57,12 @@ void readNfg(const char* filename, std::vector<Vertex>& vertices, std::vector<un
 	std::ifstream file(filename);
 	std::string str;
 	while (std::getline(file, str))
-	{
-		std::cout << str << "\n";
-		
+	{	
 		std::vector<float> numbers;
 
 		readNfgLine(str, "pos:", numbers);
 
-		std::cout << numbers.size() << '\n';
+		//std::cout << numbers.size() << '\n';
 
 		if (numbers.size() == 3) {
 			Vertex v;
@@ -73,85 +72,19 @@ void readNfg(const char* filename, std::vector<Vertex>& vertices, std::vector<un
 			vertices.push_back(v);
 		}
 		
+		numbers.clear();
+		readNfgLine(str, "norm:", numbers);
 
+		numbers.clear();
+		readNfgLine(str, "binorm:", numbers);
 
-		int posIndex = str.find("norm:");
-		if (posIndex != std::string::npos) {
+		numbers.clear();
+		readNfgLine(str, "tgt:", numbers);
 
-			std::string numbersStr = str.substr(posIndex + 5, str.find(';', posIndex + 5) - posIndex - 5);
-			std::stringstream ss(numbersStr);
-			std::string token;
+		numbers.clear();
+		readNfgLine(str, "uv:", numbers);
 
-			std::vector<float> numbers;
-
-			while (std::getline(ss, token, ',')) {
-				numbers.push_back(std::stof(token)); // convertim string -> float
-			}
-
-			for (float f : numbers) {
-				std::cout <<"norm:"<< f << " ";
-			}
-			std::cout << "\n";
-		}
-
-		posIndex = str.find("binorm:");
-		if (posIndex != std::string::npos) {
-
-			std::string numbersStr = str.substr(posIndex + 7, str.find(';', posIndex + 7) - posIndex - 7);
-			std::stringstream ss(numbersStr);
-			std::string token;
-
-			std::vector<float> numbers;
-
-			while (std::getline(ss, token, ',')) {
-				numbers.push_back(std::stof(token)); // convertim string -> float
-			}
-
-			for (float f : numbers) {
-				std::cout << "binorm:" << f << " ";
-			}
-			std::cout << "\n";
-		}
-
-		posIndex = str.find("tgt:");
-		if (posIndex != std::string::npos) {
-
-			std::string numbersStr = str.substr(posIndex + 4, str.find(';', posIndex + 4) - posIndex - 4);
-			std::stringstream ss(numbersStr);
-			std::string token;
-
-			std::vector<float> numbers;
-
-			while (std::getline(ss, token, ',')) {
-				numbers.push_back(std::stof(token)); // convertim string -> float
-			}
-
-			for (float f : numbers) {
-				std::cout << "tgt:" << f << " ";
-			}
-			std::cout << "\n";
-		}
-
-		posIndex = str.find("uv:");
-		if (posIndex != std::string::npos) {
-
-			std::string numbersStr = str.substr(posIndex + 3, str.find(';', posIndex + 3) - posIndex - 3);
-			std::stringstream ss(numbersStr);
-			std::string token;
-
-			std::vector<float> numbers;
-
-			while (std::getline(ss, token, ',')) {
-				numbers.push_back(std::stof(token)); // convertim string -> float
-			}
-
-			for (float f : numbers) {
-				std::cout << "uv:" << f << " ";
-			}
-			std::cout << "\n";
-		}
-
-		posIndex = str.find("NrIndices:");
+		int posIndex = str.find("NrIndices:");
 		if (posIndex != std::string::npos) {
 			std::string numberStr = str.substr(posIndex + 10);
 			int nrIndices = std::stoi(numberStr);
@@ -198,9 +131,11 @@ int Init ( ESContext *esContext )
 	verticesData[1].pos.x = -0.5f;  verticesData[1].pos.y = -0.5f;  verticesData[1].pos.z =  0.0f;
 	verticesData[2].pos.x =  0.5f;  verticesData[2].pos.y = -0.5f;  verticesData[2].pos.z =  0.0f;*/
 
-	vertices[0].color.x = 1.0; vertices[1].color.x = 0.0; vertices[2].color.x = 0.0; vertices[3].color.x = 1.0; vertices[4].color.x = 1.0; vertices[5].color.x = 1.0; vertices[6].color.x = 1.0; vertices[7].color.x = 1.0;
-	vertices[0].color.y = 0.0; vertices[1].color.y = 1.0; vertices[2].color.y = 0.0; vertices[3].color.y = 1.0; vertices[4].color.y = 1.0; vertices[5].color.y = 1.0; vertices[6].color.y = 1.0; vertices[7].color.y = 1.0;
-	vertices[0].color.z = 0.0;  vertices[1].color.z = 0.0; vertices[2].color.z = 1.0; vertices[3].color.z = 0.0; vertices[4].color.z = 0.0; vertices[5].color.z =0.0; vertices[6].color.z = 0.0; vertices[7].color.z = 0.0;
+	for (int i = 0; i < vertices.size(); i++) {
+		vertices[i].color.x = i % 2 ? 1.0f : 0.0f;
+		vertices[i].color.y = i % 3 ? 1.0f : 0.0f;
+		vertices[i].color.z = i % 4 ? 1.0f : 0.0f;
+	}
 
 	std::cout << "marime:"<<vertices.size() * sizeof(Vertex);
 
@@ -239,7 +174,7 @@ void Draw ( ESContext *esContext )
 		glVertexAttribPointer(myShaders.colorAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(Vector3)));
 	}
 
-	mRotation.SetRotationZ(0);
+	mRotation.SetRotationZ(angle);
 
 	if (myShaders.matrixUniform != -1) {
 		glUniformMatrix4fv(myShaders.matrixUniform, 1, GL_FALSE, (float*)mRotation.m);
@@ -281,10 +216,10 @@ void Key ( ESContext *esContext, unsigned char key, bool bIsPressed)
 	switch (key)
 	{
 		case 'A': case 'a':
-			camera.moveOx(1);
+			camera.moveOx(-1);
 			break;
 		case 'D':case'd':
-			camera.moveOx(-1);
+			camera.moveOx(1);
 			break;
 		case 'W':case 'w':
 			camera.moveOz(-1);
@@ -297,6 +232,12 @@ void Key ( ESContext *esContext, unsigned char key, bool bIsPressed)
 			break;
 		case 'E': case 'e':
 			camera.moveOy(-1);
+			break;
+		case 'R': case 'r':
+			camera.rotateOy(-1);
+			break;
+		case 'T': case 't':
+			camera.rotateOy(1);
 			break;
 		default:
 			break;
