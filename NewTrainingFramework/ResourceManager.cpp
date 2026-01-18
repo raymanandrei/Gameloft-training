@@ -117,24 +117,3 @@ ResourceManager* ResourceManager::GetInstance() {
 		return spInstance;
 }
 
-
-
-
-Model::Model() {
-}
-
-Model::~Model() {
-}
-
-Texture::Texture() {
-}
-
-Texture::~Texture() {
-}
-
-Shader::Shader() {
-}
-
-Shader::~Shader() {
-}
-

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Globals.h"
 
-const int Globals::screenWidth = 800;
-const int Globals::screenHeight = 600;
-const float Globals::frameTime = 0.005;
+const int Globals::screenWidth = 1280;
+const int Globals::screenHeight = 720;
+const float Globals::frameTime = 0.05;

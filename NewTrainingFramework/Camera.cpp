@@ -7,11 +7,11 @@ Camera::Camera()
 	this->position = Vector3(0.0, 0.0, 1.0);
 	this->target = Vector3(0.0, 0.0, 0.0);
 	this->up = Vector3(0.0, 1.0, 0.0);
-	this->moveSpeed = 20.0;
+	this->moveSpeed = 55.0;
 	this->rotateSpeed = 0.2;
 	this->nearPlane = 0.2;
-	this->farPlane = 100.0;
-	this->fov = 90.0;
+	this->farPlane = 1000.0;
+	this->fov =  0.78;
 
 	zAxis = -(target - position).Normalize();
 	yAxis = up.Normalize();
@@ -93,6 +93,24 @@ void Camera::rotateOy(GLfloat sens)
 }
 
 void Camera::rotateOz(GLfloat sens) {
+
+	float unghiRotatie = sens * rotateSpeed * deltaTime;
+
+	Matrix mRotateOZ;
+	mRotateOZ.SetRotationZ(unghiRotatie);
+
+	Vector4 localUp = Vector4(0, 1, 0, 0);
+	Vector4 rotatedLocalUp = localUp * mRotateOZ;
+
+	up = (rotatedLocalUp * worldMatrix).toVector3();
+	up = up.Normalize();
+
+
+	Vector4 localTarget = Vector4(0.0f, 0.0f, -(target - position).Length(), 1.0f);
+	Vector4 rotatedTarget = localTarget * mRotateOZ;
+
+	target = (rotatedTarget * worldMatrix).toVector3();
+
 	updateWorldView();
 }
 
@@ -103,7 +121,6 @@ void Camera::updateAxes() {
 }
 
 void Camera::updateWorldView() {
-	//printf("update\n");
 	updateAxes();
 	Matrix R;
 	R.SetIdentity();
