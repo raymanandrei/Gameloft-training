@@ -18,6 +18,7 @@
 
 GLuint modelVboId;
 GLuint modelIboId;
+GLuint idTexture;
 
 std::vector<Vertex> vertices;
 std::vector<unsigned short> indices;
@@ -144,6 +145,10 @@ void readNfg(const char* filename, std::vector<Vertex>& vertices, std::vector<un
 
 int Init ( ESContext *esContext )
 {
+	int width, height, bpp;
+	char *pixelArray;
+
+	glEnable(GL_DEPTH_TEST);
 	glClearColor ( 0.0f, 0.0f, 0.0f, 0.0f );
 
 	readNfg("../../NewResourcesPacket/Models/Croco.nfg", vertices, indices);
@@ -153,7 +158,7 @@ int Init ( ESContext *esContext )
 	}
 
 	for (auto v : vertices) {
-		std::cout << "Vertex pos (Init): " << v.pos.x << ", " << v.pos.y << ", " << v.pos.y << "\n";
+		std::cout << "Vertex pos (Init): " << v.uv.x << ", " << v.uv.y << ", " << v.pos.y << "\n";
 	}
 	
 	for (auto v: vertices) {
@@ -164,6 +169,7 @@ int Init ( ESContext *esContext )
 
 	glGenBuffers(1, &modelVboId);
 	glGenBuffers(1, &modelIboId);
+	
 	glBindBuffer(GL_ARRAY_BUFFER, modelVboId);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, modelIboId);
 
@@ -174,6 +180,22 @@ int Init ( ESContext *esContext )
 
 	resourceManager->Init();
 
+	pixelArray = LoadTGA("C:/Users/Andrei/Desktop/Gameloft/NewResourcesPacket/Textures/Croco.tga", &width, &height, &bpp);
+
+	std::cout << "Texture width: " << width << " height: " << height << " bpp: " << bpp << "\n";
+
+	glGenTextures(1, &idTexture);
+	glBindTexture(GL_TEXTURE_2D, idTexture);
+	glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,width,height,0,GL_RGB,GL_UNSIGNED_BYTE,pixelArray);
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 	return modelShader.Init("../Resources/Shaders/ModelShaderVS.vs", "../Resources/Shaders/ModelShaderFS.fs");
 
 }
@@ -182,6 +204,7 @@ void Draw ( ESContext *esContext )
 {
 	Matrix mRotation;
 
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	glUseProgram(modelShader.program);
@@ -194,13 +217,31 @@ void Draw ( ESContext *esContext )
 		glEnableVertexAttribArray(modelShader.positionAttribute);
 		glVertexAttribPointer(modelShader.positionAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
 	}
+
+	if (modelShader.textureUniform != - 1)
+	{
+		glUniform1i(modelShader.textureUniform, 0);
+	}
+
+	std::cout << modelShader.uvAttribute << "\n";
+
+	if (modelShader.uvAttribute != -1)
+	{
+		glEnableVertexAttribArray(modelShader.uvAttribute);
+		glVertexAttribPointer(modelShader.uvAttribute, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)offsetof(Vertex, uv));
+	}
+
+
 	Matrix MVP = camera.viewMatrix * camera.perspectiveMatrix;
 
 	if (modelShader.matrixCamera != -1) {
-	glUniformMatrix4fv(modelShader.matrixCamera, 1, GL_FALSE, (float*)MVP.m);
+		glUniformMatrix4fv(modelShader.matrixCamera, 1, GL_FALSE, (float*)MVP.m);
 	}
 
 	glDrawElements(GL_TRIANGLES,indices.size(), GL_UNSIGNED_SHORT, 0);
+
+	GLint err = glGetError();
+	std::cout << "GL Error: " << err << "\n";
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -210,7 +251,6 @@ void Draw ( ESContext *esContext )
 
 void Update ( ESContext *esContext, float deltaTime )
 {
-	//camera.setDeltaTime(deltaTime);
 	//printf("Update: %f\n", deltaTime);
 	totalTime += deltaTime;
 	if (totalTime >= Globals::frameTime) {
