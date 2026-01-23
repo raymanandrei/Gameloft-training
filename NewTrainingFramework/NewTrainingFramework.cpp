@@ -12,15 +12,17 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <algorithm>
 #include <string>
-#include <cstring>
 
 #define PI 3.14159265358979323846
 
+GLuint modelVboId;
+GLuint modelIboId;
 
-GLuint vboId;
-Shaders myShaders;
+std::vector<Vertex> vertices;
+std::vector<unsigned short> indices;
+
+Shaders modelShader;
 
 float angle = 0;
 float step = 0.05;
@@ -29,126 +31,150 @@ float totalTime = 0;
 
 Camera camera = Camera();
 
-
 ResourceManager* resourceManager = ResourceManager::GetInstance();
 
 void readNfgLine(std::string str,std::string field, std::vector<float> &numbers) {
 	//std::cout << str << " ";
 	int posIndex = str.find(field);
-	std::cout << posIndex << "\n";
+	//std::cout << posIndex << "\n";
 	if (posIndex != -1) {
 
+		//std::cout << "Field:" << str.find(';') << "\n";
 		//std::cout <<"substring"<< str.substr(posIndex + field.length() + 1, str.find(';') - posIndex - field.length() - 1) << '\n';
 		std::string numbersStr = str.substr(posIndex + field.length() + 1, str.find(';') - posIndex - field.length() - 1);
 		std::stringstream ss(numbersStr);
 		std::string token;
 
 		while (std::getline(ss, token, ',')) {
-			numbers.push_back(std::stof(token)); // convertim string -> float
+			numbers.push_back(std::stod(token)); 
 		}
-		//for (float f : numbers) {
+		//for (double f : numbers) {
 		//	std::cout << field << f << " ";
 		//}
 		//std::cout << '\n';
 	}
 }
 
-void readNfg(const char* filename, std::vector<Vertex>& vertices, std::vector<unsigned int>& indices) {
+void readNfg(const char* filename, std::vector<Vertex>& vertices, std::vector<unsigned short>& indices) {
 	std::ifstream file(filename);
 	std::string str;
 	while (std::getline(file, str))
 	{	
 		std::vector<float> numbers;
-
+		Vertex v;
 		readNfgLine(str, "pos:", numbers);
 
-		//std::cout << numbers.size() << '\n';
-
 		if (numbers.size() == 3) {
-			Vertex v;
+			
 			v.pos.x = numbers[0];
 			v.pos.y = numbers[1];
 			v.pos.z = numbers[2];
-			vertices.push_back(v);
 		}
-		
+
+		str = str.substr(str.find(";") + 1,str.length() - str.find(";") - 1);
 		numbers.clear();
 		readNfgLine(str, "norm:", numbers);
 
+		if (numbers.size() == 3) {
+			v.norm.x = numbers[0];
+			v.norm.y = numbers[1];
+			v.norm.z = numbers[2];
+		}
+
+		str = str.substr(str.find(";") + 1, str.length() - str.find(";") - 1);
 		numbers.clear();
 		readNfgLine(str, "binorm:", numbers);
+
+		if (numbers.size() == 3) {
+			v.binorm.x = numbers[0];
+			v.binorm.y = numbers[1];
+			v.binorm.z = numbers[2];
+		}
+
+		str = str.substr(str.find(";") + 1, str.length() - str.find(";") - 1);
 
 		numbers.clear();
 		readNfgLine(str, "tgt:", numbers);
 
+		//std::cout << "Numbers size norm:" << numbers.size() << "\n";
+		//for (double f : numbers) {
+		//	std::cout << "binorm:" << f << " ";
+		//}
+		//std::cout << '\n';
+
+		if (numbers.size() == 3) {
+			v.tgt.x = numbers[0];
+			v.tgt.y = numbers[1];
+			v.tgt.z = numbers[2];
+		}
+
+		str = str.substr(str.find(";") + 1, str.length() - str.find(";") - 1);
+
 		numbers.clear();
 		readNfgLine(str, "uv:", numbers);
+
+		if (numbers.size() == 2) {
+			v.uv.x = numbers[0];
+			v.uv.y = numbers[1];
+			vertices.push_back(v);
+		}
 
 		int posIndex = str.find("NrIndices:");
 		if (posIndex != std::string::npos) {
 			std::string numberStr = str.substr(posIndex + 10);
 			int nrIndices = std::stoi(numberStr);
 			std::cout << "NrIndices: " << nrIndices << "\n";
-			std::getline(file, str);
+			while (std::getline(file, str)) {
 
-			int posIndex = str.find("]");
+				int posIndex = str.find(".");
 
-			std::string numbersStr = str.substr(posIndex + 3, str.find(';', posIndex + 3) - posIndex - 3);
-			std::cout << str << "\n";
-			std::stringstream ss(numbersStr);
-			std::string token;
+				std::string numbersStr = str.substr(posIndex + 1, str.find('.', posIndex + 1) - posIndex - 1);
+				std::stringstream ss(numbersStr);
+				std::string token;
 
-			std::vector<float> numbers;
+				while (std::getline(ss, token, ',')) {
+					indices.push_back(std::stoi(token));
+				}
 
-			while (std::getline(ss, token, ',')) {
-				numbers.push_back(std::stof(token)); // convertim string -> float
-			}
-			for (float f : numbers) {
-				std::cout << "indice:" << f << " ";
 			}
 		}
+
 	}
 }
-
 
 int Init ( ESContext *esContext )
 {
 	glClearColor ( 0.0f, 0.0f, 0.0f, 0.0f );
 
-	//triangle data (heap)
-	//Vertex verticesData[3];
+	readNfg("../../NewResourcesPacket/Models/Croco.nfg", vertices, indices);
 
-	std::vector<Vertex> vertices;
-	std::vector<unsigned int> indices;
-
-	readNfg("C:/Users/Andrei/Desktop/Gameloft/NewTrainingFramework_2015/NewTrainingFramework/modelTest.nfg", vertices, indices);
+	for (auto idx : indices) {
+		std::cout << "Index: " << idx << "\n";
+	}
 
 	for (auto v : vertices) {
-		std::cout << "Vertex pos: " << v.pos.x << ", " << v.pos.y << ", " << v.pos.z << "\n";
+		std::cout << "Vertex pos (Init): " << v.pos.x << ", " << v.pos.y << ", " << v.pos.y << "\n";
+	}
+	
+	for (auto v: vertices) {
+		v.color.x = 1.0f;
+		v.color.y = 1.0f;
+		v.color.z = 1.0f;
 	}
 
-	/*verticesData[0].pos.x =  0.0f;  verticesData[0].pos.y =  0.5f;  verticesData[0].pos.z =  0.0f;
-	verticesData[1].pos.x = -0.5f;  verticesData[1].pos.y = -0.5f;  verticesData[1].pos.z =  0.0f;
-	verticesData[2].pos.x =  0.5f;  verticesData[2].pos.y = -0.5f;  verticesData[2].pos.z =  0.0f;*/
+	glGenBuffers(1, &modelVboId);
+	glGenBuffers(1, &modelIboId);
+	glBindBuffer(GL_ARRAY_BUFFER, modelVboId);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, modelIboId);
 
-	for (int i = 0; i < vertices.size(); i++) {
-		vertices[i].color.x = i % 2 ? 1.0f : 0.0f;
-		vertices[i].color.y = i % 3 ? 1.0f : 0.0f;
-		vertices[i].color.z = i % 4 ? 1.0f : 0.0f;
-	}
-
-	std::cout << "marime:"<<vertices.size() * sizeof(Vertex);
-
-	//buffer object
-	glGenBuffers(1, &vboId);
-	glBindBuffer(GL_ARRAY_BUFFER, vboId);
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER,indices.size() * sizeof(std::vector<unsigned short>),indices.data(),GL_STATIC_DRAW);
+	
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	resourceManager->Init();
 
-	//creation of shaders and program 
-	return myShaders.Init("../Resources/Shaders/TriangleShaderVS.vs", "../Resources/Shaders/TriangleShaderFS.fs");
+	return modelShader.Init("../Resources/Shaders/ModelShaderVS.vs", "../Resources/Shaders/ModelShaderFS.fs");
 
 }
 
@@ -158,55 +184,39 @@ void Draw ( ESContext *esContext )
 
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	glUseProgram(myShaders.program);
+	glUseProgram(modelShader.program);
 
-	glBindBuffer(GL_ARRAY_BUFFER, vboId);
+	glBindBuffer(GL_ARRAY_BUFFER, modelVboId);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, modelIboId);
 
-	
-	if(myShaders.positionAttribute != -1)
+	if (modelShader.positionAttribute != -1)
 	{
-		glEnableVertexAttribArray(myShaders.positionAttribute);
-		glVertexAttribPointer(myShaders.positionAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+		glEnableVertexAttribArray(modelShader.positionAttribute);
+		glVertexAttribPointer(modelShader.positionAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
 	}
-
-	if (myShaders.colorAttribute != -1) {
-		glEnableVertexAttribArray(myShaders.colorAttribute);
-		glVertexAttribPointer(myShaders.colorAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(Vector3)));
-	}
-
-	mRotation.SetRotationZ(angle);
-
-	if (myShaders.matrixUniform != -1) {
-		glUniformMatrix4fv(myShaders.matrixUniform, 1, GL_FALSE, (float*)mRotation.m);
-	}
-
 	Matrix MVP = camera.viewMatrix * camera.perspectiveMatrix;
-	MVP = mRotation * MVP;
 
-	if (myShaders.matrixCamera != -1) {
-		glUniformMatrix4fv(myShaders.matrixCamera, 1, GL_FALSE, (float*)MVP.m);
+	if (modelShader.matrixCamera != -1) {
+	glUniformMatrix4fv(modelShader.matrixCamera, 1, GL_FALSE, (float*)MVP.m);
 	}
 
-	// Draw after the uniform is set
-	glDrawArrays(GL_TRIANGLE_FAN, 0, 8);
-
+	glDrawElements(GL_TRIANGLES,indices.size(), GL_UNSIGNED_SHORT, 0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	eglSwapBuffers(esContext->eglDisplay, esContext->eglSurface);
-	
 } 
 
 void Update ( ESContext *esContext, float deltaTime )
 {
-	camera.setDeltaTime(deltaTime);
+	//camera.setDeltaTime(deltaTime);
 	//printf("Update: %f\n", deltaTime);
 	totalTime += deltaTime;
 	if (totalTime >= Globals::frameTime) {
 		camera.setDeltaTime(totalTime);
-		angle = (angle + step) > 2 * PI ? (angle + step) - 2 * PI : angle + step;
+		//angle = (angle + step) > 2 * PI ? (angle + step) - 2 * PI : angle + step;
 		totalTime = 0;
-		deltaTime = Globals::frameTime;
 	}
 	
 }
@@ -239,6 +249,18 @@ void Key ( ESContext *esContext, unsigned char key, bool bIsPressed)
 		case 'T': case 't':
 			camera.rotateOy(1);
 			break;
+		case 'Y': case 'y':
+			camera.rotateOx(-1);
+			break;
+		case 'U': case 'u':
+			camera.rotateOx(1);
+			break;
+		case 'I': case 'i':
+			camera.rotateOz(-1);
+			break;
+		case 'O': case 'o':
+			camera.rotateOz(1);
+			break;
 		default:
 			break;
 	}
@@ -246,7 +268,8 @@ void Key ( ESContext *esContext, unsigned char key, bool bIsPressed)
 
 void CleanUp()
 {
-	glDeleteBuffers(1, &vboId);
+	glDeleteBuffers(1, &modelIboId);
+	glDeleteBuffers(1, &modelVboId);
 }
 
 int _tmain(int argc, _TCHAR* argv[])
