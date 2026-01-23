@@ -31,7 +31,6 @@ void Camera::moveOx(GLfloat sens) {
 	position += vectorDeplasare;
 	target += vectorDeplasare;
 
-
 	updateWorldView();
 }
 
@@ -105,7 +104,6 @@ void Camera::rotateOz(GLfloat sens) {
 	up = (rotatedLocalUp * worldMatrix).toVector3();
 	up = up.Normalize();
 
-
 	Vector4 localTarget = Vector4(0.0f, 0.0f, -(target - position).Length(), 1.0f);
 	Vector4 rotatedTarget = localTarget * mRotateOZ;
 
@@ -154,21 +152,6 @@ void Camera::updateWorldView() {
 
 	viewMatrix = T1 * R1;
 }
-
-Matrix Camera::getViewMatrix() {
-	return viewMatrix;
-}
-
-float Camera::getFOV() {
-	return fov;
-}
-float Camera::getNear() {
-	return nearPlane;
-}
-float Camera::getFar() {
-	return farPlane;
-}
-
 
 void Camera::setDeltaTime(GLfloat dt)
 {

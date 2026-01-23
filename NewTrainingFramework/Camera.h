@@ -41,12 +41,4 @@ class Camera
 		void updateWorldView();
 
 		void setDeltaTime(GLfloat);
-
-		Matrix getViewMatrix();
-
-
-		float getFOV();
-		float getNear();
-		float getFar();
-
 };
