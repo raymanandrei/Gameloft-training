@@ -35,24 +35,17 @@ Camera camera = Camera();
 ResourceManager* resourceManager = ResourceManager::GetInstance();
 
 void readNfgLine(std::string str,std::string field, std::vector<float> &numbers) {
-	//std::cout << str << " ";
+
 	int posIndex = str.find(field);
-	//std::cout << posIndex << "\n";
+
 	if (posIndex != -1) {
 
-		//std::cout << "Field:" << str.find(';') << "\n";
-		//std::cout <<"substring"<< str.substr(posIndex + field.length() + 1, str.find(';') - posIndex - field.length() - 1) << '\n';
 		std::string numbersStr = str.substr(posIndex + field.length() + 1, str.find(';') - posIndex - field.length() - 1);
 		std::stringstream ss(numbersStr);
 		std::string token;
 
-		while (std::getline(ss, token, ',')) {
+		while (std::getline(ss, token, ',')) 
 			numbers.push_back(std::stod(token)); 
-		}
-		//for (double f : numbers) {
-		//	std::cout << field << f << " ";
-		//}
-		//std::cout << '\n';
 	}
 }
 
@@ -97,12 +90,6 @@ void readNfg(const char* filename, std::vector<Vertex>& vertices, std::vector<un
 		numbers.clear();
 		readNfgLine(str, "tgt:", numbers);
 
-		//std::cout << "Numbers size norm:" << numbers.size() << "\n";
-		//for (double f : numbers) {
-		//	std::cout << "binorm:" << f << " ";
-		//}
-		//std::cout << '\n';
-
 		if (numbers.size() == 3) {
 			v.tgt.x = numbers[0];
 			v.tgt.y = numbers[1];
@@ -124,7 +111,6 @@ void readNfg(const char* filename, std::vector<Vertex>& vertices, std::vector<un
 		if (posIndex != std::string::npos) {
 			std::string numberStr = str.substr(posIndex + 10);
 			int nrIndices = std::stoi(numberStr);
-			std::cout << "NrIndices: " << nrIndices << "\n";
 			while (std::getline(file, str)) {
 
 				int posIndex = str.find(".");
@@ -146,27 +132,13 @@ void readNfg(const char* filename, std::vector<Vertex>& vertices, std::vector<un
 int Init ( ESContext *esContext )
 {
 	int width, height, bpp;
-	char *pixelArray;
+	char *pixelArray =nullptr;
 
 	glEnable(GL_DEPTH_TEST);
 	glClearColor ( 0.0f, 0.0f, 0.0f, 0.0f );
 
 	readNfg("../../NewResourcesPacket/Models/Croco.nfg", vertices, indices);
-
-	for (auto idx : indices) {
-		std::cout << "Index: " << idx << "\n";
-	}
-
-	for (auto v : vertices) {
-		std::cout << "Vertex pos (Init): " << v.uv.x << ", " << v.uv.y << ", " << v.pos.y << "\n";
-	}
 	
-	for (auto v: vertices) {
-		v.color.x = 1.0f;
-		v.color.y = 1.0f;
-		v.color.z = 1.0f;
-	}
-
 	glGenBuffers(1, &modelVboId);
 	glGenBuffers(1, &modelIboId);
 	
@@ -174,20 +146,20 @@ int Init ( ESContext *esContext )
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, modelIboId);
 
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER,indices.size() * sizeof(std::vector<unsigned short>),indices.data(),GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned short), indices.data(), GL_STATIC_DRAW);
 	
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	resourceManager->Init();
 
-	pixelArray = LoadTGA("C:/Users/Andrei/Desktop/Gameloft/NewResourcesPacket/Textures/Croco.tga", &width, &height, &bpp);
-
-	std::cout << "Texture width: " << width << " height: " << height << " bpp: " << bpp << "\n";
+	pixelArray = LoadTGA("../../NewResourcesPacket/Textures/Croco.tga", &width, &height, &bpp);
 
 	glGenTextures(1, &idTexture);
 	glBindTexture(GL_TEXTURE_2D, idTexture);
-	glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,width,height,0,GL_RGB,GL_UNSIGNED_BYTE,pixelArray);
-	
+
+	GLint format = (bpp == 32) ? GL_RGBA : GL_RGB;
+	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, pixelArray);
+
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
@@ -205,7 +177,6 @@ void Draw ( ESContext *esContext )
 	Matrix mRotation;
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClear(GL_COLOR_BUFFER_BIT);
 
 	glUseProgram(modelShader.program);
 
@@ -223,8 +194,6 @@ void Draw ( ESContext *esContext )
 		glUniform1i(modelShader.textureUniform, 0);
 	}
 
-	std::cout << modelShader.uvAttribute << "\n";
-
 	if (modelShader.uvAttribute != -1)
 	{
 		glEnableVertexAttribArray(modelShader.uvAttribute);
@@ -238,10 +207,11 @@ void Draw ( ESContext *esContext )
 		glUniformMatrix4fv(modelShader.matrixCamera, 1, GL_FALSE, (float*)MVP.m);
 	}
 
-	glDrawElements(GL_TRIANGLES,indices.size(), GL_UNSIGNED_SHORT, 0);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, idTexture);
 
-	GLint err = glGetError();
-	std::cout << "GL Error: " << err << "\n";
+
+	glDrawElements(GL_TRIANGLES,indices.size(), GL_UNSIGNED_SHORT, 0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -251,11 +221,9 @@ void Draw ( ESContext *esContext )
 
 void Update ( ESContext *esContext, float deltaTime )
 {
-	//printf("Update: %f\n", deltaTime);
 	totalTime += deltaTime;
 	if (totalTime >= Globals::frameTime) {
 		camera.setDeltaTime(totalTime);
-		//angle = (angle + step) > 2 * PI ? (angle + step) - 2 * PI : angle + step;
 		totalTime = 0;
 	}
 	
