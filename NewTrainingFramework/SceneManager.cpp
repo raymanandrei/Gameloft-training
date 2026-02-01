@@ -77,11 +77,12 @@ void SceneManager::Init() {
 		newObject->scale.y = std::stof(object->first_node("scale")->first_node("y")->value());
 		newObject->scale.z = std::stof(object->first_node("scale")->first_node("z")->value());
 
-		//if (object->first_node("color")) {
-		//	newObject->color.x = std::stof(object->first_node("scale")->first_node("x")->value());
-		//	newObject->scale.y = std::stof(object->first_node("scale")->first_node("y")->value());
-		//	newObject->scale.z = std::stof(object->first_node("scale")->first_node("z")->value());
-		//}
+		if (object->first_node("color")) {
+			std::cout << "Loading color for object ID: " << newObject->id << std::endl;
+			newObject->color.x = std::stof(object->first_node("color")->first_node("r")->value());
+			newObject->color.y = std::stof(object->first_node("color")->first_node("g")->value());
+			newObject->color.z = std::stof(object->first_node("color")->first_node("b")->value());
+		}
 
 		ResourceManager* resourceManager = ResourceManager::GetInstance();
 

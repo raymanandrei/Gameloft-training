@@ -211,6 +211,11 @@ void Draw ( ESContext *esContext )
 		glVertexAttribPointer(modelShader.uvAttribute, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)offsetof(Vertex, uv));
 	}
 
+	if (modelShader.colorAttribute != -1)
+	{
+		glEnableVertexAttribArray(modelShader.colorAttribute);
+		glVertexAttribPointer(modelShader.colorAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)offsetof(Vertex, color));
+	}
 
 	Matrix MVP = camera.viewMatrix * camera.perspectiveMatrix;
 
@@ -220,7 +225,6 @@ void Draw ( ESContext *esContext )
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(resourceManager->textureResources[4]->type, idTexture);
-
 
 	glDrawElements(GL_TRIANGLES,indices.size(), GL_UNSIGNED_SHORT, 0);
 
@@ -237,7 +241,6 @@ void Update ( ESContext *esContext, float deltaTime )
 		camera.setDeltaTime(totalTime);
 		totalTime = 0;
 	}
-	
 }
 
 void Key ( ESContext *esContext, unsigned char key, bool bIsPressed)
@@ -318,7 +321,6 @@ int _tmain(int argc, _TCHAR* argv[])
 	printf("Press any key...\n");
 	_getch();
 
-	
 	return 0;
 }
 

@@ -10,6 +10,7 @@ public:
 	float position[3];
 	Vector3 rotation;
 	Vector3 scale;
+	Vector3 color;	
 	ModelResource* model;
 	ShaderResource* shader;
 	TextureResource* texture;
