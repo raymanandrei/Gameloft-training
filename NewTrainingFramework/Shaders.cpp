@@ -3,8 +3,6 @@
 #include <string>
 int Shaders::Init(char* fileVertexShader, char* fileFragmentShader)
 {
-	
-
 	vertexShader = esLoadShader(GL_VERTEX_SHADER, fileVertexShader);
 
 	if (vertexShader == 0)
@@ -28,7 +26,6 @@ int Shaders::Init(char* fileVertexShader, char* fileFragmentShader)
 
 
 	return 0;
-
 }
 
 Shaders::~Shaders()

@@ -117,7 +117,7 @@ void LoadUncompressedImage( char* pDest, char * pSrc, TGA_HEADER * pHeader )
 
 char * LoadTGA( const char * szFileName, int * width, int * height, int * bpp )
 {
-    
+	
     FILE * f;
 	
 	if (fopen_s(&f, szFileName, "rb" ) != 0)
@@ -164,5 +164,6 @@ char * LoadTGA( const char * szFileName, int * width, int * height, int * bpp )
 
     delete[] pBuffer;
 
+	printf("TGA file '%s' loaded: %dx%d, %d bpp\n", szFileName, *width, *height, *bpp);
     return pOutBuffer;
 }
