@@ -7,3 +7,7 @@ Texture::Texture() {
 Texture::~Texture() {
 }
 
+bool Texture::Load() {
+	return true;
+}
+

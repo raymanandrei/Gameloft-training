@@ -11,7 +11,6 @@ public:
 	bool Load();
 
 	ShaderResource* sr;
-	GLuint programId;
 	GLuint vsId;
 	GLuint fsId;
 };

@@ -1,7 +1,5 @@
 #pragma once
-
 #include "../Utilities/utilities.h"
-#include "../Utilities/Math.h"
 #include "ModelResource.h"
 #include "ShaderResource.h"
 #include "TextureResource.h"
@@ -19,7 +17,7 @@ public:
 
 	SceneObject();
 	~SceneObject();
-	void Draw();
+	void Draw(ESContext* esContext);
 	void Update(float deltaTime);	
 };
 

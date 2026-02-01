@@ -2,10 +2,12 @@
 #include <string>
 struct TextureResource
 {
-	std::string id;
+
+	GLuint id;
 	std::string file;
-	std::string min_filter;
-	std::string mag_filter;
-	std::string wrap_s;
-	std::string wrap_t;
+	GLenum type;
+	GLint min_filter;
+	GLint mag_filter;
+	GLint wrap_s;
+	GLint wrap_t;
 };

@@ -1,20 +1,20 @@
 ﻿// NewTrainingFramework.cpp : Defines the entry point for the console application.
-//
 #include "stdafx.h"
-#include "../Utilities/utilities.h" // if you use STL, please include this line AFTER all other include
 #include <iostream>
-#include <fstream>
-#include <sstream>
 #include <string>
 #include <vector>
 #include <conio.h>
+#include <fstream>
+#include <sstream>
 #include "Vertex.h"
 #include "Shaders.h"
 #include "Globals.h"
 #include "Camera.h"
 #include "ResourceManager.h"
+#include "SceneManager.h"
+#include "SceneObject.h"
 
-#define PI 3.14159265358979323846
+#include "../Utilities/utilities.h" // if you use STL, please include this line AFTER all other include
 
 GLuint modelVboId;
 GLuint modelIboId;
@@ -33,8 +33,9 @@ float totalTime = 0;
 Camera camera = Camera();
 
 ResourceManager* resourceManager = ResourceManager::GetInstance();
+SceneManager* sceneManager = SceneManager::GetInstance();
 
-void readNfgLine(std::string str,std::string field, std::vector<float> &numbers) {
+void readNfgLine(std::string str, std::string field, std::vector<float>& numbers) {
 
 	int posIndex = str.find(field);
 
@@ -44,28 +45,28 @@ void readNfgLine(std::string str,std::string field, std::vector<float> &numbers)
 		std::stringstream ss(numbersStr);
 		std::string token;
 
-		while (std::getline(ss, token, ',')) 
-			numbers.push_back(std::stod(token)); 
+		while (std::getline(ss, token, ','))
+			numbers.push_back(std::stod(token));
 	}
 }
 
-void readNfg(const char* filename, std::vector<Vertex>& vertices, std::vector<unsigned short>& indices) {
+void readNfg(std::string filename, std::vector<Vertex>& vertices, std::vector<unsigned short>& indices) {
 	std::ifstream file(filename);
 	std::string str;
 	while (std::getline(file, str))
-	{	
+	{
 		std::vector<float> numbers;
 		Vertex v;
 		readNfgLine(str, "pos:", numbers);
 
 		if (numbers.size() == 3) {
-			
+
 			v.pos.x = numbers[0];
 			v.pos.y = numbers[1];
 			v.pos.z = numbers[2];
 		}
 
-		str = str.substr(str.find(";") + 1,str.length() - str.find(";") - 1);
+		str = str.substr(str.find(";") + 1, str.length() - str.find(";") - 1);
 		numbers.clear();
 		readNfgLine(str, "norm:", numbers);
 
@@ -129,16 +130,32 @@ void readNfg(const char* filename, std::vector<Vertex>& vertices, std::vector<un
 	}
 }
 
+
 int Init ( ESContext *esContext )
 {
-	int width, height, bpp;
-	char *pixelArray =nullptr;
-
 	glEnable(GL_DEPTH_TEST);
-	glClearColor ( 0.0f, 0.0f, 0.0f, 0.0f );
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-	readNfg("../../NewResourcesPacket/Models/Croco.nfg", vertices, indices);
+	int width, height, bpp;
+	char *pixelArray = nullptr;
+
+	resourceManager->Init();
+	sceneManager->Init();
+
+	int currentObj = 0;
+
+	//for (auto i = 0; i < sceneManager->currentSceneObjects.size(); i++) {
+	//	std::cout << "Object " << i << " Model: " << sceneManager->currentSceneObjects[i]->model->file << " Texture: " << sceneManager->currentSceneObjects[i]->texture->file << "\n";
+	//}
+
+	std::cout << sceneManager->currentSceneObjects[currentObj]->model->file << "\n";
 	
+	readNfg(std::string(sceneManager->currentSceneObjects[1]->model->file), vertices, indices);
+	
+
+	pixelArray = LoadTGA(std::string(sceneManager->currentSceneObjects[currentObj]->texture->file).c_str(), &width, &height, &bpp);
+	std::cout << width << " " << height << " " << bpp << "\n";
+
 	glGenBuffers(1, &modelVboId);
 	glGenBuffers(1, &modelIboId);
 	
@@ -150,26 +167,20 @@ int Init ( ESContext *esContext )
 	
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	resourceManager->Init();
-
-	pixelArray = LoadTGA("../../NewResourcesPacket/Textures/Croco.tga", &width, &height, &bpp);
-
-	glGenTextures(1, &idTexture);
-	glBindTexture(GL_TEXTURE_2D, idTexture);
-
+	glGenTextures(1, &sceneManager->currentSceneObjects[currentObj]->texture->id);
+	glBindTexture(sceneManager->currentSceneObjects[currentObj]->texture->type, idTexture);
 	GLint format = (bpp == 32) ? GL_RGBA : GL_RGB;
-	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, pixelArray);
+	glTexImage2D(resourceManager->textureResources[4]->type, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, pixelArray);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(sceneManager->currentSceneObjects[currentObj]->texture->type, GL_TEXTURE_WRAP_S, sceneManager->currentSceneObjects[currentObj]->texture->wrap_s);
+	glTexParameteri(sceneManager->currentSceneObjects[currentObj]->texture->type, GL_TEXTURE_WRAP_T, sceneManager->currentSceneObjects[currentObj]->texture->wrap_t);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(sceneManager->currentSceneObjects[currentObj]->texture->type, GL_TEXTURE_MIN_FILTER, sceneManager->currentSceneObjects[currentObj]->texture->min_filter);
+	glTexParameteri(sceneManager->currentSceneObjects[currentObj]->texture->type, GL_TEXTURE_MAG_FILTER, sceneManager->currentSceneObjects[currentObj]->texture->mag_filter);
 
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(sceneManager->currentSceneObjects[currentObj]->texture->type, 0);
 
-	return modelShader.Init("../Resources/Shaders/ModelShaderVS.vs", "../Resources/Shaders/ModelShaderFS.fs");
-
+	return modelShader.Init((char*)resourceManager->shaderResources[10]->vs.c_str(), (char *)resourceManager->shaderResources[10]->fs.c_str());
 }
 
 void Draw ( ESContext *esContext )
@@ -208,7 +219,7 @@ void Draw ( ESContext *esContext )
 	}
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, idTexture);
+	glBindTexture(resourceManager->textureResources[4]->type, idTexture);
 
 
 	glDrawElements(GL_TRIANGLES,indices.size(), GL_UNSIGNED_SHORT, 0);

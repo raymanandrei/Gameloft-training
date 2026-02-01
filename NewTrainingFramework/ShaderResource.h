@@ -3,6 +3,6 @@
 struct ShaderResource
 {
 	std::string id;
-	std::string vs;    //Vertex shader file
-	std::string fs;  //Fragement shader file
+	std::string vs;  
+	std::string fs;  
 };
