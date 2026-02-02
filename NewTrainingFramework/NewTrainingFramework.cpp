@@ -83,7 +83,7 @@ int Init ( ESContext *esContext )
 
 	glBindTexture(sceneManager->currentSceneObjects[currentObj]->texture->type, 0);
 
-	return modelShader.Init((char*)resourceManager->shaderResources[10]->vs.c_str(), (char *)resourceManager->shaderResources[10]->fs.c_str());
+	return modelShader.Init("../Resources/Shaders/ballShaderVS.vs", "../Resources/Shaders/ballShaderFS.fs");
 }
 
 void Draw ( ESContext *esContext )

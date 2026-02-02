@@ -212,6 +212,8 @@
     <None Include="..\Resources\Shaders\TriangleShaderFS.fs" />
     <None Include="..\Resources\Shaders\TriangleShaderVS.vs" />
     <None Include="..\..\Readme.doc" />
+    <None Include="ballShaderFS.fs" />
+    <None Include="ballShaderVS.vs" />
     <PackageLayout Include="modelTest.nfg">
       <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug-Nvidia|Win32'">false</ExcludedFromBuild>
