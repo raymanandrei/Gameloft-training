@@ -3,7 +3,7 @@
 class SceneManager {
 	public:
 		static SceneManager* GetInstance();
-		void InitWindow();
+		void InitWindow(ESContext* esContext);
 		void static Init();
 		void Draw();
 		void Update(float deltaTime);

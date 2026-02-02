@@ -4,7 +4,7 @@
 	le-am adaugat ca sa evit cazul de comentarii imbricate (imposibile in XML) -->
 	<gameName>My game engine</gameName>
 	<defaultScreenSize>
-		<width>960</width>
+		<width>1280</width>
 		<height>720</height>
 		<!--
 		se mai poate pune si:

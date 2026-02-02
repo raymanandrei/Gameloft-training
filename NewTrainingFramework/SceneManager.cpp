@@ -26,7 +26,7 @@ SceneManager::~SceneManager() {
 	
 }
 
-void SceneManager::InitWindow() {
+void SceneManager::InitWindow(ESContext* esContext) {
 	std::string xmlPath = "..\\sceneManager.xml";
 
 	rapidxml::xml_document<> doc;
@@ -41,6 +41,10 @@ void SceneManager::InitWindow() {
 	xml_node<>* root = doc.first_node("sceneManager");
 	xml_node<>* gameName = root->first_node("gameName");
 	xml_node<>* defaultScreenSize = root->first_node("defaultScreenSize");
+
+
+	esCreateWindow(esContext, gameName->value(), std::stoi(defaultScreenSize->first_node("width")->value()), std::stoi(defaultScreenSize->first_node("height")->value()), ES_WINDOW_RGB | ES_WINDOW_DEPTH);
+
 }
 
 void SceneManager::Init() {

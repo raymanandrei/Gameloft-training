@@ -11,10 +11,9 @@
 #include "ResourceManager.h"
 #include "SceneManager.h"
 #include "SceneObject.h"
+#include "ReadNFG.h"
 
 #include "../Utilities/utilities.h" // if you use STL, please include this line AFTER all other include
-
-#include "ReadNFG.h"
 
 GLuint modelVboId;
 GLuint modelIboId;
@@ -207,7 +206,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
     esInitContext ( &esContext );
 
-	esCreateWindow ( &esContext, "Game Engine", Globals::screenWidth, Globals::screenHeight, ES_WINDOW_RGB | ES_WINDOW_DEPTH);
+	sceneManager->InitWindow(&esContext);
 
 	if ( Init ( &esContext ) != 0 )
 		return 0;
