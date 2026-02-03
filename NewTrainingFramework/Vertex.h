@@ -1,4 +1,5 @@
 #pragma once
+#include "../Utilities/Math.h"
 
 struct Vertex 
 {

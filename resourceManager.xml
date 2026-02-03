@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resourceManager>
 	<models>
-		<folder path="Res/Models/">
+		<folder path="../../NewResourcesPacket/Models/">
 			<model id="1">
 				<file>croco.nfg</file>
 			</model>
@@ -20,32 +20,32 @@
 		<!-- si aici se adauga toate modelele necesare -->
 	</models>
 	<shaders>
-		<folder path="Res/Shaders/">
+		<folder path="../Resources/Shaders/">
 			<shader id="10">
-				<vs>modelShader.vs</vs>
-				<fs>modelShader.fs</fs>
+				<vs>modelShaderVS.vs</vs>
+				<fs>modelShaderFS.fs</fs>
 			</shader>
 			<shader id="3">
-				<vs>terrainShader.vs</vs>
-				<fs>terrainShader.fs</fs>
+				<vs>terrainShaderVS.vs</vs>
+				<fs>terrainShaderFS.fs</fs>
 			</shader>
 		<!-- si aici se adauga toate shaderele -->
 		</folder>
 		
 	</shaders>
 	<textures>
-		<folder path="Res/Textures/">
+		<folder path="../../NewResourcesPacket/Textures/">
 			<texture id="4" type="2d">
 				<file>croco.tga</file>			
-				<min_filter>LINEAR</min_filter>
-				<mag_filter>LINEAR</mag_filter>
+				<min_filter>GL_LINEAR</min_filter>
+				<mag_filter>GL_LINEAR</mag_filter>
 				<wrap_s>CLAMP_TO_EDGE</wrap_s>
 				<wrap_t>CLAMP_TO_EDGE</wrap_t>
 			</texture>
 			<texture id="14" type="2d">
 				<file>dirt.tga</file>			
-				<min_filter>LINEAR</min_filter>
-				<mag_filter>LINEAR</mag_filter>
+				<min_filter>GL_LINEAR</min_filter>
+				<mag_filter>GL_LINEAR</mag_filter>
 				<wrap_s>CLAMP_TO_EDGE</wrap_s>
 				<wrap_t>CLAMP_TO_EDGE</wrap_t>
 			</texture>

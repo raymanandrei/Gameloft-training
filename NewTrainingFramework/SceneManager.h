@@ -1,17 +1,20 @@
-
-#include "../Utilities/utilities.h"
-#include <string>
-
+#include "sceneObject.h"
 
 class SceneManager {
 	public:
-		void Init(); //parsing xml and applying settings
-		void InitWindow();
+		static SceneManager* GetInstance();
+		void InitWindow(ESContext* esContext);
+		void static Init();
 		void Draw();
 		void Update(float deltaTime);
-		SceneManager();
+		
+		std::vector<SceneObject*> currentSceneObjects;
+
 		~SceneManager();
 		void LoadScene(const std::string& sceneName);
 		void UnloadScene(const std::string& sceneName);
 		void SwitchScene(const std::string& sceneName);
+	private:
+		SceneManager();
+		static SceneManager* spInstance;
 };

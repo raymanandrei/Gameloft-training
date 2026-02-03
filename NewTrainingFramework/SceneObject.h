@@ -1,7 +1,5 @@
 #pragma once
-
 #include "../Utilities/utilities.h"
-#include "../Utilities/Math.h"
 #include "ModelResource.h"
 #include "ShaderResource.h"
 #include "TextureResource.h"
@@ -12,6 +10,7 @@ public:
 	float position[3];
 	Vector3 rotation;
 	Vector3 scale;
+	Vector3 color;	
 	ModelResource* model;
 	ShaderResource* shader;
 	TextureResource* texture;
@@ -19,7 +18,7 @@ public:
 
 	SceneObject();
 	~SceneObject();
-	void Draw();
+	void Draw(ESContext* esContext);
 	void Update(float deltaTime);	
 };
 

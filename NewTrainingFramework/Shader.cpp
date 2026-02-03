@@ -6,3 +6,7 @@ Shader::Shader() {
 
 Shader::~Shader() {
 }
+
+bool Shader::Load() {
+	return true;
+}
