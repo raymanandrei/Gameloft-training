@@ -6,17 +6,21 @@
 
 class Model
 {
-public:
-	Model();
-	~Model();
+	public:
 
-	bool Load();
+		ModelResource* mr;
 
-	ModelResource* mr;
-	GLuint iboId;
-	GLuint wiredIboId;
-	GLuint vboId;
-	int nrIndici;
-	int nrIndiciWired;
+		GLuint iboId;
+		GLuint wiredIboId;
+		GLuint vboId;
+
+		int nrIndici;
+		int nrIndiciWired;
+
+		Model();
+		~Model();
+
+		bool Load();
+	
 };
 

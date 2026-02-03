@@ -24,7 +24,6 @@ int Shaders::Init(char* fileVertexShader, char* fileFragmentShader)
 	textureUniform = glGetUniformLocation(program,"u_texture");
 	uvAttribute = glGetAttribLocation(program,"a_uv");
 
-
 	return 0;
 }
 

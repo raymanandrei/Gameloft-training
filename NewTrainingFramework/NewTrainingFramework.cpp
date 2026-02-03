@@ -24,6 +24,8 @@ std::vector<unsigned short> indices;
 
 Shaders modelShader;
 
+int currentObj = 1;
+
 float angle = 0;
 float step = 0.05;
 
@@ -45,50 +47,69 @@ int Init ( ESContext *esContext )
 	resourceManager->Init();
 	sceneManager->Init();
 
-	int currentObj = 0;
-
 	//for (auto i = 0; i < sceneManager->currentSceneObjects.size(); i++) {
 	//	std::cout << "Object " << i << " Model: " << sceneManager->currentSceneObjects[i]->model->file << " Texture: " << sceneManager->currentSceneObjects[i]->texture->file << "\n";
 	//}
 
 	std::cout << sceneManager->currentSceneObjects[currentObj]->model->file << "\n";
 	
-	readNfg(std::string(sceneManager->currentSceneObjects[1]->model->file), vertices, indices);
+	readNfg(std::string(sceneManager->currentSceneObjects[currentObj]->model->file), vertices, indices);
 	
+	bool textureLoaded = sceneManager->currentSceneObjects[currentObj]->texture != nullptr;
 
-	pixelArray = LoadTGA(std::string(sceneManager->currentSceneObjects[currentObj]->texture->file).c_str(), &width, &height, &bpp);
-	std::cout << width << " " << height << " " << bpp << "\n";
+	std::cout << textureLoaded << "\n";
+
+	Vector3 objectColor = sceneManager->currentSceneObjects[currentObj]->color;
+
+	for (int i = 0; i < vertices.size(); i++) {
+		vertices[i].color = objectColor;
+	}
 
 	glGenBuffers(1, &modelVboId);
 	glGenBuffers(1, &modelIboId);
-	
+
 	glBindBuffer(GL_ARRAY_BUFFER, modelVboId);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, modelIboId);
 
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned short), indices.data(), GL_STATIC_DRAW);
-	
+
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	glGenTextures(1, &sceneManager->currentSceneObjects[currentObj]->texture->id);
-	glBindTexture(sceneManager->currentSceneObjects[currentObj]->texture->type, idTexture);
-	GLint format = (bpp == 32) ? GL_RGBA : GL_RGB;
-	glTexImage2D(resourceManager->textureResources[4]->type, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, pixelArray);
 
-	glTexParameteri(sceneManager->currentSceneObjects[currentObj]->texture->type, GL_TEXTURE_WRAP_S, sceneManager->currentSceneObjects[currentObj]->texture->wrap_s);
-	glTexParameteri(sceneManager->currentSceneObjects[currentObj]->texture->type, GL_TEXTURE_WRAP_T, sceneManager->currentSceneObjects[currentObj]->texture->wrap_t);
+	if ((textureLoaded)){
+		pixelArray = LoadTGA(std::string(sceneManager->currentSceneObjects[currentObj]->texture->file).c_str(), &width, &height, &bpp);
 
-	glTexParameteri(sceneManager->currentSceneObjects[currentObj]->texture->type, GL_TEXTURE_MIN_FILTER, sceneManager->currentSceneObjects[currentObj]->texture->min_filter);
-	glTexParameteri(sceneManager->currentSceneObjects[currentObj]->texture->type, GL_TEXTURE_MAG_FILTER, sceneManager->currentSceneObjects[currentObj]->texture->mag_filter);
+		std::cout << width << " " << height << " " << bpp << "\n";
 
-	glBindTexture(sceneManager->currentSceneObjects[currentObj]->texture->type, 0);
+		glGenTextures(1, &sceneManager->currentSceneObjects[currentObj]->texture->id);
+		glBindTexture(sceneManager->currentSceneObjects[currentObj]->texture->type, idTexture);
 
-	return modelShader.Init("../Resources/Shaders/ballShaderVS.vs", "../Resources/Shaders/ballShaderFS.fs");
+		GLint format = (bpp == 32) ? GL_RGBA : GL_RGB;
+
+		glTexImage2D(resourceManager->textureResources[4]->type, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, pixelArray);
+
+		glTexParameteri(sceneManager->currentSceneObjects[currentObj]->texture->type, GL_TEXTURE_WRAP_S, sceneManager->currentSceneObjects[currentObj]->texture->wrap_s);
+		glTexParameteri(sceneManager->currentSceneObjects[currentObj]->texture->type, GL_TEXTURE_WRAP_T, sceneManager->currentSceneObjects[currentObj]->texture->wrap_t);
+
+		glTexParameteri(sceneManager->currentSceneObjects[currentObj]->texture->type, GL_TEXTURE_MIN_FILTER, sceneManager->currentSceneObjects[currentObj]->texture->min_filter);
+		glTexParameteri(sceneManager->currentSceneObjects[currentObj]->texture->type, GL_TEXTURE_MAG_FILTER, sceneManager->currentSceneObjects[currentObj]->texture->mag_filter);
+
+		glBindTexture(sceneManager->currentSceneObjects[currentObj]->texture->type, 0);
+	}
+
+	std::cout << (char*)(sceneManager->currentSceneObjects[currentObj]->shader->fs).c_str() << "\n";
+
+	int shaderId = std::stoi(sceneManager->currentSceneObjects[currentObj]->shader->id);
+
+	return modelShader.Init((char*)(sceneManager->currentSceneObjects[currentObj]->shader->vs).c_str(), (char*)(sceneManager->currentSceneObjects[currentObj]->shader->fs).c_str());
 }
 
 void Draw ( ESContext *esContext )
 {
 	Matrix mRotation;
+
+	bool textureLoaded = sceneManager->currentSceneObjects[currentObj]->texture != nullptr;
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -103,7 +124,7 @@ void Draw ( ESContext *esContext )
 		glVertexAttribPointer(modelShader.positionAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
 	}
 
-	if (modelShader.textureUniform != - 1)
+	if (modelShader.textureUniform != - 1 && textureLoaded)
 	{
 		glUniform1i(modelShader.textureUniform, 0);
 	}
@@ -126,8 +147,10 @@ void Draw ( ESContext *esContext )
 		glUniformMatrix4fv(modelShader.matrixCamera, 1, GL_FALSE, (float*)MVP.m);
 	}
 
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(resourceManager->textureResources[4]->type, idTexture);
+	if (textureLoaded){
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(resourceManager->textureResources[4]->type, idTexture);
+	}
 
 	glDrawElements(GL_TRIANGLES,indices.size(), GL_UNSIGNED_SHORT, 0);
 

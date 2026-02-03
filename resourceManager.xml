@@ -25,6 +25,10 @@
 				<vs>modelShaderVS.vs</vs>
 				<fs>modelShaderFS.fs</fs>
 			</shader>
+			<shader id="1">
+				<vs>TriangleShaderVS.vs</vs>
+				<fs>TriangleShaderFS.fs</fs>
+			</shader>
 			<shader id="3">
 				<vs>terrainShaderVS.vs</vs>
 				<fs>terrainShaderFS.fs</fs>

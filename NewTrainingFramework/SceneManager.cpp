@@ -42,7 +42,6 @@ void SceneManager::InitWindow(ESContext* esContext) {
 	xml_node<>* gameName = root->first_node("gameName");
 	xml_node<>* defaultScreenSize = root->first_node("defaultScreenSize");
 
-
 	esCreateWindow(esContext, gameName->value(), std::stoi(defaultScreenSize->first_node("width")->value()), std::stoi(defaultScreenSize->first_node("height")->value()), ES_WINDOW_RGB | ES_WINDOW_DEPTH);
 
 }
@@ -101,6 +100,8 @@ void SceneManager::Init() {
 			xml_attribute<>* idAttr = textureNode->first_attribute("id");
 			textureId = idAttr->value();
 		}
+		else
+			newObject->texture = nullptr;
 
 		std::cout << "Loading object ID: " << newObject->id << " Model ID: " << modelId << " Shader ID: " << shaderId << " Texture ID: " << std::endl;
 

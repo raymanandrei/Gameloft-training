@@ -9,6 +9,7 @@ void main()
 	vec4 posL = vec4(a_posL, 1.0);
 
 	gl_Position = MVP * posL;
+	//v_color = vec3(0,0,1);
 	v_color = a_color;
 }
    

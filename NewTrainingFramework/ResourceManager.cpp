@@ -70,6 +70,8 @@ void ResourceManager::Init() {
 		const char* vs = shader->first_node("vs")->value();
 		const char* fs = shader->first_node("fs")->value();
 		
+		std::cout << "Loaded shader ID: " << id << " VS: " << path + std::string(vs) << " FS: " << path + std::string(fs) << std::endl;
+
 		ResourceManager::spInstance->shaderResources[id] = new ShaderResource();
 		ResourceManager::spInstance->shaderResources[id]->id = std::to_string(id);
 		ResourceManager::spInstance->shaderResources[id]->vs = path + std::string(vs);
@@ -94,7 +96,7 @@ void ResourceManager::Init() {
 		ResourceManager::spInstance->textureResources[id]->wrap_t = ResourceManager::spInstance->textureTypes[tex->first_node("wrap_t")->value()];
 	
 	}
-
+		
 	xmlFile.close();
 }
 
