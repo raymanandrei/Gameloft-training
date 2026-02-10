@@ -68,7 +68,6 @@ void SceneObject::Draw(ESContext* esContext) {
 	glUseProgram(modelShader.program);
 
 	sendCommonData(esContext,modelShader);
-
 }
 
 void SceneObject::Update(float deltaTime) {
