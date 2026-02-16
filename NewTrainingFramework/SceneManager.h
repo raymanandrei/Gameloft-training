@@ -5,7 +5,7 @@ class SceneManager {
 		static SceneManager* GetInstance();
 		void InitWindow(ESContext* esContext);
 		void static Init();
-		void Draw();
+		void Draw(ESContext* esContext);
 		void Update(float deltaTime);
 		
 		std::vector<SceneObject*> currentSceneObjects;

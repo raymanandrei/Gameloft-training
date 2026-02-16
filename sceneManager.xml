@@ -87,6 +87,11 @@
 				<y>1.0</y>
 				<z>1.0</z>
 			</scale>
+			<color>
+				<r>1</r>
+				<g>0</g>
+				<b>0</b>	
+			</color>
 			<!--
 			Exemple de alte configurari care vor fi adaugate si parsate mai tarziu (pentru taskuri ulterioare)
 			<followingCamera>
@@ -118,6 +123,9 @@
 			<type>normal</type>
 			<wired/>
 			<name>Mesh_minge</name>
+			<textures>
+				<texture id="4"/>
+			</textures>
 			<color>
 				<r>1.0</r>
 				<g>0.0</g>

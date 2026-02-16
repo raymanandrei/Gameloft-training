@@ -20,8 +20,13 @@ bool Model::Load() {
 	std::vector<unsigned short> indices;
 	readNfg(mr->file,vertices,indices);
 
-	nrIndici = indices.size();
+	for (int i = 0; i < vertices.size(); i++) {
+		vertices[i].color.x = 1.0f;
+		vertices[i].color.y = 0.0f;
+		vertices[i].color.z = 1.0f;
+	}
 
+	nrIndici = indices.size();
 	glBindBuffer(GL_ARRAY_BUFFER, vboId);
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_STATIC_DRAW);
 

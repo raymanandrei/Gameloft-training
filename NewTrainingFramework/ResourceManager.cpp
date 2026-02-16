@@ -126,8 +126,13 @@ Shader* ResourceManager::loadShader(int id){
 	else {
 		loadedShaders[id] = new Shader();
 		loadedShaders[id]->sr = shaderResources[id];
+		std::cout << loadedShaders[id]->sr->fs<< std::endl;
+		std::cout << loadedShaders[id]->sr->vs << std::endl;
 		if (loadedShaders[id]->Load())
+		{
+			printf("Shader loaded successfully with program ID: %d\n", loadedShaders[id]->programId);
 			return loadedShaders[id];
+		}
 		return nullptr;
 	}
 }	

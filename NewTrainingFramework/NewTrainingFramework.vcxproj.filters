@@ -128,12 +128,6 @@
     <None Include="..\Resources\Shaders\modelShaderVS.vs">
       <Filter>Resources\Shaders</Filter>
     </None>
-    <None Include="ballShaderFS.fs">
-      <Filter>Resources\Shaders</Filter>
-    </None>
-    <None Include="ballShaderVS.vs">
-      <Filter>Resources\Shaders</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="NewTrainingFramework.rc">

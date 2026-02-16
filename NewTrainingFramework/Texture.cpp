@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <iostream>
 #include "Texture.h"
 
 #include "../Utilities/utilities.h"
@@ -16,10 +17,8 @@ bool Texture::Load() {
 
 	pixelArray = LoadTGA((tr->file).c_str(), &width, &height, &bpp);
 
-	//std::cout << width << " " << height << " " << bpp << "\n";
-
-	glGenTextures(1, &textureId);
-	glBindTexture(tr->type, textureId);
+	glGenTextures(1, &tr->id);
+	glBindTexture(tr->type, tr->id);
 
 	GLint format = (bpp == 32) ? GL_RGBA : GL_RGB;
 

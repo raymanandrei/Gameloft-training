@@ -115,6 +115,7 @@ void SceneManager::Init() {
 			std::cout << resourceManager->textureResources[textureId]->file << std::endl;
 			newObject->texture = resourceManager->loadTexture(textureId);	
 		}
+		else newObject->texture = nullptr;
 
 		if (modelId != -1)
 		{
@@ -124,17 +125,26 @@ void SceneManager::Init() {
 
 		if (shaderId != -1)
 		{
-			std::cout << shaderId << std::endl;
+			std::cout << "Shader id:: " << shaderId << std::endl;
 			//std::cout << resourceManager->shaderResources[shaderId]->fs << std::endl;
 			newObject->shader = resourceManager->loadShader(shaderId);
+			std::cout << "Loaded shader program ID: " << newObject->shader->programId << std::endl;
+			std::cout << "Loaded shader vertex shader: " << newObject->shader->sr->vs << std::endl;
+			std::cout << "Loaded shader vertex shader: " << newObject->shader->sr->fs << std::endl;
 		}
+
 
 		SceneManager::spInstance->currentSceneObjects.push_back(newObject);
 	}
 }
 
-void SceneManager::Draw() {
-	for (SceneObject* object : currentSceneObjects) {
-		object->Draw();
-	}
+void SceneManager::Draw(ESContext* esContext) {
+	//printf("Drawing scene with %d objects.\n", currentSceneObjects.size());
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	currentSceneObjects[1]->Draw(esContext);
+	//object[0]->Draw(esContext);
+	//for (SceneObject* object : currentSceneObjects) {
+	//	object->Draw(esContext);
+	//}
 }	

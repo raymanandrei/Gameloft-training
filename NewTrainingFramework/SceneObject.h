@@ -3,6 +3,7 @@
 #include "Model.h"
 #include "Shader.h"
 #include "Texture.h"
+#include "Camera.h"
 
 class SceneObject {
 public:
@@ -16,11 +17,15 @@ public:
 	Shader* shader;
 	Texture* texture;
 
+	Camera camera;
+	Matrix MVP;
+
 	int depthTest;
 
 	SceneObject();
 	~SceneObject();
-	void Draw();
+	void sendCommonData(ESContext* esContext);
+	void Draw(ESContext* esContext);
 	void Update(float deltaTime);	
 };
 
