@@ -33,6 +33,10 @@
 				<vs>terrainShaderVS.vs</vs>
 				<fs>terrainShaderFS.fs</fs>
 			</shader>
+			<shader id="8">
+				<vs>terrainShaderVS.vs</vs>
+				<fs>terrainShaderFS.fs</fs>
+			</shader>
 		<!-- si aici se adauga toate shaderele -->
 		</folder>
 		

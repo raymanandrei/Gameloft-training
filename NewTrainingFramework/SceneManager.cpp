@@ -23,7 +23,7 @@ SceneManager::SceneManager() {
 }
 
 SceneManager::~SceneManager() {
-	
+	delete spInstance;
 }
 
 void SceneManager::InitWindow(ESContext* esContext) {
@@ -43,7 +43,6 @@ void SceneManager::InitWindow(ESContext* esContext) {
 	xml_node<>* defaultScreenSize = root->first_node("defaultScreenSize");
 
 	esCreateWindow(esContext, gameName->value(), std::stoi(defaultScreenSize->first_node("width")->value()), std::stoi(defaultScreenSize->first_node("height")->value()), ES_WINDOW_RGB | ES_WINDOW_DEPTH);
-
 }
 
 void SceneManager::Init() {
@@ -68,9 +67,9 @@ void SceneManager::Init() {
 
 		SceneObject* newObject = new SceneObject();
 		newObject->id = std::stoi(object->first_attribute("id")->value());
-		newObject->position[0] = std::stof(object->first_node("position")->first_node("x")->value());
-		newObject->position[1] = std::stof(object->first_node("position")->first_node("y")->value());
-		newObject->position[2] = std::stof(object->first_node("position")->first_node("z")->value());
+		newObject->position.x = std::stof(object->first_node("position")->first_node("x")->value());
+		newObject->position.y = std::stof(object->first_node("position")->first_node("y")->value());
+		newObject->position.z = std::stof(object->first_node("position")->first_node("z")->value());
 
 		newObject->rotation.x = std::stof(object->first_node("rotation")->first_node("x")->value());
 		newObject->rotation.y = std::stof(object->first_node("rotation")->first_node("y")->value());
@@ -89,37 +88,53 @@ void SceneManager::Init() {
 
 		ResourceManager* resourceManager = ResourceManager::GetInstance();
 
-		std::string modelId = object->first_node("model")->value();
-		std::string shaderId = object->first_node("shader")->value();
+		int modelId = -1;
+		std::string modelStringId = object->first_node("model")->value();
+		if (modelStringId != "generated")
+		{
+			std::cout << object->first_node("model")->value() << std::endl;
+			modelId = std::stoi(object->first_node("model")->value());
+		}
 
 		xml_node<>* textureRoot = object->first_node("textures");
-		std::string textureId;
+		int textureId = -1;
 		if (textureRoot)
 		{
 			xml_node<>* textureNode = textureRoot->first_node("texture");
 			xml_attribute<>* idAttr = textureNode->first_attribute("id");
-			textureId = idAttr->value();
+			textureId = std::stoi(idAttr->value());
 		}
-		else
-			newObject->texture = nullptr;
+
+		int shaderId = -1;
+		shaderId = std::stoi(object->first_node("shader")->value());
 
 		std::cout << "Loading object ID: " << newObject->id << " Model ID: " << modelId << " Shader ID: " << shaderId << " Texture ID: " << std::endl;
 
-		if (modelId != "generated")
-			newObject->model = resourceManager->modelResources[std::stoi(modelId)]; 
-		if (shaderId != "generated")
-			newObject->shader = resourceManager->shaderResources[std::stoi(shaderId)];
-		if (textureId != "generated" && textureId != "")
-			newObject->texture = resourceManager->textureResources[std::stoi(textureId)];
+		if (textureId != -1)
+		{
+			std::cout << resourceManager->textureResources[textureId]->file << std::endl;
+			newObject->texture = resourceManager->loadTexture(textureId);	
+		}
 
-		if (modelId != "generated") {
-			std::cout << "Model ID: " << object->first_node("model")->value() << std::endl;
-			if (textureId != "generated" && textureId != "")
-			std::cout << resourceManager->textureResources[std::stoi(textureId)]->file << std::endl;
-			//std::cout << resourceManager->shaderResources[std::stoi(shaderId)]->file << std::endl;
-			std::cout << resourceManager->modelResources[std::stoi(modelId)]->file << std::endl;
+		if (modelId != -1)
+		{
+			std::cout << resourceManager->modelResources[modelId]->file << std::endl;
+			newObject->model = resourceManager->loadModel(modelId);
+		}
+
+		if (shaderId != -1)
+		{
+			std::cout << shaderId << std::endl;
+			//std::cout << resourceManager->shaderResources[shaderId]->fs << std::endl;
+			newObject->shader = resourceManager->loadShader(shaderId);
 		}
 
 		SceneManager::spInstance->currentSceneObjects.push_back(newObject);
 	}
 }
+
+void SceneManager::Draw() {
+	for (SceneObject* object : currentSceneObjects) {
+		object->Draw();
+	}
+}	

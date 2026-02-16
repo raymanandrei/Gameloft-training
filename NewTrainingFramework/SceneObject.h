@@ -1,24 +1,26 @@
 #pragma once
 #include "../Utilities/utilities.h"
-#include "ModelResource.h"
-#include "ShaderResource.h"
-#include "TextureResource.h"
+#include "Model.h"
+#include "Shader.h"
+#include "Texture.h"
 
 class SceneObject {
 public:
 	GLuint id;
-	float position[3];
+	Vector3 position;
 	Vector3 rotation;
 	Vector3 scale;
 	Vector3 color;	
-	ModelResource* model;
-	ShaderResource* shader;
-	TextureResource* texture;
+
+	Model* model;
+	Shader* shader;
+	Texture* texture;
+
 	int depthTest;
 
 	SceneObject();
 	~SceneObject();
-	void Draw(ESContext* esContext);
+	void Draw();
 	void Update(float deltaTime);	
 };
 

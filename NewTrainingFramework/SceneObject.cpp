@@ -62,12 +62,8 @@ void sendSpecificData() {
 
 }
 
-void SceneObject::Draw(ESContext* esContext) {
-
-	Shaders modelShader;
-	glUseProgram(modelShader.program);
-
-	sendCommonData(esContext,modelShader);
+void SceneObject::Draw() {
+	printf("Drawing object with id: %d\n", id);
 }
 
 void SceneObject::Update(float deltaTime) {

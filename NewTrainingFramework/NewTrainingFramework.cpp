@@ -23,7 +23,7 @@ std::vector<unsigned short> indices;
 
 Shaders modelShader;
 
-int currentObj = 1;
+int currentObj = 0;
 
 float angle = 0;
 float step = 0.05;
@@ -50,9 +50,9 @@ int Init ( ESContext *esContext )
 	//	std::cout << "Object " << i << " Model: " << sceneManager->currentSceneObjects[i]->model->file << " Texture: " << sceneManager->currentSceneObjects[i]->texture->file << "\n";
 	//}
 
-	std::cout << sceneManager->currentSceneObjects[currentObj]->model->file << "\n";
+	std::cout << sceneManager->currentSceneObjects[currentObj]->model->mr->file << "\n";
 	
-	readNfg(std::string(sceneManager->currentSceneObjects[currentObj]->model->file), vertices, indices);
+	readNfg(std::string(sceneManager->currentSceneObjects[currentObj]->model->mr->file), vertices, indices);
 	
 	bool textureLoaded = sceneManager->currentSceneObjects[currentObj]->texture != nullptr;
 
@@ -77,31 +77,31 @@ int Init ( ESContext *esContext )
 
 
 	if ((textureLoaded)){
-		pixelArray = LoadTGA(std::string(sceneManager->currentSceneObjects[currentObj]->texture->file).c_str(), &width, &height, &bpp);
+		pixelArray = LoadTGA(std::string(sceneManager->currentSceneObjects[currentObj]->texture->tr->file).c_str(), &width, &height, &bpp);
 
 		std::cout << width << " " << height << " " << bpp << "\n";
 
-		glGenTextures(1, &sceneManager->currentSceneObjects[currentObj]->texture->id);
-		glBindTexture(sceneManager->currentSceneObjects[currentObj]->texture->type, idTexture);
+		glGenTextures(1, &sceneManager->currentSceneObjects[currentObj]->texture->tr->id);
+		glBindTexture(sceneManager->currentSceneObjects[currentObj]->texture->tr->type, idTexture);
 
 		GLint format = (bpp == 32) ? GL_RGBA : GL_RGB;
 
 		glTexImage2D(resourceManager->textureResources[4]->type, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, pixelArray);
 
-		glTexParameteri(sceneManager->currentSceneObjects[currentObj]->texture->type, GL_TEXTURE_WRAP_S, sceneManager->currentSceneObjects[currentObj]->texture->wrap_s);
-		glTexParameteri(sceneManager->currentSceneObjects[currentObj]->texture->type, GL_TEXTURE_WRAP_T, sceneManager->currentSceneObjects[currentObj]->texture->wrap_t);
+		glTexParameteri(sceneManager->currentSceneObjects[currentObj]->texture->tr->type, GL_TEXTURE_WRAP_S, sceneManager->currentSceneObjects[currentObj]->texture->tr->wrap_s);
+		glTexParameteri(sceneManager->currentSceneObjects[currentObj]->texture->tr->type, GL_TEXTURE_WRAP_T, sceneManager->currentSceneObjects[currentObj]->texture->tr->wrap_t);
 
-		glTexParameteri(sceneManager->currentSceneObjects[currentObj]->texture->type, GL_TEXTURE_MIN_FILTER, sceneManager->currentSceneObjects[currentObj]->texture->min_filter);
-		glTexParameteri(sceneManager->currentSceneObjects[currentObj]->texture->type, GL_TEXTURE_MAG_FILTER, sceneManager->currentSceneObjects[currentObj]->texture->mag_filter);
+		glTexParameteri(sceneManager->currentSceneObjects[currentObj]->texture->tr->type, GL_TEXTURE_MIN_FILTER, sceneManager->currentSceneObjects[currentObj]->texture->tr->min_filter);
+		glTexParameteri(sceneManager->currentSceneObjects[currentObj]->texture->tr->type, GL_TEXTURE_MAG_FILTER, sceneManager->currentSceneObjects[currentObj]->texture->tr->mag_filter);
 
-		glBindTexture(sceneManager->currentSceneObjects[currentObj]->texture->type, 0);
+		glBindTexture(sceneManager->currentSceneObjects[currentObj]->texture->tr->type, 0);
 	}
 
-	std::cout << (char*)(sceneManager->currentSceneObjects[currentObj]->shader->fs).c_str() << "\n";
+	std::cout << (char*)(sceneManager->currentSceneObjects[currentObj]->shader->sr->fs).c_str() << "\n";
 
-	int shaderId = std::stoi(sceneManager->currentSceneObjects[currentObj]->shader->id);
+	int shaderId = std::stoi(sceneManager->currentSceneObjects[currentObj]->shader->sr->id);
 
-	return modelShader.Init((char*)(sceneManager->currentSceneObjects[currentObj]->shader->vs).c_str(), (char*)(sceneManager->currentSceneObjects[currentObj]->shader->fs).c_str());
+	return modelShader.Init((char*)(sceneManager->currentSceneObjects[currentObj]->shader->sr->vs).c_str(), (char*)(sceneManager->currentSceneObjects[currentObj]->shader->sr->fs).c_str());
 }
 
 void Draw ( ESContext *esContext )
@@ -219,6 +219,10 @@ void CleanUp()
 	glDeleteBuffers(1, &modelVboId);
 }
 
+//void Draw(ESContext* esContext) {
+//	SceneManager::GetInstance()->Draw();
+//}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	//identifying memory leaks
@@ -233,7 +237,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	if ( Init ( &esContext ) != 0 )
 		return 0;
 
-	esRegisterDrawFunc ( &esContext, Draw );
+	esRegisterDrawFunc ( &esContext, Draw);
 	esRegisterUpdateFunc ( &esContext, Update );
 	esRegisterKeyFunc ( &esContext, Key);
 

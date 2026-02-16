@@ -184,10 +184,6 @@
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\Downloads\rapidxml\rapidxml.hpp" />
-    <ClInclude Include="..\..\..\..\Downloads\rapidxml\rapidxml_iterators.hpp" />
-    <ClInclude Include="..\..\..\..\Downloads\rapidxml\rapidxml_print.hpp" />
-    <ClInclude Include="..\..\..\..\Downloads\rapidxml\rapidxml_utils.hpp" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Model.h" />
