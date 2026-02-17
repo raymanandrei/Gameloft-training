@@ -95,6 +95,10 @@ void SceneManager::Init() {
 			std::cout << object->first_node("model")->value() << std::endl;
 			modelId = std::stoi(object->first_node("model")->value());
 		}
+		else {
+			newObject->model = new Model();
+			bool ok = newObject->model->generateModel();
+		}
 
 		xml_node<>* textureRoot = object->first_node("textures");
 		int textureId = -1;
@@ -138,13 +142,13 @@ void SceneManager::Init() {
 	}
 }
 
-void SceneManager::Draw(ESContext* esContext) {
+void SceneManager::Draw(ESContext* esContext, Camera camera) {
 	//printf("Drawing scene with %d objects.\n", currentSceneObjects.size());
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glDisable(GL_CULL_FACE);
 
-	currentSceneObjects[1]->Draw(esContext);
-	//object[0]->Draw(esContext);
-	//for (SceneObject* object : currentSceneObjects) {
-	//	object->Draw(esContext);
-	//}
+	for (SceneObject* object : currentSceneObjects) {
+		object->Draw(esContext,camera);
+	}
+
 }	

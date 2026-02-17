@@ -17,15 +17,15 @@ public:
 	Shader* shader;
 	Texture* texture;
 
-	Camera camera;
+	//Camera camera;
 	Matrix MVP;
 
 	int depthTest;
 
 	SceneObject();
 	~SceneObject();
-	void sendCommonData(ESContext* esContext);
-	void Draw(ESContext* esContext);
+	void Draw(ESContext* esContext, Camera camera);
+	void sendCommonData(ESContext* esContext,Camera camera);
 	void Update(float deltaTime);	
 };
 

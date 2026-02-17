@@ -28,7 +28,6 @@ bool Shader::Load() {
 
 	sr->positionAttribute = glGetAttribLocation(programId, "a_posL");
 	sr->colorAttribute = glGetAttribLocation(programId, "a_color");
-	sr->colorVarying = glGetAttribLocation(programId, "v_color");
 	sr->matrixCamera = glGetUniformLocation(programId, "MVP");
 	sr->textureUniform = glGetUniformLocation(programId, "u_texture");
 	sr->uvAttribute = glGetAttribLocation(programId, "a_uv");

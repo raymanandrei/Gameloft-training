@@ -14,14 +14,13 @@
 
 #include "../Utilities/utilities.h" // if you use STL, please include this line AFTER all other include
 
-Shaders modelShader;
-
 int currentObj = 1;
 
 float totalTime = 0;
 
 ResourceManager* resourceManager = ResourceManager::GetInstance();
 SceneManager* sceneManager = SceneManager::GetInstance();
+Camera camera = Camera();
 
 int Init ( ESContext *esContext )
 {
@@ -36,56 +35,52 @@ int Init ( ESContext *esContext )
 
 void Update ( ESContext *esContext, float deltaTime )
 {
-	SceneObject* obj = sceneManager->currentSceneObjects[currentObj];
-
 	totalTime += deltaTime;
 	if (totalTime >= Globals::frameTime) {
-		obj->camera.setDeltaTime(totalTime);
+		camera.setDeltaTime(totalTime);
 		totalTime = 0;
 	}
 }
 
 void Key ( ESContext *esContext, unsigned char key, bool bIsPressed)
 {
-	SceneObject* obj = sceneManager->currentSceneObjects[currentObj];
-
 	switch (key)
 	{
 		case 'A': case 'a':
-			obj->camera.moveOx(-1);
+			camera.moveOx(-1);
 			break;
 		case 'D':case'd':
-			obj->camera.moveOx(1);
+			camera.moveOx(1);
 			break;
 		case 'W':case 'w':
-			obj->camera.moveOz(-1);
+			camera.moveOz(-1);
 			break;
 		case 'S': case 's':
-			obj->camera.moveOz(1);
+			camera.moveOz(1);
 			break ;
 		case 'Q':case 'q':
-			obj->camera.moveOy(1);
+			camera.moveOy(1);
 			break;
 		case 'E': case 'e':
-			obj->camera.moveOy(-1);
+			camera.moveOy(-1);
 			break;
 		case 'R': case 'r':
-			obj->camera.rotateOy(-1);
+			camera.rotateOy(-1);
 			break;
 		case 'T': case 't':
-			obj->camera.rotateOy(1);
+			camera.rotateOy(1);
 			break;
 		case 'Y': case 'y':
-			obj->camera.rotateOx(-1);
+			camera.rotateOx(-1);
 			break;
 		case 'U': case 'u':
-			obj->camera.rotateOx(1);
+			camera.rotateOx(1);
 			break;
 		case 'I': case 'i':
-			obj->camera.rotateOz(-1);
+			camera.rotateOz(-1);
 			break;
 		case 'O': case 'o':
-			obj->camera.rotateOz(1);
+			camera.rotateOz(1);
 			break;
 		default:
 			break;
@@ -101,7 +96,7 @@ void CleanUp()
 }
 
 void Draw(ESContext* esContext) {
-	SceneManager::GetInstance()->Draw(esContext);
+	SceneManager::GetInstance()->Draw(esContext,camera);
 }
 
 int _tmain(int argc, _TCHAR* argv[])

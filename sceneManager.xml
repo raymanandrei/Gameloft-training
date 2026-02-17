@@ -117,15 +117,11 @@
 			-->
 		</object>
 		<object id="3">
-			
 			<model>5</model>
 			<shader>1</shader>
 			<type>normal</type>
 			<wired/>
 			<name>Mesh_minge</name>
-			<textures>
-				<texture id="4"/>
-			</textures>
 			<color>
 				<r>1.0</r>
 				<g>0.0</g>
@@ -179,7 +175,8 @@
 			<textures>
 				<texture id="14"/>
 				<texture id="15"/>
-				<!-- TO DO adaugati texturile-->
+				<texture id="16"/>
+				<texture id="17"/>
 			</textures>
 			<position>
 				<x>1.5</x>
@@ -198,7 +195,7 @@
 			</scale>
 		</object>
 	</objects>
-	
+
 	<!--
 	<ambientalLight>
 		<color>

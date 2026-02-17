@@ -20,6 +20,8 @@ class Model
 		Model();
 		~Model();
 
+		bool generateModel();
+
 		bool Load();
 	
 };

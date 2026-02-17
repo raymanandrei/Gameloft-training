@@ -12,5 +12,4 @@ struct ShaderResource
 	GLint matrixCamera;
 	GLint textureUniform;
 	GLint uvAttribute;
-	GLint colorVarying;
 };

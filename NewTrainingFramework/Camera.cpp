@@ -7,8 +7,8 @@ Camera::Camera()
 	this->position = Vector3(0.0, 0.0, 1.0);
 	this->target = Vector3(0.0, 0.0, 0.0);
 	this->up = Vector3(0.0, 1.0, 0.0);
-	this->moveSpeed = 55.0;
-	this->rotateSpeed = 0.2;
+	this->moveSpeed = 200.0;
+	this->rotateSpeed = 2;
 	this->nearPlane = 0.2;
 	this->farPlane = 1000.0;
 	this->fov =  0.78;

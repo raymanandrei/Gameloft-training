@@ -203,8 +203,12 @@
     <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Resources\Shaders\ballShaderFS.fs" />
+    <None Include="..\Resources\Shaders\ballShaderVS.vs" />
     <None Include="..\Resources\Shaders\modelShaderFS.fs" />
     <None Include="..\Resources\Shaders\modelShaderVS.vs" />
+    <None Include="..\Resources\Shaders\terrainShaderFS.fs" />
+    <None Include="..\Resources\Shaders\terrainShaderVS.vs" />
     <None Include="..\Resources\Shaders\TriangleShaderFS.fs" />
     <None Include="..\Resources\Shaders\TriangleShaderVS.vs" />
     <None Include="..\..\Readme.doc" />
