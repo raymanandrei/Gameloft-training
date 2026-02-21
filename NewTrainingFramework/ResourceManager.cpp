@@ -27,6 +27,8 @@ void ResourceManager::Init() {
 	std::string xmlPath = "..\\resourceManager.xml";
 
 	ResourceManager::spInstance->textureTypes["GL_LINEAR"] = GL_LINEAR;
+	ResourceManager::spInstance->textureTypes["GL_REPEAT"] = GL_REPEAT;
+	ResourceManager::spInstance->textureTypes["GL_CLAMP_TO_EDGE"] = GL_CLAMP_TO_EDGE;
 	ResourceManager::spInstance->textureTypes["CLAMP_TO_EDGE"] = GL_CLAMP_TO_EDGE;
 	ResourceManager::spInstance->textureTypes["2d"] = GL_TEXTURE_2D;	
 
@@ -56,8 +58,8 @@ void ResourceManager::Init() {
 			ResourceManager::spInstance->modelResources[id]->id = std::to_string(id);	
 			ResourceManager::spInstance->modelResources[id]->file = folderPath + std::string(file->value());
 
-			std::cout << "Loaded model ID: " << id << " File: ";
-			std::cout << ResourceManager::spInstance->modelResources[id]->file << std::endl;
+			//std::cout << "Loaded model ID: " << id << " File: ";
+			//std::cout << ResourceManager::spInstance->modelResources[id]->file << std::endl;
 		}
 	}
 
@@ -70,7 +72,7 @@ void ResourceManager::Init() {
 		const char* vs = shader->first_node("vs")->value();
 		const char* fs = shader->first_node("fs")->value();
 		
-		std::cout << "Loaded shader ID: " << id << " VS: " << path + std::string(vs) << " FS: " << path + std::string(fs) << std::endl;
+		//std::cout << "Loaded shader ID: " << id << " VS: " << path + std::string(vs) << " FS: " << path + std::string(fs) << std::endl;
 
 		ResourceManager::spInstance->shaderResources[id] = new ShaderResource();
 		ResourceManager::spInstance->shaderResources[id]->id = std::to_string(id);
@@ -94,9 +96,7 @@ void ResourceManager::Init() {
 		ResourceManager::spInstance->textureResources[id]->mag_filter = ResourceManager::spInstance->textureTypes[tex->first_node("mag_filter")->value()];
 		ResourceManager::spInstance->textureResources[id]->wrap_s = ResourceManager::spInstance->textureTypes[tex->first_node("wrap_s")->value()];
 		ResourceManager::spInstance->textureResources[id]->wrap_t = ResourceManager::spInstance->textureTypes[tex->first_node("wrap_t")->value()];
-	
 	}
-		
 	xmlFile.close();
 }
 
@@ -107,13 +107,6 @@ Model* ResourceManager::loadModel(int id){
 	else {
 		loadedModels[id] = new Model();
 		loadedModels[id]->mr = modelResources[id];	
-		
-		std::vector<Vertex> vertices;
-		std::vector<unsigned short> indices;
-
-		//readNfg(std::string(modelResources[id]->file), vertices, indices);
-
-		loadedModels[id]->nrIndici = indices.size();
 		if (loadedModels[id]->Load())
 			return loadedModels[id];
 		return nullptr;
@@ -126,13 +119,8 @@ Shader* ResourceManager::loadShader(int id){
 	else {
 		loadedShaders[id] = new Shader();
 		loadedShaders[id]->sr = shaderResources[id];
-		std::cout << loadedShaders[id]->sr->fs<< std::endl;
-		std::cout << loadedShaders[id]->sr->vs << std::endl;
 		if (loadedShaders[id]->Load())
-		{
-			printf("Shader loaded successfully with program ID: %d\n", loadedShaders[id]->programId);
 			return loadedShaders[id];
-		}
 		return nullptr;
 	}
 }	

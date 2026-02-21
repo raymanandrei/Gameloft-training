@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include "../Utilities/utilities.h"
 #include "Model.h"
 #include "Shader.h"
@@ -15,7 +16,7 @@ public:
 
 	Model* model;
 	Shader* shader;
-	Texture* texture;
+	std::vector<Texture*> texture;
 
 	//Camera camera;
 	Matrix MVP;

@@ -10,7 +10,7 @@ Shader::~Shader() {
 }
 
 bool Shader::Load() {
-	printf("Loading shader with vertex shader: %s and fragment shader: %s\n", sr->vs.c_str(), sr->fs.c_str());
+	//printf("Loading shader with vertex shader: %s and fragment shader: %s\n", sr->vs.c_str(), sr->fs.c_str());
 	GLuint vertexShader = esLoadShader(GL_VERTEX_SHADER, (char*)(sr->vs).c_str());
 
 	if (vertexShader == 0)
@@ -28,9 +28,14 @@ bool Shader::Load() {
 
 	sr->positionAttribute = glGetAttribLocation(programId, "a_posL");
 	sr->colorAttribute = glGetAttribLocation(programId, "a_color");
+	sr->objectColor = glGetUniformLocation(programId, "objectColor");
 	sr->matrixCamera = glGetUniformLocation(programId, "MVP");
-	sr->textureUniform = glGetUniformLocation(programId, "u_texture");
+	for (int i = 0; i < 5; i++) {
+		std::string con = "u_texture_" + std::to_string(i);
+		sr->textureUniform[i] = glGetUniformLocation(programId,(char * )con.c_str());
+	}
 	sr->uvAttribute = glGetAttribLocation(programId, "a_uv");
+	sr->uv2Attribute = glGetAttribLocation(programId, "a_uv2");
 
 	return true;
 }

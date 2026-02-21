@@ -22,13 +22,15 @@ bool Texture::Load() {
 
 	GLint format = (bpp == 32) ? GL_RGBA : GL_RGB;
 
+	std::cout << tr->type << " " << tr->wrap_t << " " << tr->min_filter << " " << '\n';
+
 	glTexImage2D(tr->type, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, pixelArray);
 
 	glTexParameteri(tr->type, GL_TEXTURE_WRAP_S, tr->wrap_s);
 	glTexParameteri(tr->type, GL_TEXTURE_WRAP_T, tr->wrap_t);
 
 	glTexParameteri(tr->type, GL_TEXTURE_MIN_FILTER, tr->min_filter);
-	glTexParameteri(tr->type, GL_TEXTURE_MAG_FILTER,tr->mag_filter);
+	glTexParameteri(tr->type, GL_TEXTURE_MAG_FILTER, tr->mag_filter);
 
 	glBindTexture(tr->type, 0);
 

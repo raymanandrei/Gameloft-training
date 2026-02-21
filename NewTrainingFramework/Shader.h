@@ -4,12 +4,12 @@
 
 class Shader
 {
-public:
-	Shader();
-	~Shader();
+	public:
+		Shader();
+		~Shader();
 
-	bool Load();
+		bool Load();
 
-	ShaderResource* sr;
-	GLuint programId;
+		ShaderResource *sr;
+		GLuint programId;
 };

@@ -10,7 +10,7 @@ Camera::Camera()
 	this->moveSpeed = 200.0;
 	this->rotateSpeed = 2;
 	this->nearPlane = 0.2;
-	this->farPlane = 1000.0;
+	this->farPlane = 10000.0;
 	this->fov =  0.78;
 
 	zAxis = -(target - position).Normalize();

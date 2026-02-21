@@ -178,6 +178,11 @@
 				<texture id="16"/>
 				<texture id="17"/>
 			</textures>
+			<inaltimi>
+				<r>15</r>
+				<b>5</b>
+				<g>-5</g>
+			</inaltimi>	
 			<position>
 				<x>1.5</x>
 				<y>2.4</y>

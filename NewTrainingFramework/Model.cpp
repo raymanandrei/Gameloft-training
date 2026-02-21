@@ -46,21 +46,21 @@ bool Model::generateModel() {
 	std::vector<Vertex>vertices;
 	std::vector<unsigned short> indices;
 
-	//printf("Generating model with %d vertices.\n",vertices.size());
 	for (float i = (-n / 2) * d; i <= (n / 2) * d; i+=d) {
 		for (float j = (-n / 2) * d; j <= (n / 2) * d; j+=d) {
 			Vertex v;
 			v.pos.x = j;
 			v.pos.y = -70.0f;
 			v.pos.z = i ;
+
+			v.uv.x = j;
+			v.uv.y = i;
+
+			v.uv2.x = j / n;
+			v.uv2.y = i / n;
+
 			vertices.push_back(v);
 		}
-	}
-
-	std::cout << "Generated model with " << vertices.size() << " vertices." << std::endl;
-
-	for (int i = 0; i < vertices.size(); i++) {
-		std::cout << vertices[i].pos.x << " " << vertices[i].pos.y << " " << vertices[i].pos.z << std::endl;
 	}
 
 	for (int i = 0;i < n;i++){
@@ -80,15 +80,7 @@ bool Model::generateModel() {
 		}
 	}
 
-	for (int i = 0; i < vertices.size(); i++) {
-		std::cout << vertices[i].pos.x << " " << vertices[i].pos.y << " " << vertices[i].pos.z << std::endl;
-	}
-
 	nrIndici = indices.size();
-
-	for (int i = 0; i < indices.size(); i++) {
-		std::cout << indices[i] << std::endl;
-	}
 
 	glGenBuffers(1, &iboId);
 	glGenBuffers(1, &vboId);

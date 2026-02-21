@@ -86,6 +86,12 @@ void SceneManager::Init() {
 			newObject->color.z = std::stof(object->first_node("color")->first_node("b")->value());
 		}
 
+		if (object->first_node("inaltimi")) {
+			newObject->color.x = std::stof(object->first_node("inaltimi")->first_node("r")->value());
+			newObject->color.y = std::stof(object->first_node("inaltimi")->first_node("g")->value());
+			newObject->color.z = std::stof(object->first_node("inaltimi")->first_node("b")->value());
+		}
+
 		ResourceManager* resourceManager = ResourceManager::GetInstance();
 
 		int modelId = -1;
@@ -106,37 +112,38 @@ void SceneManager::Init() {
 		{
 			xml_node<>* textureNode = textureRoot->first_node("texture");
 			xml_attribute<>* idAttr = textureNode->first_attribute("id");
-			textureId = std::stoi(idAttr->value());
+			for (xml_node<>* textures = textureRoot->first_node("texture"); textures; textures = textures->next_sibling("texture"))
+			{
+				xml_attribute<>* idAttr = textures->first_attribute("id");
+				textureId = std::stoi(idAttr->value());
+				std::cout <<"TextureID :: " << textureId << '\n';
+				std::cout << resourceManager->textureResources[textureId]->file << std::endl;
+				Texture *text = resourceManager->loadTexture(textureId);
+				if (text->tr)
+					newObject->texture.push_back(text);
+			}	
 		}
 
 		int shaderId = -1;
 		shaderId = std::stoi(object->first_node("shader")->value());
 
-		std::cout << "Loading object ID: " << newObject->id << " Model ID: " << modelId << " Shader ID: " << shaderId << " Texture ID: " << std::endl;
-
-		if (textureId != -1)
-		{
-			std::cout << resourceManager->textureResources[textureId]->file << std::endl;
-			newObject->texture = resourceManager->loadTexture(textureId);	
-		}
-		else newObject->texture = nullptr;
+		//std::cout << "Loading object ID: " << newObject->id << " Model ID: " << modelId << " Shader ID: " << shaderId << " Texture ID: " << std::endl;
 
 		if (modelId != -1)
 		{
-			std::cout << resourceManager->modelResources[modelId]->file << std::endl;
+			//std::cout << resourceManager->modelResources[modelId]->file << std::endl;
 			newObject->model = resourceManager->loadModel(modelId);
 		}
 
 		if (shaderId != -1)
 		{
-			std::cout << "Shader id:: " << shaderId << std::endl;
+			//std::cout << "Shader id:: " << shaderId << std::endl;
 			//std::cout << resourceManager->shaderResources[shaderId]->fs << std::endl;
 			newObject->shader = resourceManager->loadShader(shaderId);
-			std::cout << "Loaded shader program ID: " << newObject->shader->programId << std::endl;
-			std::cout << "Loaded shader vertex shader: " << newObject->shader->sr->vs << std::endl;
-			std::cout << "Loaded shader vertex shader: " << newObject->shader->sr->fs << std::endl;
+			//std::cout << "Loaded shader program ID: " << newObject->shader->programId << std::endl;
+			//std::cout << "Loaded shader vertex shader: " << newObject->shader->sr->vs << std::endl;
+			//std::cout << "Loaded shader vertex shader: " << newObject->shader->sr->fs << std::endl;
 		}
-
 
 		SceneManager::spInstance->currentSceneObjects.push_back(newObject);
 	}
