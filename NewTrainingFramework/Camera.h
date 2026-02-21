@@ -2,20 +2,20 @@
 #include "../Utilities/Math.h"
 class Camera
 {
-	Vector3 position;
-	Vector3 target;
-	Vector3 up;
-	GLfloat moveSpeed;
-	GLfloat rotateSpeed;
-	GLfloat nearPlane;
-	GLfloat farPlane;
-	GLfloat fov;
-	GLfloat deltaTime;
-	Vector3 xAxis;
-	Vector3 yAxis;
-	Vector3 zAxis;
-	
 	public:
+
+		Vector3 position;
+		Vector3 target;
+		Vector3 up;
+		GLfloat moveSpeed;
+		GLfloat rotateSpeed;
+		GLfloat nearPlane;
+		GLfloat farPlane;
+		GLfloat fov;
+		GLfloat deltaTime;
+		Vector3 xAxis;
+		Vector3 yAxis;
+		Vector3 zAxis;
 
 		Matrix viewMatrix;
 		Matrix worldMatrix;

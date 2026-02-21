@@ -1,16 +1,17 @@
 #include "stdafx.h"
 #include <iostream>
-#include "SceneObject.h"
+#include "SceneObject.h";
+#include "SceneManager.h"
 #include "Camera.h"
 #include "Shaders.h"
 #include "Vertex.h"
 
 SceneObject::SceneObject() {
-	//camera = Camera();
 }
 
-void SceneObject::sendCommonData(ESContext* esContext, Camera camera) {
+void SceneObject::sendCommonData(ESContext* esContext) {
 
+	//std::cout << SceneManager::GetInstance()->camera.position.x << " " << SceneManager::GetInstance()->camera.position.y << " " << SceneManager::GetInstance()->camera.position.z << std::endl;
 	//std::cout << "Sending common data for object ID: " << this->id << std::endl;
 	glBindBuffer(GL_ARRAY_BUFFER,this->model->vboId);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,this->model->iboId);
@@ -31,8 +32,8 @@ void SceneObject::sendCommonData(ESContext* esContext, Camera camera) {
 		glVertexAttribPointer(this->shader->sr->uv2Attribute,2,GL_FLOAT,GL_FALSE,sizeof(Vertex),(const GLvoid *)offsetof(Vertex,uv2));
 	}
 
-	MVP = camera.viewMatrix * camera.perspectiveMatrix;
-
+	Matrix MVP = MVP.SetIdentity() * SceneManager::GetInstance()->camera.viewMatrix * SceneManager::GetInstance()->camera.perspectiveMatrix;
+	
 	if (this->shader->sr->matrixCamera != -1) {
 		glUniformMatrix4fv(this->shader->sr->matrixCamera, 1, GL_FALSE, (float*)MVP.m);
 	}
@@ -71,13 +72,12 @@ void sendSpecificData() {
 
 }
 
-void SceneObject::Draw(ESContext* esContext,Camera camera) {
+void SceneObject::Draw(ESContext* esContext) {
 	
 	glUseProgram(this->shader->programId);
 
-	sendCommonData(esContext,camera);
+	sendCommonData(esContext);
 
 	eglSwapBuffers(esContext->eglDisplay, esContext->eglSurface);
-
 }
 

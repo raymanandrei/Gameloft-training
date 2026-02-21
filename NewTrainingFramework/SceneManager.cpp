@@ -4,13 +4,14 @@
 #include <fstream>
 #include "../Utilities/rapidxml/rapidxml.hpp"
 #include "SceneManager.h"
+#include "Globals.h"
 #include "Camera.h"
 #include "SceneObject.h"
 #include "ResourceManager.h"
 
 using namespace rapidxml;
 
-SceneManager* SceneManager::spInstance = nullptr;	
+SceneManager* SceneManager::spInstance = nullptr;    
 
 SceneManager* SceneManager::GetInstance() {
 	if (spInstance == nullptr) 
@@ -19,12 +20,25 @@ SceneManager* SceneManager::GetInstance() {
 }
 
 SceneManager::SceneManager() {
-	
+	camera = Camera();
+	totalTime = 0;
 }
 
 SceneManager::~SceneManager() {
 	delete spInstance;
 }
+
+void SceneManager::Update(float deltaTime)
+{
+	totalTime += deltaTime;
+	//std::cout << deltaTime << " " << totalTime + deltaTime << " " << Globals::frameTime << std::endl;
+	if (totalTime >= Globals::frameTime) {
+		//std::cout << deltaTime << std::endl;
+		camera.setDeltaTime(totalTime);
+		totalTime = 0;
+	}
+}
+
 
 void SceneManager::InitWindow(ESContext* esContext) {
 	std::string xmlPath = "..\\sceneManager.xml";
@@ -46,7 +60,7 @@ void SceneManager::InitWindow(ESContext* esContext) {
 }
 
 void SceneManager::Init() {
-	
+    
 	std::string xmlPath = "..\\sceneManager.xml";
 
 	rapidxml::xml_document<> doc;
@@ -121,7 +135,7 @@ void SceneManager::Init() {
 				Texture *text = resourceManager->loadTexture(textureId);
 				if (text->tr)
 					newObject->texture.push_back(text);
-			}	
+			}   
 		}
 
 		int shaderId = -1;
@@ -149,13 +163,13 @@ void SceneManager::Init() {
 	}
 }
 
-void SceneManager::Draw(ESContext* esContext, Camera camera) {
+void SceneManager::Draw(ESContext* esContext) {
 	//printf("Drawing scene with %d objects.\n", currentSceneObjects.size());
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glDisable(GL_CULL_FACE);
 
 	for (SceneObject* object : currentSceneObjects) {
-		object->Draw(esContext,camera);
+		object->Draw(esContext);
 	}
 
-}	
+}    

@@ -6,7 +6,6 @@
 #include "Vertex.h"
 #include "Shaders.h"
 #include "Globals.h"
-#include "Camera.h"
 #include "ResourceManager.h"
 #include "SceneManager.h"
 #include "SceneObject.h"
@@ -14,73 +13,59 @@
 
 #include "../Utilities/utilities.h" // if you use STL, please include this line AFTER all other include
 
-int currentObj = 1;
-
-float totalTime = 0;
-
-ResourceManager* resourceManager = ResourceManager::GetInstance();
-SceneManager* sceneManager = SceneManager::GetInstance();
-Camera camera = Camera();
-
 int Init ( ESContext *esContext )
 {
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-	resourceManager->Init();
-	sceneManager->Init();
+	ResourceManager::GetInstance()->Init();
+	SceneManager::GetInstance()->Init();
 	
 	return 0;
 }
 
-void Update ( ESContext *esContext, float deltaTime )
-{
-	totalTime += deltaTime;
-	if (totalTime >= Globals::frameTime) {
-		camera.setDeltaTime(totalTime);
-		totalTime = 0;
-	}
-}
-
 void Key ( ESContext *esContext, unsigned char key, bool bIsPressed)
 {
+	SceneManager* sceneManager = SceneManager::GetInstance();
+	//std::cout << sceneManager->camera.position.x << " " << sceneManager->camera.position.y << " " << sceneManager->camera.position.z << std::endl;
+	
 	switch (key)
 	{
 		case 'A': case 'a':
-			camera.moveOx(-1);
+			sceneManager->camera.moveOx(-1);
 			break;
 		case 'D':case'd':
-			camera.moveOx(1);
+			sceneManager->camera.moveOx(1);
 			break;
 		case 'W':case 'w':
-			camera.moveOz(-1);
+			sceneManager->camera.moveOz(-1);
 			break;
 		case 'S': case 's':
-			camera.moveOz(1);
+			sceneManager->camera.moveOz(1);
 			break ;
 		case 'Q':case 'q':
-			camera.moveOy(1);
+			sceneManager->camera.moveOy(1);
 			break;
 		case 'E': case 'e':
-			camera.moveOy(-1);
+			sceneManager->camera.moveOy(-1);
 			break;
 		case 'R': case 'r':
-			camera.rotateOy(-1);
+			sceneManager->camera.rotateOy(-1);
 			break;
 		case 'T': case 't':
-			camera.rotateOy(1);
+			sceneManager->camera.rotateOy(1);
 			break;
 		case 'Y': case 'y':
-			camera.rotateOx(-1);
+			sceneManager->camera.rotateOx(-1);
 			break;
 		case 'U': case 'u':
-			camera.rotateOx(1);
+			sceneManager->camera.rotateOx(1);
 			break;
 		case 'I': case 'i':
-			camera.rotateOz(-1);
+			sceneManager->camera.rotateOz(-1);
 			break;
 		case 'O': case 'o':
-			camera.rotateOz(1);
+			sceneManager->camera.rotateOz(1);
 			break;
 		default:
 			break;
@@ -89,14 +74,14 @@ void Key ( ESContext *esContext, unsigned char key, bool bIsPressed)
 
 void CleanUp()
 {
-	SceneObject* obj = sceneManager->currentSceneObjects[currentObj];
-
-	glDeleteBuffers(1, &obj->model->iboId);
-	glDeleteBuffers(1, &obj->model->iboId);
 }
 
+void Update(ESContext* esContext, float deltaTime) {
+	SceneManager::GetInstance()->Update(deltaTime);
+}	
+
 void Draw(ESContext* esContext) {
-	SceneManager::GetInstance()->Draw(esContext,camera);
+	SceneManager::GetInstance()->Draw(esContext);
 }
 
 int _tmain(int argc, _TCHAR* argv[])
@@ -108,7 +93,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
     esInitContext ( &esContext );
 
-	sceneManager->InitWindow(&esContext);
+	SceneManager::GetInstance()->InitWindow(&esContext);
 
 	if ( Init ( &esContext ) != 0 )
 		return 0;

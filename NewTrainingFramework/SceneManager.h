@@ -1,3 +1,5 @@
+#include <vector>
+#include "Camera.h"
 #include "sceneObject.h"
 
 class SceneManager {
@@ -5,9 +7,12 @@ class SceneManager {
 		static SceneManager* GetInstance();
 		void InitWindow(ESContext* esContext);
 		void static Init();
-		void Draw(ESContext* esContext, Camera camera);
+		void Draw(ESContext* esContext);
 		void Update(float deltaTime);
 		
+		float totalTime;
+		Camera camera;
+
 		std::vector<SceneObject*> currentSceneObjects;
 
 		~SceneManager();
