@@ -81,3 +81,5 @@ void SceneObject::Draw(ESContext* esContext) {
 	eglSwapBuffers(esContext->eglDisplay, esContext->eglSurface);
 }
 
+void SceneObject::Update(float deltaTime) {
+}

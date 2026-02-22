@@ -27,7 +27,6 @@ int Init ( ESContext *esContext )
 void Key ( ESContext *esContext, unsigned char key, bool bIsPressed)
 {
 	SceneManager* sceneManager = SceneManager::GetInstance();
-	//std::cout << sceneManager->camera.position.x << " " << sceneManager->camera.position.y << " " << sceneManager->camera.position.z << std::endl;
 	
 	switch (key)
 	{
@@ -74,6 +73,12 @@ void Key ( ESContext *esContext, unsigned char key, bool bIsPressed)
 
 void CleanUp()
 {
+	SceneManager *sceneManager = SceneManager::GetInstance();
+	int objectsSize = sceneManager->currentSceneObjects.size();
+	for (int i = 0; i < objectsSize; i++){
+		glDeleteBuffers(1, &sceneManager->currentSceneObjects[i]->model->iboId);
+		glDeleteBuffers(1, &sceneManager->currentSceneObjects[i]->model->vboId);
+	}
 }
 
 void Update(ESContext* esContext, float deltaTime) {
@@ -106,7 +111,6 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	//releasing OpenGL resources
 	CleanUp();
-
 
 	printf("Press any key...\n");
 	_getch();

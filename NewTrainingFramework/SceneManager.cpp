@@ -31,14 +31,11 @@ SceneManager::~SceneManager() {
 void SceneManager::Update(float deltaTime)
 {
 	totalTime += deltaTime;
-	//std::cout << deltaTime << " " << totalTime + deltaTime << " " << Globals::frameTime << std::endl;
 	if (totalTime >= Globals::frameTime) {
-		//std::cout << deltaTime << std::endl;
 		camera.setDeltaTime(totalTime);
 		totalTime = 0;
 	}
 }
-
 
 void SceneManager::InitWindow(ESContext* esContext) {
 	std::string xmlPath = "..\\sceneManager.xml";
