@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resourceManager>
 	<models>
-		<folder path="../../NewResourcesPacket/Models/">
+		<folder path="../NewResourcesPacket/Models/">
 			<model id="1">
 				<file>croco.nfg</file>
 			</model>
@@ -38,7 +38,7 @@
 		
 	</shaders>
 	<textures>
-		<folder path="../../NewResourcesPacket/Textures/">
+		<folder path="../NewResourcesPacket/Textures/">
 			<texture id="4" type="2d">
 				<file>croco.tga</file>			
 				<min_filter>GL_LINEAR</min_filter>
