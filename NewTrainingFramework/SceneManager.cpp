@@ -167,6 +167,7 @@ void SceneManager::Draw(ESContext* esContext) {
 
 	for (SceneObject* object : currentSceneObjects) {
 		object->Draw(esContext);
+		//object->Update();
 	}
 
 }    

@@ -82,4 +82,5 @@ void SceneObject::Draw(ESContext* esContext) {
 }
 
 void SceneObject::Update(float deltaTime) {
+	
 }
