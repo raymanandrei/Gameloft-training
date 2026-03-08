@@ -79,6 +79,14 @@ void SceneManager::Init() {
 	for (xml_node<>* object = objects->first_node("object"); object; object = object->next_sibling("object")) {
 
 		SceneObject* newObject = new SceneObject();
+		std::string type = object->first_node("type")->value();
+		std::cout << type << std::endl;
+		if (type == "terrain") {
+			newObject = new Terrain();
+		}
+		else if (type == "skyBox") {
+			newObject = new SkyBox();
+		}
 		newObject->id = std::stoi(object->first_attribute("id")->value());
 		newObject->position.x = std::stof(object->first_node("position")->first_node("x")->value());
 		newObject->position.y = std::stof(object->first_node("position")->first_node("y")->value());
@@ -116,13 +124,12 @@ void SceneManager::Init() {
 		}
 		else {
 			newObject->model = new Model();
-			bool ok = newObject->model->generateModel();
+			newObject->model->generateModel();
 		}
 
 		xml_node<>* textureRoot = object->first_node("textures");
 		int textureId = -1;
-		if (textureRoot)
-		{
+		if (textureRoot){
 			xml_node<>* textureNode = textureRoot->first_node("texture");
 			xml_attribute<>* idAttr = textureNode->first_attribute("id");
 			for (xml_node<>* textures = textureRoot->first_node("texture"); textures; textures = textures->next_sibling("texture"))
@@ -142,14 +149,12 @@ void SceneManager::Init() {
 
 		//std::cout << "Loading object ID: " << newObject->id << " Model ID: " << modelId << " Shader ID: " << shaderId << " Texture ID: " << std::endl;
 
-		if (modelId != -1)
-		{
+		if (modelId != -1){
 			//std::cout << resourceManager->modelResources[modelId]->file << std::endl;
 			newObject->model = resourceManager->loadModel(modelId);
 		}
 
-		if (shaderId != -1)
-		{
+		if (shaderId != -1){
 			newObject->shader = resourceManager->loadShader(shaderId);
 			//std::cout << "Shader id:: " << shaderId << std::endl;
 			//std::cout << resourceManager->shaderResources[shaderId]->fs << std::endl;

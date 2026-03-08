@@ -13,6 +13,7 @@ uniform mat4 MVP;
 uniform sampler2D u_texture_3;//Blend
 uniform vec3 u_height;
 
+
 void main()
 {
 	vec4 c_blend = texture2D(u_texture_3,a_uv);

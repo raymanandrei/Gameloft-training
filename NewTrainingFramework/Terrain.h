@@ -1,7 +1,14 @@
 #pragma once
 #include "SceneObject.h"
+#include "../Utilities/Math.h"
 class Terrain : public SceneObject
 {
-	virtual void Update();
+	public:	
+		virtual void Update();
+		void sendCommonData(ESContext* esContext);
+		Vector2 blendTextureOffset;
+		int cellSize;	
+		int nrCells;
+		Terrain();
 };
 

@@ -3,10 +3,12 @@
 #include "SceneObject.h";
 #include "SceneManager.h"
 #include "Camera.h"
-#include "Shaders.h"
 #include "Vertex.h"
 
 SceneObject::SceneObject() {
+}
+
+SceneObject::~SceneObject() {
 }
 
 void SceneObject::sendCommonData(ESContext* esContext) {
@@ -26,22 +28,11 @@ void SceneObject::sendCommonData(ESContext* esContext) {
 		glEnableVertexAttribArray(this->shader->sr->uvAttribute);
 		glVertexAttribPointer(this->shader->sr->uvAttribute, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)offsetof(Vertex, uv));
 	}
-	
-	if (this->shader->sr->uv2Attribute != -1) {
-		glEnableVertexAttribArray(this->shader->sr->uv2Attribute);
-		glVertexAttribPointer(this->shader->sr->uv2Attribute,2,GL_FLOAT,GL_FALSE,sizeof(Vertex),(const GLvoid *)offsetof(Vertex,uv2));
-	}
 
 	Matrix MVP = MVP.SetIdentity() * SceneManager::GetInstance()->camera.viewMatrix * SceneManager::GetInstance()->camera.perspectiveMatrix;
 
 	MVP = Matrix().SetTranslation(this->position.x, this->position.y, this->position.z) * MVP;
 
-	//for (int i = 0; i < 4; i++) {
-	//	for (int j = 0; j < 4; j++) {
-	//		std::cout << MVP.m[i][j] << " ";	
-	//	}
-	//	std::cout << std::endl;
-	//}
 
 	if (this->shader->sr->matrixCamera != -1) {
 		glUniformMatrix4fv(this->shader->sr->matrixCamera, 1, GL_FALSE, (float*)MVP.m);
@@ -54,11 +45,6 @@ void SceneObject::sendCommonData(ESContext* esContext) {
 
 	if (this->shader->sr->objectColor != -1) {
 		glUniform3f(this->shader->sr->objectColor, this->color.x, this->color.y, this->color.z);
-	}
-
-	if (this->shader->sr->u_height != -1) {
-		//std::cout << this->color.x << this->color.y << this->color.z << '\n';
-		glUniform3f(this->shader->sr->u_height, this->color.x, this->color.y, this->color.z);
 	}
 
 	if (this->texture.size()) {
@@ -92,20 +78,4 @@ void SceneObject::Draw(ESContext* esContext) {
 
 void SceneObject::Update() {
 	SceneManager* sceneManager = SceneManager::GetInstance();
-	int d = 500;
-	int dx = sceneManager->camera.position.x - this->position.x;
-	int dz = sceneManager->camera.position.z - this->position.z;
-
-	//std::cout << this->model->mr->id << " " << dx << " " << dz << std::endl;
-	//if (this->model->mr->id == "terrain")
-	//{
-	//	if (dx > d)
-	//		this->position.x += d;
-	//	else if (dx < -d)
-	//		this->position.x -= d;
-	//	if (dz > d)
-	//		this->position.z += d;
-	//	else if (dz < -d)
-	//		this->position.z -= d;
-	//}
 }

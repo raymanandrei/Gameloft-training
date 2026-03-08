@@ -21,8 +21,8 @@ public:
 
 	SceneObject();
 	~SceneObject();
-	void Draw(ESContext* esContext);
-	void sendCommonData(ESContext* esContext);
+	virtual void Draw(ESContext* esContext);
+	virtual void sendCommonData(ESContext* esContext);
 	virtual void Update();	
 };
 
