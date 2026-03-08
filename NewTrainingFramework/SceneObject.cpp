@@ -65,7 +65,7 @@ void SceneObject::sendCommonData(ESContext* esContext) {
 
 		for (int i = 0; i < this->texture.size();i++) {
 			//std::cout << "Texture with id:" << this->texture[i]->tr->id << "and file:" << this->texture[i]->tr->file << '\n';
-			glUniform1i(GL_TEXTURE0 + i, this->texture[i]->tr->id);
+			glUniform1i(this->shader->sr->textureUniform[i], i);
 			glActiveTexture(GL_TEXTURE0 + i);
 			glBindTexture(this->texture[i]->tr->type, this->texture[i]->tr->id);
 		}		
@@ -96,14 +96,16 @@ void SceneObject::Update() {
 	int dx = sceneManager->camera.position.x - this->position.x;
 	int dz = sceneManager->camera.position.z - this->position.z;
 
-	std::cout << this->model->mr->id << " " << dx << " " << dz << std::endl;
-	if (dx > d)
-		this->position.x += d;
-	else if (dx < -d)
-		this->position.x -= d;
-	if (dz > d)
-		this->position.z += d;
-	else if (dz < -d)
-		this->position.z -= d;
-	std::cout << dx << " " << dz << std::endl;
+	//std::cout << this->model->mr->id << " " << dx << " " << dz << std::endl;
+	//if (this->model->mr->id == "terrain")
+	//{
+	//	if (dx > d)
+	//		this->position.x += d;
+	//	else if (dx < -d)
+	//		this->position.x -= d;
+	//	if (dz > d)
+	//		this->position.z += d;
+	//	else if (dz < -d)
+	//		this->position.z -= d;
+	//}
 }

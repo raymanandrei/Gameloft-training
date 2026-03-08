@@ -201,6 +201,22 @@
 		</object>
 	</objects>
 
+
+	<object id="10">
+		<position>
+			<x>0</x>
+			<y>10</y>
+			<z>0</z>
+		</position>
+		<model>2</model>
+		<type>skyBox</type>
+		<name>SkyBox</name>
+		<shader>11</shader>
+		<textures>
+			<texture id="11" />
+		</textures>
+	</object>
+	
 	<!--
 	<ambientalLight>
 		<color>
