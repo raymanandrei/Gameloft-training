@@ -31,6 +31,8 @@ void ResourceManager::Init() {
 	ResourceManager::spInstance->textureTypes["GL_CLAMP_TO_EDGE"] = GL_CLAMP_TO_EDGE;
 	ResourceManager::spInstance->textureTypes["CLAMP_TO_EDGE"] = GL_CLAMP_TO_EDGE;
 	ResourceManager::spInstance->textureTypes["2d"] = GL_TEXTURE_2D;	
+	ResourceManager::spInstance->textureTypes["cube"] = GL_TEXTURE_CUBE_MAP;
+
 
 	rapidxml::xml_document<> doc;
 	rapidxml::xml_node<>* rootNode;

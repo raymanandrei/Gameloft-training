@@ -58,11 +58,11 @@ bool Model::generateModel() {
 			v.pos.y = -70.0f;
 			v.pos.z = i ;
 
-			v.uv.x = j;
-			v.uv.y = i;
+			v.uv.x = j / d;
+			v.uv.y = i / d;
 
-			v.uv2.x = j / n;
-			v.uv2.y = i / n;
+			v.uv2.x = j / n / d;
+			v.uv2.y = i / n / d;
 
 			vertices.push_back(v);
 		}

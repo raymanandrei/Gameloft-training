@@ -9,6 +9,7 @@
 #include "SceneObject.h"
 #include "ResourceManager.h"
 #include "Terrain.h"
+#include "SkyBox.h"
 
 using namespace rapidxml;
 
@@ -149,9 +150,9 @@ void SceneManager::Init() {
 
 		if (shaderId != -1)
 		{
+			newObject->shader = resourceManager->loadShader(shaderId);
 			//std::cout << "Shader id:: " << shaderId << std::endl;
 			//std::cout << resourceManager->shaderResources[shaderId]->fs << std::endl;
-			newObject->shader = resourceManager->loadShader(shaderId);
 			//std::cout << "Loaded shader program ID: " << newObject->shader->programId << std::endl;
 			//std::cout << "Loaded shader vertex shader: " << newObject->shader->sr->vs << std::endl;
 			//std::cout << "Loaded shader vertex shader: " << newObject->shader->sr->fs << std::endl;
