@@ -361,3 +361,23 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/BIN-Nvidia/NewTrainingFramework.exe
+/BIN-Nvidia/Utilities.idb
+/BIN-Nvidia/Utilities.lib
+/NewTrainingFramework/Debug-Nvidia/NewTrain.FC024EC8.tlog/CL.command.1.tlog
+/NewTrainingFramework/Debug-Nvidia/NewTrain.FC024EC8.tlog/Cl.items.tlog
+/NewTrainingFramework/Debug-Nvidia/NewTrain.FC024EC8.tlog/CL.write.1.tlog
+/NewTrainingFramework/Debug-Nvidia/NewTrain.FC024EC8.tlog/link.secondary.1.tlog
+/NewTrainingFramework/Debug-Nvidia/NewTrain.FC024EC8.tlog/link.read.1.tlog
+/Utilities/Debug-Nvidia/Utilities.tlog/Lib.read.1.tlog
+/Utilities/Debug-Nvidia/Utilities.tlog/Utilities.lastbuildstate
+/Utilities/Debug-Nvidia/Utilities.tlog/Lib.command.1.tlog
+/NewTrainingFramework/Debug-Nvidia/NewTrain.FC024EC8.tlog/CL.read.1.tlog
+/NewTrainingFramework/Debug-Nvidia/NewTrain.FC024EC8.tlog/link.write.1.tlog
+/NewTrainingFramework/Debug-Nvidia/NewTrain.FC024EC8.tlog/link.command.1.tlog
+/NewTrainingFramework/Debug-Nvidia/NewTrain.FC024EC8.tlog/NewTrainingFramework.lastbuildstate
+/NewTrainingFramework/Debug-Nvidia/NewTrain.FC024EC8.tlog/rc.read.1.tlog
+/NewTrainingFramework/Debug-Nvidia/NewTrain.FC024EC8.tlog/rc.command.1.tlog
+/NewTrainingFramework/Debug-Nvidia/vc143.idb
+/Utilities/Debug-Nvidia/Utilities.tlog/CL.command.1.tlog
+/Utilities/Debug-Nvidia/Utilities.tlog/CL.read.1.tlog
