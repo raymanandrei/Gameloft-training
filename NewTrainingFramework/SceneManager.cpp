@@ -195,5 +195,6 @@ void SceneManager::Draw(ESContext* esContext) {
 		object->Draw(esContext);
 		object->Update();
 	}
+	eglSwapBuffers(esContext->eglDisplay, esContext->eglSurface);
 
 }    

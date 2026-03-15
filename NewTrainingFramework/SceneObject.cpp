@@ -72,7 +72,7 @@ void SceneObject::Draw(ESContext* esContext) {
 
 	sendCommonData(esContext);
 
-	eglSwapBuffers(esContext->eglDisplay, esContext->eglSurface);
+	
 }
 
 void SceneObject::Update() {
