@@ -4,6 +4,8 @@ uniform mat4 MVP;
 
 varying vec3 v_coord;
 
+varying vec3 position;
+
 void main()
 {
     v_coord = a_posL;

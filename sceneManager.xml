@@ -27,7 +27,23 @@
 		</control>
 		<!-- adaugati restul -->
 	</controls>
-	
+
+	<!---->
+	<!--FOG-->
+	<!---->
+
+	<fog>
+		<r>400</r>
+		<R>600</R>
+		<color>
+			<r>0.24</r>
+			<g>0.28</g>
+			<b>0.32</b>
+		</color>
+	</fog>
+	<!---->
+	<!--FOG-END-->
+	<!---->
 	
 	<cameras>
 		<camera id="1">
@@ -73,9 +89,9 @@
 				<texture id="4"/>
 			</textures>
 			<position>
-				<x>20.5</x>
+				<x>500</x>
 				<y>27</y>
-				<z>21.22</z>
+				<z>500</z>
 			</position>
 			<rotation>
 				<x>0.5</x>
@@ -195,13 +211,13 @@
 		<object id="10">
 			<position>
 				<x>0</x>
-				<y>100</y>
+				<y>2500</y>
 				<z>0</z>
 			</position>
 			<scale>
-				<x>1000</x>
-				<y>1000</y>
-				<z>1000</z>
+				<x>5000</x>
+				<y>5000</y>
+				<z>5000</z>
 			</scale>
 			<model>2</model>
 			<type>skyBox</type>

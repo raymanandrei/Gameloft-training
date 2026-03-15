@@ -6,7 +6,7 @@
 
 Terrain::Terrain() {
 	this->cellSize = 500;
-	this->nrCells = 4;
+	this->nrCells = 8;
 	this->blendTextureOffset = Vector2(0.0f, 0.0f);
 }
 
@@ -42,13 +42,40 @@ void Terrain::sendCommonData(ESContext* esContext) {
 	}
 
 	//std::cout << "Blend Texture Offset: " << blendTextureOffset.x << " " << blendTextureOffset.y << std::endl;
-	Matrix MVP = MVP.SetIdentity() * SceneManager::GetInstance()->camera.viewMatrix * SceneManager::GetInstance()->camera.perspectiveMatrix;
 
-	MVP = Matrix().SetTranslation(this->position.x, this->position.y, this->position.z) * MVP;
+	Matrix model = Matrix().SetTranslation(this->position.x, this->position.y, this->position.z);
+
+	Matrix MVP = model * SceneManager::GetInstance()->camera.viewMatrix * SceneManager::GetInstance()->camera.perspectiveMatrix;
+
+	//MVP = Matrix().SetTranslation(this->position.x, this->position.y, this->position.z) * MVP;
+
+	if (this->shader->sr->matrixModel != -1) {
+		glUniformMatrix4fv(this->shader->sr->matrixModel, 1, GL_FALSE, (float*)model.m);
+	}
+
+	if (this->shader->sr->cameraPosition != -1) {
+		SceneManager* sceneManager = SceneManager::GetInstance();
+		glUniform3f(this->shader->sr->cameraPosition, sceneManager->camera.position.x, sceneManager->camera.position.y, sceneManager->camera.position.z);
+	}
 
 	if (this->shader->sr->matrixCamera != -1) {
 		glUniformMatrix4fv(this->shader->sr->matrixCamera, 1, GL_FALSE, (float*)MVP.m);
 	}
+
+	SceneManager* sceneManager = SceneManager::GetInstance();
+
+	if (this->shader->sr->smallR != -1) {
+		glUniform1f(this->shader->sr->smallR, sceneManager->smallR);
+	}
+
+	if (this->shader->sr->bigR != -1) {
+		glUniform1f(this->shader->sr->bigR, sceneManager->bigR);
+	}
+
+	if (this->shader->sr->fogColor != -1) {
+		glUniform3f(this->shader->sr->fogColor, sceneManager->fogColor.x, sceneManager->fogColor.y, sceneManager->fogColor.z);
+	}
+
 
 	if (this->shader->sr->colorAttribute != -1) {
 		glEnableVertexAttribArray(this->shader->sr->colorAttribute);
@@ -91,23 +118,23 @@ void Terrain::Update() {
 	if (dx > this->cellSize)
 	{
 		this->position.x += this->cellSize;
-		this->blendTextureOffset.x -= textureStep;
+		this->blendTextureOffset.x += textureStep;
 		std::cout << this->blendTextureOffset.x << std::endl;
 	}
 	else if (dx < -this->cellSize)
 	{
 		this->position.x -= this->cellSize;
-		this->blendTextureOffset.x += textureStep;
+		this->blendTextureOffset.x -= textureStep;
 	}
 	if (dz > this->cellSize)
 	{
 		this->position.z += this->cellSize;
-		this->blendTextureOffset.y -= textureStep;
+		this->blendTextureOffset.y += textureStep;
 	}
 	else if (dz < -this->cellSize)
 	{
 		this->position.z -= this->cellSize;
-		this->blendTextureOffset.y += textureStep;
+		this->blendTextureOffset.y -= textureStep;
 	}
 
 	//std::cout << dx << " " << dz << std::endl;

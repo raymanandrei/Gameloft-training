@@ -7,9 +7,8 @@
 void SkyBox::Update() {
 	//std::cout << this->position.x << " " << this->position.y << " " << this->position.z << '\n';
 	SceneManager* sceneManager = SceneManager::GetInstance();
-	if (this->followingCamera.x || this->followingCamera.y || this->followingCamera.z) {
+	if (this->followingCamera.x ||  this->followingCamera.z) {
 		this->position.x = sceneManager->camera.position.x;
-		this->position.y = sceneManager->camera.position.y;
 		this->position.z = sceneManager->camera.position.z;
 	}
 }
@@ -31,12 +30,19 @@ void SkyBox::sendCommonData(ESContext* esContext){
 		glEnableVertexAttribArray(this->shader->sr->uvAttribute);
 		glVertexAttribPointer(this->shader->sr->uvAttribute, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)offsetof(Vertex, uv));
 	}
+	
+	Matrix model = Matrix().SetScale(this->scale.x, this->scale.y, this->scale.z) * Matrix().SetRotationX(3.14) * Matrix().SetTranslation(this->position.x, this->position.y, this->position.z);
 
-	Matrix MVP = MVP.SetIdentity() * SceneManager::GetInstance()->camera.viewMatrix * SceneManager::GetInstance()->camera.perspectiveMatrix;
+	Matrix MVP = model * SceneManager::GetInstance()->camera.viewMatrix * SceneManager::GetInstance()->camera.perspectiveMatrix;
 
-	MVP = Matrix().SetTranslation(this->position.x, this->position.y, this->position.z) * MVP;
+	if (this->shader->sr->matrixModel != -1) {
+		glUniformMatrix4fv(this->shader->sr->matrixModel, 1, GL_FALSE, (float*)model.m);
+	}
 
-	MVP = Matrix().SetScale(this->scale.x, this->scale.y, this->scale.z) * MVP;
+	if (this->shader->sr->cameraPosition != -1) {
+		SceneManager* sceneManager = SceneManager::GetInstance();
+		glUniform3f(this->shader->sr->cameraPosition, sceneManager->camera.position.x, sceneManager->camera.position.y, sceneManager->camera.position.z);
+	}
 
 	if (this->shader->sr->matrixCamera != -1) {
 		glUniformMatrix4fv(this->shader->sr->matrixCamera, 1, GL_FALSE, (float*)MVP.m);
@@ -51,6 +57,22 @@ void SkyBox::sendCommonData(ESContext* esContext){
 		glUniform3f(this->shader->sr->objectColor, this->color.x, this->color.y, this->color.z);
 
 	}
+
+	SceneManager* sceneManager = SceneManager::GetInstance();
+
+	if (this->shader->sr->smallR != -1) {
+		glUniform1f(this->shader->sr->smallR, sceneManager->smallR);
+	}
+
+	if (this->shader->sr->bigR != -1) {
+		glUniform1f(this->shader->sr->bigR, sceneManager->bigR);
+	}
+
+	if (this->shader->sr->fogColor != -1) {
+		glUniform3f(this->shader->sr->fogColor, sceneManager->fogColor.x, sceneManager->fogColor.y, sceneManager->fogColor.z);
+	}
+
+	if (this->shader->sr)
 
 	if (this->texture.size()) {
 

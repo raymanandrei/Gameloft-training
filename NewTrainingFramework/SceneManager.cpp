@@ -74,6 +74,20 @@ void SceneManager::Init() {
 	xml_node<>* root = doc.first_node("sceneManager");
 	xml_node<>* backgroundColor = root->first_node("backgroundColor");
 	xml_node<>* controls = root->first_node("controls");
+	xml_node<>* fog = root->first_node("fog");
+
+	if (fog) {
+		SceneManager::spInstance->smallR = std::stof(fog->first_node("r")->value());
+		SceneManager::spInstance->bigR = std::stof(fog->first_node("R")->value());
+		xml_node<>* color = fog->first_node("color");
+		if (color) {
+			SceneManager::spInstance->fogColor.x = std::stof(color->first_node("r")->value());
+			SceneManager::spInstance->fogColor.y = std::stof(color->first_node("g")->value());
+			SceneManager::spInstance->fogColor.z = std::stof(color->first_node("b")->value());
+		}
+	}
+	
+
 	xml_node<>* objects = root->first_node("objects");
 
 	for (xml_node<>* object = objects->first_node("object"); object; object = object->next_sibling("object")) {

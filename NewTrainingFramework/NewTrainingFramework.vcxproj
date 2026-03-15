@@ -209,6 +209,8 @@
   <ItemGroup>
     <None Include="..\Resources\Shaders\ballShaderFS.fs" />
     <None Include="..\Resources\Shaders\ballShaderVS.vs" />
+    <None Include="..\Resources\Shaders\fogShaderFS.fs" />
+    <None Include="..\Resources\Shaders\fogShaderVS.vs" />
     <None Include="..\Resources\Shaders\modelShaderFS.fs" />
     <None Include="..\Resources\Shaders\modelShaderVS.vs" />
     <None Include="..\Resources\Shaders\skyBoxShaderFs.fs" />
@@ -236,6 +238,7 @@
     <Xml Include="..\resourceManager.xml">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug-Nvidia|Win32'">false</ExcludedFromBuild>
     </Xml>
+    <Xml Include="..\sceneManager.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

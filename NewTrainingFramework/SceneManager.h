@@ -13,6 +13,10 @@ class SceneManager {
 		float totalTime;
 		Camera camera;
 
+		Vector3 fogColor;
+		float smallR;
+		float bigR;
+
 		std::vector<SceneObject*> currentSceneObjects;
 
 		~SceneManager();

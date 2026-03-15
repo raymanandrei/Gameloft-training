@@ -37,5 +37,11 @@ bool Shader::Load() {
 	sr->uvAttribute = glGetAttribLocation(programId, "a_uv");
 	sr->uv2Attribute = glGetAttribLocation(programId, "a_uv2");
 	sr->blendTextureOffset = glGetUniformLocation(programId, "blendTextureOffset");
+	sr->smallR = glGetUniformLocation(programId, "smallR");
+	sr->bigR = glGetUniformLocation(programId, "bigR");
+	sr->fogColor = glGetUniformLocation(programId, "fogColor");
+	sr->cameraPosition = glGetUniformLocation(programId, "cameraPosition");
+	sr->matrixModel = glGetUniformLocation(programId, "matrixModel");
+
 	return true;
 }

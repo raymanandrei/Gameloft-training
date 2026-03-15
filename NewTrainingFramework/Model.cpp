@@ -41,7 +41,7 @@ bool Model::Load() {
 }	
 
 bool Model::generateModel() {
-	int n = 4;
+	int n = 8;
 	int d = 500;
 	std::vector<Vertex>vertices;
 	std::vector<unsigned short> indices;

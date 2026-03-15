@@ -158,6 +158,12 @@
     <None Include="..\Resources\Shaders\skyBoxShaderVs.vs">
       <Filter>Resources\Shaders</Filter>
     </None>
+    <None Include="..\Resources\Shaders\fogShaderFS.fs">
+      <Filter>Resources\Shaders</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\fogShaderVS.vs">
+      <Filter>Resources\Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="NewTrainingFramework.rc">
@@ -166,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\resourceManager.xml" />
+    <Xml Include="..\sceneManager.xml" />
   </ItemGroup>
   <ItemGroup>
     <PackageLayout Include="modelTest.nfg">
