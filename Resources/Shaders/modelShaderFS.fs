@@ -14,7 +14,7 @@ uniform float smallR;
 
 uniform float bigR;
 
-uniform vec3 fogColor;
+uniform vec3 fogColor;	
 
 void main()
 {    

@@ -11,7 +11,7 @@ SceneObject::SceneObject() {
 SceneObject::~SceneObject() {
 }
 
-void SceneObject::sendCommonData(ESContext* esContext) {
+void SceneObject::sendCommonData() {
 
 	//std::cout << SceneManager::GetInstance()->camera.position.x << " " << SceneManager::GetInstance()->camera.position.y << " " << SceneManager::GetInstance()->camera.position.z << std::endl;
 	//std::cout << "Sending common data for object ID: " << this->id << std::endl;
@@ -29,7 +29,9 @@ void SceneObject::sendCommonData(ESContext* esContext) {
 		glVertexAttribPointer(this->shader->sr->uvAttribute, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)offsetof(Vertex, uv));
 	}
 
-	Matrix model = Matrix().SetScale(this->scale.x, this->scale.y, this->scale.z) * Matrix().SetTranslation(this->position.x, this->position.y, this->position.z);
+	Matrix rotation = Matrix().SetRotationX(this->rotation.x) * Matrix().SetRotationX(this->rotation.y) * Matrix().SetRotationZ(this->rotation.z);
+
+	Matrix model = Matrix().SetScale(this->scale.x, this->scale.y, this->scale.z) * rotation * Matrix().SetTranslation(this->position.x, this->position.y, this->position.z);
 
 	Matrix MVP = model * SceneManager::GetInstance()->camera.viewMatrix * SceneManager::GetInstance()->camera.perspectiveMatrix;
 
@@ -60,10 +62,6 @@ void SceneObject::sendCommonData(ESContext* esContext) {
 		glUniformMatrix4fv(this->shader->sr->matrixCamera, 1, GL_FALSE, (float*)MVP.m);
 	}
 
-	if (this->shader->sr->matrixCamera != -1) {
-		glUniformMatrix4fv(this->shader->sr->matrixCamera, 1, GL_FALSE, (float*)MVP.m);
-	}
-
 	if (this->shader->sr->colorAttribute != -1) {
 		glEnableVertexAttribArray(this->shader->sr->colorAttribute);
 		glVertexAttribPointer(this->shader->sr->colorAttribute, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)offsetof(Vertex, color));
@@ -83,23 +81,24 @@ void SceneObject::sendCommonData(ESContext* esContext) {
 		}		
 	}
 
-	glDrawElements(GL_TRIANGLES, this->model->nrIndici, GL_UNSIGNED_SHORT, 0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void sendSpecificData() {
-
+void SceneObject::sendSpecificData() {
+	return;
 }
 
 void SceneObject::Draw(ESContext* esContext) {
 	
 	glUseProgram(this->shader->programId);
 
-	sendCommonData(esContext);
+	sendCommonData();
 
-	
+	sendSpecificData();
+
+	glDrawElements(GL_TRIANGLES, this->model->nrIndici, GL_UNSIGNED_SHORT, 0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 void SceneObject::Update() {

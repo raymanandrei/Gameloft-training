@@ -23,7 +23,8 @@ public:
 	SceneObject();
 	~SceneObject();
 	virtual void Draw(ESContext* esContext);
-	virtual void sendCommonData(ESContext* esContext);
+	virtual void sendCommonData();
+	virtual void sendSpecificData();
 	virtual void Update();	
 };
 

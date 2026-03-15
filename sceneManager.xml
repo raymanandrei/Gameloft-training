@@ -219,6 +219,11 @@
 				<y>5000</y>
 				<z>5000</z>
 			</scale>
+			<rotation>
+				<x>3.14</x>
+				<y>0</y>
+				<z>0</z>
+			</rotation>
 			<model>2</model>
 			<type>skyBox</type>
 			<name>SkyBox</name>

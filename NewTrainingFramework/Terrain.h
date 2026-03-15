@@ -5,7 +5,7 @@ class Terrain : public SceneObject
 {
 	public:	
 		virtual void Update();
-		void sendCommonData(ESContext* esContext);
+		void sendSpecificData();
 		Vector2 blendTextureOffset;
 		int cellSize;	
 		int nrCells;

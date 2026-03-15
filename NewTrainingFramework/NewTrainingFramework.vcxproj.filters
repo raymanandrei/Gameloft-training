@@ -127,12 +127,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Resources\Shaders\TriangleShaderFS.fs">
-      <Filter>Resources\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\TriangleShaderVS.vs">
-      <Filter>Resources\Shaders</Filter>
-    </None>
     <None Include="..\..\Readme.doc" />
     <None Include="..\Resources\Shaders\modelShaderFS.fs">
       <Filter>Resources\Shaders</Filter>
@@ -156,12 +150,6 @@
       <Filter>Resources\Shaders</Filter>
     </None>
     <None Include="..\Resources\Shaders\skyBoxShaderVs.vs">
-      <Filter>Resources\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\fogShaderFS.fs">
-      <Filter>Resources\Shaders</Filter>
-    </None>
-    <None Include="..\Resources\Shaders\fogShaderVS.vs">
       <Filter>Resources\Shaders</Filter>
     </None>
   </ItemGroup>
