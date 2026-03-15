@@ -37,6 +37,5 @@ bool Shader::Load() {
 	sr->uvAttribute = glGetAttribLocation(programId, "a_uv");
 	sr->uv2Attribute = glGetAttribLocation(programId, "a_uv2");
 	sr->blendTextureOffset = glGetUniformLocation(programId, "blendTextureOffset");
-
 	return true;
 }

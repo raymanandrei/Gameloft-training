@@ -88,17 +88,25 @@ void SceneManager::Init() {
 			newObject = new SkyBox();
 		}
 		newObject->id = std::stoi(object->first_attribute("id")->value());
-		newObject->position.x = std::stof(object->first_node("position")->first_node("x")->value());
-		newObject->position.y = std::stof(object->first_node("position")->first_node("y")->value());
-		newObject->position.z = std::stof(object->first_node("position")->first_node("z")->value());
 
-		newObject->rotation.x = std::stof(object->first_node("rotation")->first_node("x")->value());
-		newObject->rotation.y = std::stof(object->first_node("rotation")->first_node("y")->value());
-		newObject->rotation.z = std::stof(object->first_node("rotation")->first_node("z")->value());
+		if (object->first_node("position")) {
+			newObject->position.x = std::stof(object->first_node("position")->first_node("x")->value());
+			newObject->position.y = std::stof(object->first_node("position")->first_node("y")->value());
+			newObject->position.z = std::stof(object->first_node("position")->first_node("z")->value());
+		}
 
-		newObject->scale.x = std::stof(object->first_node("scale")->first_node("x")->value());
-		newObject->scale.y = std::stof(object->first_node("scale")->first_node("y")->value());
-		newObject->scale.z = std::stof(object->first_node("scale")->first_node("z")->value());
+		if (object->first_node("rotation")) {
+			newObject->rotation.x = std::stof(object->first_node("rotation")->first_node("x")->value());
+			newObject->rotation.y = std::stof(object->first_node("rotation")->first_node("y")->value());
+			newObject->rotation.z = std::stof(object->first_node("rotation")->first_node("z")->value());
+		}
+
+
+		if (object->first_node("scale")) {
+			newObject->scale.x = std::stof(object->first_node("scale")->first_node("x")->value());
+			newObject->scale.y = std::stof(object->first_node("scale")->first_node("y")->value());
+			newObject->scale.z = std::stof(object->first_node("scale")->first_node("z")->value());
+		}
 
 		if (object->first_node("color")) {
 			std::cout << "Loading color for object ID: " << newObject->id << std::endl;
@@ -113,6 +121,15 @@ void SceneManager::Init() {
 			newObject->color.z = std::stof(object->first_node("inaltimi")->first_node("b")->value());
 		}
 
+		if (object->first_node("followingCamera")) {
+			if (object->first_node("followingCamera")->first_node("ox"))
+				newObject->followingCamera.x = 1;
+			if (object->first_node("followingCamera")->first_node("oy"))
+				newObject->followingCamera.y = 1;
+			if (object->first_node("followingCamera")->first_node("oz"))
+				newObject->followingCamera.z = 1;
+		}
+
 		ResourceManager* resourceManager = ResourceManager::GetInstance();
 
 		int modelId = -1;
@@ -123,6 +140,7 @@ void SceneManager::Init() {
 			modelId = std::stoi(object->first_node("model")->value());
 		}
 		else {
+			std::cout << type << std::endl;
 			newObject->model = new Model();
 			newObject->model->generateModel();
 		}
@@ -169,6 +187,7 @@ void SceneManager::Init() {
 
 void SceneManager::Draw(ESContext* esContext) {
 	//printf("Drawing scene with %d objects.\n", currentSceneObjects.size());
+	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glDisable(GL_CULL_FACE);
 

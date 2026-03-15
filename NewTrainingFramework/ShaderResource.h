@@ -17,4 +17,5 @@ struct ShaderResource
 	GLint uv2Attribute;
 	GLint u_height;
 	GLint blendTextureOffset;
+	GLint u_cube_texture;
 };

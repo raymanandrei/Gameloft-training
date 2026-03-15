@@ -2,5 +2,7 @@
 #include "SceneObject.h"
 class SkyBox : public SceneObject
 {
+	void Update();
+	void sendCommonData(ESContext* esContext);
 };
 

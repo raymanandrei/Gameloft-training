@@ -12,6 +12,7 @@ public:
 	Vector3 rotation;
 	Vector3 scale;
 	Vector3 color;
+	Vector3 followingCamera;
 
 	Model* model;
 	Shader* shader;

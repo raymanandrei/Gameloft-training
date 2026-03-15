@@ -33,7 +33,6 @@ void SceneObject::sendCommonData(ESContext* esContext) {
 
 	MVP = Matrix().SetTranslation(this->position.x, this->position.y, this->position.z) * MVP;
 
-
 	if (this->shader->sr->matrixCamera != -1) {
 		glUniformMatrix4fv(this->shader->sr->matrixCamera, 1, GL_FALSE, (float*)MVP.m);
 	}

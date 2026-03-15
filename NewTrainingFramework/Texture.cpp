@@ -4,6 +4,26 @@
 
 #include "../Utilities/utilities.h"
 
+void ExtractFace(
+    char* dest,
+    char* src,
+    int startX,
+    int startY,
+    int faceW,
+    int faceH,
+    int width,
+    int bytesPerPixel)
+{
+    for (int y = 0; y < faceH; y++)
+    {
+        memcpy(
+            dest + y * faceW * bytesPerPixel,
+            src + ((startY + y) * width + startX) * bytesPerPixel,
+            faceW * bytesPerPixel
+        );
+    }
+}
+
 Texture::Texture() {
 }
 
@@ -24,40 +44,58 @@ bool Texture::Load() {
 
 	if (tr->type == GL_TEXTURE_CUBE_MAP) {
 			
-		int widthFace = width / 4.0;
-		int heightFace = height / 3.0;
+		std::cout << "Loading sky texture" << "\n";
+        int width, height, bpp;
+        char* pixelArray = LoadTGA((tr->file).c_str(), &width, &height, &bpp);
 
-		char* subBuffer = pixelArray + widthFace;
+        if (!pixelArray)
+            return false;
 
-		glTexImage2D(tr->type,0,format,widthFace,heightFace,0,format,GL_UNSIGNED_BYTE,subBuffer);
+        GLint format = (bpp == 32) ? GL_RGBA : GL_RGB;
 
-		subBuffer += 2 * widthFace + heightFace;
+        glGenTextures(1, &tr->id);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, tr->id);
 
-		glTexImage2D(tr->type, 0, format, widthFace, heightFace, 0, format, GL_UNSIGNED_BYTE, subBuffer);
+        int faceW = width / 4;
+        int faceH = height / 3;
 
-		subBuffer += widthFace;
+        char* temp;
+        int faceSize = faceW * faceH * (bpp / 8);
+        temp = (char*)malloc(faceSize);
+        int bytesPerPixel = bpp / 8;
 
-		glTexImage2D(tr->type, 0, format, widthFace, heightFace, 0, format, GL_UNSIGNED_BYTE, subBuffer);
+                
+        ExtractFace(temp, pixelArray, 2 * faceW, faceH, faceW, faceH, width, bytesPerPixel);
+        //std::reverse(temp, temp + strlen(temp));
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, format, faceW, faceH, 0, format, GL_UNSIGNED_BYTE, temp);
 
-		subBuffer += widthFace;
+        ExtractFace(temp, pixelArray, 0, faceH, faceW, faceH, width, bytesPerPixel);
+        //std::reverse(temp, temp + strlen(temp));
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, format, faceW, faceH, 0, format, GL_UNSIGNED_BYTE, temp);
 
-		glTexImage2D(tr->type, 0, format, widthFace, heightFace, 0, format, GL_UNSIGNED_BYTE, subBuffer);
+        ExtractFace(temp, pixelArray, faceW, 0, faceW, faceH, width, bytesPerPixel);
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, format, faceW, faceH, 0, format, GL_UNSIGNED_BYTE, temp);
+        
+        ExtractFace(temp, pixelArray, faceW, 2 * faceH, faceW, faceH, width, bytesPerPixel);
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, format, faceW, faceH, 0, format, GL_UNSIGNED_BYTE, temp);
+        
+        ExtractFace(temp, pixelArray, faceW, faceH, faceW, faceH, width, bytesPerPixel);
+        //std::reverse(temp, temp + strlen(temp));
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, format, faceW, faceH, 0, format, GL_UNSIGNED_BYTE, temp);
+        
+        ExtractFace(temp, pixelArray, 3 * faceW, faceH, faceW, faceH, width, bytesPerPixel);
+        //std::reverse(temp, temp + strlen(temp));
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, format, faceW, faceH, 0, format, GL_UNSIGNED_BYTE, temp);
 
-		subBuffer += widthFace;
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, tr->min_filter);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, tr->mag_filter);
 
-		glTexImage2D(tr->type, 0, format, widthFace, heightFace, 0, format, GL_UNSIGNED_BYTE, subBuffer);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, tr->wrap_s);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, tr->wrap_t);
 
-		subBuffer += 2 * widthFace + heightFace;
+        glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 
-		glTexImage2D(tr->type, 0, format, widthFace, heightFace, 0, format, GL_UNSIGNED_BYTE, subBuffer);
-
-		glTexParameteri(tr->type, GL_TEXTURE_WRAP_S, tr->wrap_s);
-		glTexParameteri(tr->type, GL_TEXTURE_WRAP_T, tr->wrap_t);
-
-		glTexParameteri(tr->type, GL_TEXTURE_MIN_FILTER, tr->min_filter);
-		glTexParameteri(tr->type, GL_TEXTURE_MAG_FILTER, tr->mag_filter);
-
-		glBindTexture(tr->type, 0);
+        return true;
 	}
 	else {
 

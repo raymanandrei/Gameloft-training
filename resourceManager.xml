@@ -81,8 +81,8 @@
 			</texture>
 			<texture id="11" type="cube">
 				<file>envMap.tga</file>
-				<min_filter>LINEAR</min_filter>
-				<mag_filter>LINEAR</mag_filter>
+				<min_filter>GL_LINEAR</min_filter>
+				<mag_filter>GL_LINEAR</mag_filter>
 				<wrap_s>CLAMP_TO_EDGE</wrap_s>
 				<wrap_t>CLAMP_TO_EDGE</wrap_t>
 			</texture>

@@ -92,16 +92,8 @@
 				<g>0</g>
 				<b>0</b>	
 			</color>
+
 			<!--
-			Exemple de alte configurari care vor fi adaugate si parsate mai tarziu (pentru taskuri ulterioare)
-			<followingCamera>
-				<cameras>
-					<camera>1</camera>
-				</cameras>
-				<ox/>
-				<oy/>
-				<oz/>
-			</followingCamera>
 			<trajectory type="linear" iteration="infinite" direction="alternate">
 				<comment>startPoint e chiar Pos</comment>
 				<endPoint>
@@ -128,9 +120,9 @@
 				<b>0.0</b>
 			</color>
 			<position>
-				<x>3.5</x>
+				<x>20</x>
 				<y>0</y>
-				<z>20</z>
+				<z>200</z>
 			</position>
 			<rotation>
 				<x>0</x>
@@ -199,23 +191,37 @@
 				<z>1.0</z>
 			</scale>
 		</object>
+
+		<object id="10">
+			<position>
+				<x>0</x>
+				<y>100</y>
+				<z>0</z>
+			</position>
+			<scale>
+				<x>1000</x>
+				<y>1000</y>
+				<z>1000</z>
+			</scale>
+			<model>2</model>
+			<type>skyBox</type>
+			<name>SkyBox</name>
+			<shader>11</shader>
+			<textures>
+				<texture id="11" />
+			</textures>
+			
+			<followingCamera>
+				<ox/>
+				<oz/>
+			</followingCamera>
+			
+			
+		</object>
+
 	</objects>
 
 
-	<object id="10">
-		<position>
-			<x>0</x>
-			<y>10</y>
-			<z>0</z>
-		</position>
-		<model>2</model>
-		<type>skyBox</type>
-		<name>SkyBox</name>
-		<shader>11</shader>
-		<textures>
-			<texture id="11" />
-		</textures>
-	</object>
 	
 	<!--
 	<ambientalLight>
