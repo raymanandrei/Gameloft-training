@@ -22,4 +22,6 @@ struct ShaderResource
 	GLint fogColor;
 	GLint cameraPosition;
 	GLint matrixModel;
+	GLint U_Time;
+	GLint U_DispMax;
 };

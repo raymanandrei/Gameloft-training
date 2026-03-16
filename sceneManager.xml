@@ -124,6 +124,27 @@
 			</lights>
 			-->
 		</object>
+
+		<object id="2">
+			<model>3</model>
+			<shader>10</shader>
+			<textures>
+				<texture id="2"/>
+			</textures>
+			<type>normal</type>
+			<name>Witch</name>
+			<position>
+				<x>50</x>
+				<y>0</y>
+				<z>50</z>
+			</position>
+			<scale>
+				<x>1.0</x>
+				<y>1.0</y>
+				<z>1.0</z>
+			</scale>
+		</object>
+				
 		<object id="3">
 			<model>5</model>
 			<shader>1</shader>
@@ -173,6 +194,54 @@
 				<light>1</light>
 			</lights>
 			-->
+		</object>
+
+		<object id="4">
+			<model>4</model>
+			<shader>10</shader>
+			<textures>
+				<texture id="3" />
+			</textures>
+			<type>normal</type>
+			<name>Train</name>
+			<position>
+				<x>600</x>
+				<y>-60</y>
+				<z>-600</z>
+			</position>
+			<scale>
+				<x>1.0</x>
+				<y>1.0</y>
+				<z>1.0</z>
+			</scale>
+		</object>
+
+		<object id="5">
+			<model>6</model>
+			<shader>6</shader>
+			<type>fire</type>
+			<name>FIRE</name>
+			<textures>
+				<texture id="18" />
+				<texture id="19" />
+				<texture id="20" />
+			</textures>
+			<position>
+				<x>700.0</x>
+				<y>-230</y>
+				<z>-400.0</z>
+			</position>
+			<rotation>
+				<x>0.0</x>
+				<y>0.0</y>
+				<z>0.0</z>
+			</rotation>
+			<scale>
+				<x>25.0</x>
+				<y>25.0</y>
+				<z>25.0</z>
+			</scale>
+
 		</object>
 		
 		<object id="8">

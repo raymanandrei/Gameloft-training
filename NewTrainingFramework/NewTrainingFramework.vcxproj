@@ -164,6 +164,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Fire.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="NewTrainingFramework.cpp" />
@@ -187,6 +188,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Fire.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelResource.h" />
@@ -209,6 +211,8 @@
   <ItemGroup>
     <None Include="..\Resources\Shaders\ballShaderFS.fs" />
     <None Include="..\Resources\Shaders\ballShaderVS.vs" />
+    <None Include="..\Resources\Shaders\fireShaderFS.fs" />
+    <None Include="..\Resources\Shaders\fireShaderVS.vs" />
     <None Include="..\Resources\Shaders\modelShaderFS.fs" />
     <None Include="..\Resources\Shaders\modelShaderVS.vs" />
     <None Include="..\Resources\Shaders\skyBoxShaderFs.fs" />

@@ -10,6 +10,7 @@
 #include "ResourceManager.h"
 #include "Terrain.h"
 #include "SkyBox.h"
+#include "Fire.h"
 
 using namespace rapidxml;
 
@@ -100,6 +101,9 @@ void SceneManager::Init() {
 		}
 		else if (type == "skyBox") {
 			newObject = new SkyBox();
+		}
+		else if (type == "fire") {
+			newObject = new Fire();
 		}
 		newObject->id = std::stoi(object->first_attribute("id")->value());
 
@@ -209,6 +213,6 @@ void SceneManager::Draw(ESContext* esContext) {
 		object->Draw(esContext);
 		object->Update();
 	}
-	eglSwapBuffers(esContext->eglDisplay, esContext->eglSurface);
 
+	eglSwapBuffers(esContext->eglDisplay, esContext->eglSurface);
 }    

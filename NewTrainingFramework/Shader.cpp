@@ -42,6 +42,7 @@ bool Shader::Load() {
 	sr->fogColor = glGetUniformLocation(programId, "fogColor");
 	sr->cameraPosition = glGetUniformLocation(programId, "cameraPosition");
 	sr->matrixModel = glGetUniformLocation(programId, "matrixModel");
+	sr->U_Time = glGetUniformLocation(programId, "U_Time");
 
 	return true;
 }
