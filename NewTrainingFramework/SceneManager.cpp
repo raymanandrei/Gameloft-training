@@ -88,7 +88,6 @@ void SceneManager::Init() {
 		}
 	}
 	
-
 	xml_node<>* objects = root->first_node("objects");
 
 	for (xml_node<>* object = objects->first_node("object"); object; object = object->next_sibling("object")) {
@@ -104,6 +103,9 @@ void SceneManager::Init() {
 		}
 		else if (type == "fire") {
 			newObject = new Fire();
+			Fire* fireObj = static_cast<Fire*>(newObject);
+			if (fireObj) 
+				fireObj->u_DispMax = std::stoi(object->first_node("u_DispMax")->value());
 		}
 		newObject->id = std::stoi(object->first_attribute("id")->value());
 

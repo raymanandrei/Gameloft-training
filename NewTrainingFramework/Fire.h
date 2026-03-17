@@ -7,6 +7,6 @@ class Fire : public SceneObject
 		float u_Time;
 		void Update();
 		void sendSpecificData();
-		Fire();
+		//Fire();
 };
 

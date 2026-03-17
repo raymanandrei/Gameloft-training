@@ -4,7 +4,11 @@ varying vec2 v_uv;
 
 uniform sampler2D u_texture_0;
 
+uniform samplerCube u_texture_1;
+
 varying vec3 Vposition;
+
+varying vec3 v_normW;
 
 uniform vec3 cameraPosition;
 
@@ -18,6 +22,12 @@ uniform vec3 fogColor;
 
 void main()
 {    
+    vec3 vectCam = Vposition;
+
+    vec3 dirReflect = reflect(normalize(vectCam),normalize(v_normW));
+
+    vec4 culoare = textureCube(u_texture_1, dirReflect);
+
     float d = distance(cameraPosition,Vposition);
 
     float alpha;
@@ -34,5 +44,5 @@ void main()
         discard;
     }
 
-    gl_FragColor = vec4(alpha * fogColor + (1.0 - alpha) * colorTexture.xyz,alpha);
+    gl_FragColor =  vec4(alpha * fogColor + (1.0 - alpha) * (0.5 * colorTexture.xyz  + 0.5 * culoare.xyz),alpha);
 }

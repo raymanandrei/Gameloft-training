@@ -34,7 +34,7 @@
 
 	<fog>
 		<r>400</r>
-		<R>600</R>
+		<R>1000</R>
 		<color>
 			<r>0.24</r>
 			<g>0.28</g>
@@ -94,9 +94,9 @@
 				<z>500</z>
 			</position>
 			<rotation>
-				<x>0.5</x>
-				<y>1.4</y>
-				<z>1</z>
+				<x>0</x>
+				<y>0</y>
+				<z>0</z>
 			</rotation>
 			<scale>
 				<x>1.0</x>
@@ -130,12 +130,13 @@
 			<shader>10</shader>
 			<textures>
 				<texture id="2"/>
+				<texture id="11" />
 			</textures>
 			<type>normal</type>
 			<name>Witch</name>
 			<position>
 				<x>50</x>
-				<y>0</y>
+				<y>70</y>
 				<z>50</z>
 			</position>
 			<scale>
@@ -148,6 +149,9 @@
 		<object id="3">
 			<model>5</model>
 			<shader>1</shader>
+			<textures>
+				<texture id="11"/>
+			</textures>
 			<type>normal</type>
 			<wired/>
 			<name>Mesh_minge</name>
@@ -157,9 +161,9 @@
 				<b>0.0</b>
 			</color>
 			<position>
-				<x>20</x>
+				<x>400</x>
 				<y>0</y>
-				<z>200</z>
+				<z>400</z>
 			</position>
 			<rotation>
 				<x>0</x>
@@ -167,9 +171,9 @@
 				<z>0</z>
 			</rotation>
 			<scale>
-				<x>1.0</x>
-				<y>1.0</y>
-				<z>1.0</z>
+				<x>3.0</x>
+				<y>3.0</y>
+				<z>3.0</z>
 			</scale>
 			<!--
 			Exemple de alte configurari care vor fi adaugate si parsate mai tarziu (pentru taskuri ulterioare)
@@ -241,7 +245,7 @@
 				<y>25.0</y>
 				<z>25.0</z>
 			</scale>
-
+			<u_DispMax>2</u_DispMax>
 		</object>
 		
 		<object id="8">
@@ -278,6 +282,15 @@
 		</object>
 
 		<object id="10">
+			<model>2</model>
+			<shader>11</shader>
+			<textures>
+				<texture id="11" />
+			</textures>
+
+			<type>skyBox</type>
+			<name>SkyBox</name>
+
 			<position>
 				<x>0</x>
 				<y>2500</y>
@@ -293,13 +306,6 @@
 				<y>0</y>
 				<z>0</z>
 			</rotation>
-			<model>2</model>
-			<type>skyBox</type>
-			<name>SkyBox</name>
-			<shader>11</shader>
-			<textures>
-				<texture id="11" />
-			</textures>
 			
 			<followingCamera>
 				<ox/>

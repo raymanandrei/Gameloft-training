@@ -16,16 +16,20 @@ uniform mat4 matrixModel;
 
 varying vec3 Vposition;
 
+varying vec3 v_normW;
+
 void main()
 {
 	vec4 posL = vec4(a_posL, 1.0);
 
 	Vposition = (matrixModel * posL).xyz;
 
-	gl_Position = MVP * posL;
+	v_normW = normalize(Vposition);
 
 	v_color = a_color;
 
 	v_uv = a_uv;
+	
+	gl_Position = MVP * posL;
 }
    
