@@ -24,6 +24,8 @@ uniform mat4 matrixModel;
 
 varying vec3 Vposition;
 
+varying vec3 v_normW;
+
 void main()
 {
 	vec4 c_blend = texture2D(u_texture_3,a_uv);
@@ -36,5 +38,7 @@ void main()
 
 	Vposition = (matrixModel * pos_nou).xyz;
 	
+	v_normW = normalize(matrixModel * vec4(0.0,1.0,0.0,0.0)).xyz;
+
 	gl_Position = MVP * pos_nou;
 }

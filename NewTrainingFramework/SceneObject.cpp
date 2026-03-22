@@ -3,6 +3,7 @@
 #include "SceneObject.h";
 #include "SceneManager.h"
 #include "Camera.h"
+#include "Ligth.h"
 #include "Vertex.h"
 
 SceneObject::SceneObject() {
@@ -27,6 +28,11 @@ void SceneObject::sendCommonData() {
 	if (this->shader->sr->uvAttribute != -1){
 		glEnableVertexAttribArray(this->shader->sr->uvAttribute);
 		glVertexAttribPointer(this->shader->sr->uvAttribute, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const GLvoid*)offsetof(Vertex, uv));
+	}
+
+	if (this->shader->sr->a_norm != -1) {
+		glEnableVertexAttribArray(this->shader->sr->a_norm);
+		glVertexAttribPointer(this->shader->sr->a_norm,3,GL_FLOAT,GL_FALSE,sizeof(Vertex),(const GLvoid *)offsetof(Vertex,norm ));
 	}
 
 	Matrix rotation = Matrix().SetRotationX(this->rotation.x) * Matrix().SetRotationX(this->rotation.y) * Matrix().SetRotationZ(this->rotation.z);
@@ -79,6 +85,28 @@ void SceneObject::sendCommonData() {
 			glActiveTexture(GL_TEXTURE0 + i);
 			glBindTexture(this->texture[i]->tr->type, this->texture[i]->tr->id);
 		}		
+	}
+	
+	Ligth *ligth = SceneManager::GetInstance()->currentSceneLights[1];
+
+	if (this->shader->sr->lightPosition != -1) {
+		glUniform3f(this->shader->sr->lightPosition, ligth->position.x, ligth->position.y, ligth->position.z);
+	}
+
+	if (this->shader->sr->c_lightDiff != -1) {
+		glUniform3f(this->shader->sr->c_lightDiff, ligth->diffColor.x, ligth->diffColor.y, ligth->diffColor.z);
+	}
+
+	if (this->shader->sr->c_lightSpec != -1) {
+		glUniform3f(this->shader->sr->c_lightSpec, ligth->specColor.x, ligth->specColor.y, ligth->specColor.z);
+	}
+
+	if (this->shader->sr->SpecPower != -1) {
+		glUniform1f(this->shader->sr->SpecPower, ligth->specPower);
+	}
+
+	if (this->shader->sr->c_amb != -1) {
+		glUniform3f(this->shader->sr->c_amb, SceneManager::GetInstance()->ambientalLigth.x, SceneManager::GetInstance()->ambientalLigth.y, SceneManager::GetInstance()->ambientalLigth.z);
 	}
 }
 

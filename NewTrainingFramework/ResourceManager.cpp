@@ -35,7 +35,6 @@ void ResourceManager::Init() {
 
 
 	rapidxml::xml_document<> doc;
-	rapidxml::xml_node<>* rootNode;
 	std::ifstream xmlFile(xmlPath);
 	std::vector<char> buffer((std::istreambuf_iterator<char>(xmlFile)), std::istreambuf_iterator<char>());
 

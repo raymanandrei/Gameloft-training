@@ -8,7 +8,7 @@ varying vec2 v_uv;
 
 uniform sampler2D u_texture_0;//textura_displacement
 
-uniform sampler2D u_texture_1;
+uniform sampler2D u_texture_1;//fireTexture
 
 uniform sampler2D u_texture_2;//fireMask
 
@@ -38,7 +38,17 @@ void main()
 
     c_fire.a = c_fire.a * c_fire_alpha.x;
     
+    float d = distance(cameraPosition,Vposition);
+
+    float alpha;
+    if (d <= smallR)
+        alpha = 0.0;
+    if (d >= bigR)
+        alpha = 1.0;
+    if (d > smallR && d < bigR)
+        alpha = (d - smallR) / (bigR - smallR);
+
     if(c_fire.a < 0.1) discard;
 
-    gl_FragColor = c_fire;
+    gl_FragColor =  vec4(alpha * fogColor + (1.0 - alpha) * c_fire.xyz,alpha);
 }

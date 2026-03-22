@@ -32,8 +32,8 @@ void Terrain::sendSpecificData() {
 
 void Terrain::Update() {
 	SceneManager* sceneManager = SceneManager::GetInstance();
-	int dx = sceneManager->camera.position.x - this->position.x;
-	int dz = sceneManager->camera.position.z - this->position.z;
+	GLfloat dx = sceneManager->camera.position.x - this->position.x;
+	GLfloat dz = sceneManager->camera.position.z - this->position.z;
 	float textureStep = 1.0 / this->nrCells;
 
 	//std::cout << this->model->mr->id << " " << dx << " " << dz << std::endl;

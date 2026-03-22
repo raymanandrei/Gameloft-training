@@ -22,6 +22,18 @@ uniform float bigR;
 
 uniform vec3 fogColor;
 
+uniform vec3 lightPosition;
+
+uniform vec3 c_lightDiff;
+
+uniform vec3 c_lightSpec;
+
+uniform float SpecPower;
+
+uniform vec3 c_amb;
+
+varying vec3 v_normW;
+
 void main()
 {
     vec4 c_dirt = texture2D(u_texture_0,v_uv);
@@ -45,5 +57,22 @@ void main()
     if (d > smallR && d < bigR)
         alpha = (d - smallR) / (bigR - smallR);
 
-    gl_FragColor = vec4(alpha * fogColor + (1.0 - alpha) * c_final.xyz,alpha);
+    vec3 L = normalize(Vposition - lightPosition);
+
+    vec3 Cdiff = c_final.xyz * c_lightDiff * max(dot(v_normW,-L), 0.0);
+
+    vec3 E = normalize(Vposition - cameraPosition);
+
+    vec3 R = normalize(reflect(L,v_normW));
+    
+    vec3 Cspec = c_lightSpec * pow(max(dot(R,E), 0.0), SpecPower);
+
+    float ratio = 0.5;
+
+    vec3 Camb = c_final.xyz * c_amb;
+
+    vec3 Cfinal = ratio * Camb + (1.0 - ratio) * (Cdiff + Cspec); 
+
+    //gl_FragColor = vec4(c_lightDiff,1.0);
+    gl_FragColor = vec4(alpha * fogColor + (1.0 - alpha) * Cfinal.xyz,alpha);
 }

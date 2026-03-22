@@ -77,7 +77,7 @@ void SceneManager::Init() {
 	xml_node<>* backgroundColor = root->first_node("backgroundColor");
 	xml_node<>* controls = root->first_node("controls");
 	xml_node<>* fog = root->first_node("fog");
-	xml_node<>* ligths = root->first_node("lights");
+	xml_node<>* ligths = root->first_node("ligths");
 
 	if (fog) {
 		SceneManager::spInstance->smallR = std::stof(fog->first_node("r")->value());
@@ -91,27 +91,36 @@ void SceneManager::Init() {
 	}
 	
 	if (ligths) {
-		for (xml_node<>* light = ligths->first_node("light"); light; light = light->next_sibling("light")) {
-			Ligth* newLight = new Ligth();
-			if (light->first_node("position")) {
-				newLight->position.x = std::stof(light->first_node("position")->first_node("x")->value());
-				newLight->position.y = std::stof(light->first_node("position")->first_node("y")->value());
-				newLight->position.z = std::stof(light->first_node("position")->first_node("z")->value());
+
+		if (ligths->first_node("ambientalLigth")) {
+			SceneManager::GetInstance()->ambientalLigth.x = std::stof(ligths->first_node("ambientalLigth")->first_node("r")->value());
+			SceneManager::GetInstance()->ambientalLigth.y = std::stof(ligths->first_node("ambientalLigth")->first_node("g")->value());
+			SceneManager::GetInstance()->ambientalLigth.z = std::stof(ligths->first_node("ambientalLigth")->first_node("b")->value());
+		}
+
+		for (xml_node<>* ligth = ligths->first_node("ligth"); ligth; ligth = ligth->next_sibling("ligth")) {
+			Ligth* newLigth = new Ligth();
+			int id = std::stoi(ligth->first_attribute()->value());
+			std::cout << "Ligth id: " << id << '\n';
+			if (ligth->first_node("position")) {
+				newLigth->position.x = std::stof(ligth->first_node("position")->first_node("x")->value());
+				newLigth->position.y = std::stof(ligth->first_node("position")->first_node("y")->value());
+				newLigth->position.z = std::stof(ligth->first_node("position")->first_node("z")->value());
 			}
-			if (light->first_node("specColor")) {
-				newLight->specColor.x = std::stof(light->first_node("specColor")->first_node("r")->value());
-				newLight->specColor.y = std::stof(light->first_node("specColor")->first_node("g")->value());
-				newLight->specColor.z = std::stof(light->first_node("specColor")->first_node("b")->value());
+			if (ligth->first_node("specColor")) {
+				newLigth->specColor.x = std::stof(ligth->first_node("specColor")->first_node("r")->value());
+				newLigth->specColor.y = std::stof(ligth->first_node("specColor")->first_node("g")->value());
+				newLigth->specColor.z = std::stof(ligth->first_node("specColor")->first_node("b")->value());
 			}
-			if (light->first_node("diffColor")) {
-				newLight->specColor.x = std::stof(light->first_node("diffColor")->first_node("r")->value());
-				newLight->specColor.y = std::stof(light->first_node("diffColor")->first_node("g")->value());
-				newLight->specColor.z = std::stof(light->first_node("diffColor")->first_node("b")->value());
+			if (ligth->first_node("diffColor")) {
+				newLigth->diffColor.x = std::stof(ligth->first_node("diffColor")->first_node("r")->value());
+				newLigth->diffColor.y = std::stof(ligth->first_node("diffColor")->first_node("g")->value());
+				newLigth->diffColor.z = std::stof(ligth->first_node("diffColor")->first_node("b")->value());
 			}
-			if (light->first_node("specPower")) {
-				newLight->specPower = std::stof(light->first_node("specPower")->value());
+			if (ligth->first_node("specPower")) {
+				newLigth->specPower = std::stof(ligth->first_node("specPower")->value());
 			}
-			SceneManager::GetInstance()->currentSceneLights.push_back(newLight);
+			SceneManager::GetInstance()->currentSceneLights.insert({ id,newLigth });
 		}
 	}
 

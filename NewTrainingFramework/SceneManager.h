@@ -1,4 +1,5 @@
 #include <vector>
+#include <unordered_map>
 #include "Camera.h"
 #include "sceneObject.h"
 #include "Ligth.h"
@@ -15,11 +16,12 @@ class SceneManager {
 		Camera camera;
 
 		Vector3 fogColor;
+		Vector3 ambientalLigth;
 		float smallR;
 		float bigR;
 
 		std::vector<SceneObject*> currentSceneObjects;
-		std::vector<Ligth*>currentSceneLights;
+		std::unordered_map<int, Ligth*>currentSceneLights;
 
 		~SceneManager();
 	private:

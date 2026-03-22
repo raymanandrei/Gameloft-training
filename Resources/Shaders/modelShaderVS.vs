@@ -4,6 +4,8 @@ attribute vec3 a_posL;
 
 attribute vec3 a_color;
 
+attribute vec3 a_norm;
+
 varying vec3 v_color;
 
 attribute vec2 a_uv;
@@ -16,6 +18,8 @@ uniform mat4 matrixModel;
 
 varying vec3 Vposition;
 
+varying vec3 v_posW;
+
 varying vec3 v_normW;
 
 void main()
@@ -24,7 +28,9 @@ void main()
 
 	Vposition = (matrixModel * posL).xyz;
 
-	v_normW = normalize(Vposition);
+	v_normW = normalize(matrixModel * vec4(a_norm,0.0)).xyz;
+
+	v_posW = normalize(Vposition);
 
 	v_color = a_color;
 

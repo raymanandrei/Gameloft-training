@@ -30,6 +30,7 @@ bool Shader::Load() {
 	sr->colorAttribute = glGetAttribLocation(programId, "a_color");
 	sr->objectColor = glGetUniformLocation(programId, "objectColor");
 	sr->matrixCamera = glGetUniformLocation(programId, "MVP");
+	sr->a_norm = glGetAttribLocation(programId, "a_norm");
 	for (int i = 0; i < 5; i++) {
 		std::string con = "u_texture_" + std::to_string(i);
 		sr->textureUniform[i] = glGetUniformLocation(programId,(char * )con.c_str());
@@ -44,5 +45,11 @@ bool Shader::Load() {
 	sr->matrixModel = glGetUniformLocation(programId, "matrixModel");
 	sr->U_Time = glGetUniformLocation(programId, "U_Time");
 	sr->U_DispMax = glGetUniformLocation(programId, "U_DispMax");
+
+	sr->lightPosition = glGetUniformLocation(programId, "lightPosition");
+	sr->SpecPower = glGetUniformLocation(programId, "SpecPower");
+	sr->c_lightDiff = glGetUniformLocation(programId, "c_lightDiff");
+	sr->c_lightSpec = glGetUniformLocation(programId, "c_lightSpec");
+	sr->c_amb = glGetUniformLocation(programId, "c_amb");
 	return true;
 }

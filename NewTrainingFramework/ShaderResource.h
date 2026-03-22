@@ -10,6 +10,7 @@ struct ShaderResource
 	GLint positionAttribute;
 	GLint colorAttribute;
 	GLint objectColor;
+	GLint a_norm;
 	GLint matrixUniform;
 	GLint matrixCamera;
 	GLint textureUniform[5];
@@ -24,4 +25,10 @@ struct ShaderResource
 	GLint matrixModel;
 	GLint U_Time;
 	GLint U_DispMax;
+
+	GLint lightPosition;
+	GLint c_lightDiff;
+	GLint c_lightSpec;
+	GLint c_amb;
+	GLint SpecPower;
 };
