@@ -166,6 +166,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Fire.cpp" />
     <ClCompile Include="Globals.cpp" />
+    <ClCompile Include="Ligth.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="NewTrainingFramework.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
@@ -190,6 +191,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Fire.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="Ligth.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelResource.h" />
     <ClInclude Include="ReadNFG.h" />

@@ -11,6 +11,7 @@
 #include "Terrain.h"
 #include "SkyBox.h"
 #include "Fire.h"
+#include "Ligth.h"
 
 using namespace rapidxml;
 
@@ -76,6 +77,7 @@ void SceneManager::Init() {
 	xml_node<>* backgroundColor = root->first_node("backgroundColor");
 	xml_node<>* controls = root->first_node("controls");
 	xml_node<>* fog = root->first_node("fog");
+	xml_node<>* ligths = root->first_node("lights");
 
 	if (fog) {
 		SceneManager::spInstance->smallR = std::stof(fog->first_node("r")->value());
@@ -88,6 +90,31 @@ void SceneManager::Init() {
 		}
 	}
 	
+	if (ligths) {
+		for (xml_node<>* light = ligths->first_node("light"); light; light = light->next_sibling("light")) {
+			Ligth* newLight = new Ligth();
+			if (light->first_node("position")) {
+				newLight->position.x = std::stof(light->first_node("position")->first_node("x")->value());
+				newLight->position.y = std::stof(light->first_node("position")->first_node("y")->value());
+				newLight->position.z = std::stof(light->first_node("position")->first_node("z")->value());
+			}
+			if (light->first_node("specColor")) {
+				newLight->specColor.x = std::stof(light->first_node("specColor")->first_node("r")->value());
+				newLight->specColor.y = std::stof(light->first_node("specColor")->first_node("g")->value());
+				newLight->specColor.z = std::stof(light->first_node("specColor")->first_node("b")->value());
+			}
+			if (light->first_node("diffColor")) {
+				newLight->specColor.x = std::stof(light->first_node("diffColor")->first_node("r")->value());
+				newLight->specColor.y = std::stof(light->first_node("diffColor")->first_node("g")->value());
+				newLight->specColor.z = std::stof(light->first_node("diffColor")->first_node("b")->value());
+			}
+			if (light->first_node("specPower")) {
+				newLight->specPower = std::stof(light->first_node("specPower")->value());
+			}
+			SceneManager::GetInstance()->currentSceneLights.push_back(newLight);
+		}
+	}
+
 	xml_node<>* objects = root->first_node("objects");
 
 	for (xml_node<>* object = objects->first_node("object"); object; object = object->next_sibling("object")) {
@@ -105,7 +132,7 @@ void SceneManager::Init() {
 			newObject = new Fire();
 			Fire* fireObj = static_cast<Fire*>(newObject);
 			if (fireObj) 
-				fireObj->u_DispMax = std::stoi(object->first_node("u_DispMax")->value());
+				fireObj->u_DispMax = std::stof(object->first_node("u_DispMax")->value());
 		}
 		newObject->id = std::stoi(object->first_attribute("id")->value());
 

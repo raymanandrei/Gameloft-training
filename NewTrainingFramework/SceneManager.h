@@ -1,6 +1,7 @@
 #include <vector>
 #include "Camera.h"
 #include "sceneObject.h"
+#include "Ligth.h"
 
 class SceneManager {
 	public:
@@ -18,6 +19,7 @@ class SceneManager {
 		float bigR;
 
 		std::vector<SceneObject*> currentSceneObjects;
+		std::vector<Ligth*>currentSceneLights;
 
 		~SceneManager();
 	private:

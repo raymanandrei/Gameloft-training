@@ -22,7 +22,7 @@ uniform vec3 fogColor;
 
 void main()
 {    
-    vec3 vectCam = Vposition;
+    vec3 vectCam = Vposition - cameraPosition;
 
     vec3 dirReflect = reflect(normalize(vectCam),normalize(v_normW));
 

@@ -80,7 +80,6 @@ void SceneObject::sendCommonData() {
 			glBindTexture(this->texture[i]->tr->type, this->texture[i]->tr->id);
 		}		
 	}
-
 }
 
 void SceneObject::sendSpecificData() {

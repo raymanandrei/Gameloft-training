@@ -28,7 +28,7 @@ void main()
 {    
     vec2 disp = texture2D(u_texture_0, vec2(v_uv.x, v_uv.y + U_Time)).xy;
 
-    //disp = (disp * 2.0 - 1.0) * U_DispMax;
+    disp = (disp * 2.0 - 1.0) * U_DispMax;
 
     vec2 v_uv_displaced = v_uv + disp;
 
